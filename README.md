@@ -117,15 +117,15 @@ Visual Studio ile projeyi açıp çalıştırabilirsiniz.
 
 | Dashboard Overview | Dashboard Charts |
 |-------------------|------------------|
-| ![](Screenshots/DashboardOverview.png) | ![](Screenshots/DashboardCharts.png) |
+| ![](MiniFinansRaporlama/Screenshots/DashboardOverview.png) | ![](MiniFinansRaporlama/Screenshots/DashboardCharts.png) |
 
 | Create Transaction | Edit Transaction |
 |-------------------|------------------|
-| ![](Screenshots/Create.png) | ![](Screenshots/Edit.png) |
+| ![](MiniFinansRaporlama/Screenshots/Create.png) | ![](MiniFinansRaporlama/Screenshots/Edit.png) |
 
 | Transaction Details | Delete Transaction |
 |--------------------|--------------------|
-| ![](Screenshots/Details.png) | ![](Screenshots/Delete.png) |
+| ![](MiniFinansRaporlama/Screenshots/Details.png) | ![](MiniFinansRaporlama/Screenshots/Delete.png) |
 
 ---
 
