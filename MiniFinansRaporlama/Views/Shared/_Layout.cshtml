@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Sayfa başlığı: her view kendi ViewBag.Title değerini taşır -->
+    <title>@ViewBag.Title - Mini Finans App</title>
+
+    <!-- Bootstrap 5 stil dosyası -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        /* Sayfa içi anchor geçişleri daha yumuşak olsun */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Fixed navbar içerikleri kapatmasın diye üst boşluk */
+        body {
+            background-color: #f8f9fa;
+            padding-top: 70px;
+        }
+
+        /* Navbar marka yazısı */
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
+
+        /* Navbar içindeki buton benzeri linklerin ortak görünümü */
+        .nav-btn {
+            padding: .45rem .9rem;
+            border-radius: .6rem;
+            transition: all .2s ease;
+        }
+
+            /* Navbar buton hover efekti */
+            .nav-btn:hover {
+                background: rgba(255,255,255,.15);
+            }
+
+        /* Aktif section link görünümü */
+        .section-link.active {
+            background: rgba(255,255,255,.2);
+            font-weight: 600;
+        }
+
+        /* Yeni işlem butonunun özel rengi */
+        .nav-create {
+            background: #0d6efd;
+        }
+
+            /* Yeni işlem butonu hover durumu */
+            .nav-create:hover {
+                background: #0b5ed7;
+            }
+
+        /* Ana içerik alanının üst-alt boşluğu */
+        .page-section {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        /* Tüm sayfalarda ortak kart görünümü */
+        .page-card {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, .06);
+        }
+
+        /* Dashboard kartları için yardımcı stil */
+        .stat-card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, .08);
+        }
+
+        /* Tablo başlıklarında satır kırılmasını engeller */
+        .table thead th {
+            white-space: nowrap;
+        }
+
+        /* Mobilde işlem butonları tam genişlikte olsun */
+        .action-stack .btn {
+            width: 100%;
+        }
+
+        /* Navbar gizlenip görünürken akıcı geçiş */
+        #mainNavbar {
+            transition: top 0.3s ease;
+        }
+
+        /* Anchor ile gidilen bölümler navbar altında kalmasın */
+        #dashboard,
+        #charts,
+        #transactions,
+        #recent-transactions {
+            scroll-margin-top: 90px;
+        }
+
+        /* Aktif section linki için ek görünüm */
+        .section-link.active {
+            color: #ffffff !important;
+            font-weight: 600;
+            position: relative;
+        }
+
+        /* Tablet ve üzeri ekranlarda işlem butonlarını yatay hizala */
+        @@media (min-width: 768px) {
+            .action-stack {
+                display: flex;
+                gap: .5rem;
+                flex-wrap: wrap;
+            }
+
+                .action-stack .btn {
+                    width: auto;
+                }
+        }
+    </style>
+
+    <!-- Sayfaya özel ekstra stiller varsa burada render edilir -->
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <!--
+        Üst Navbar
+        - fixed-top ile sayfanın üstünde sabit durur
+        - mobilde collapse menü olarak çalışır
+        - dashboard içindeki ana bölümlere hızlı erişim sağlar
+    -->
+    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top">
+        <div class="container">
+
+            <!-- Uygulama logosu / ana sayfa bağlantısı -->
+            @Html.ActionLink("Mini Finans App", "Index", "Finance", null, new { @class = "navbar-brand" })
+
+            <!-- Mobil görünümde hamburger menü butonu -->
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainMenu"
+                    aria-controls="mainMenu"
+                    aria-expanded="false"
+                    aria-label="Menüyü Aç">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar menü alanı -->
+            <div class="collapse navbar-collapse" id="mainMenu">
+                <ul class="navbar-nav ms-auto gap-2">
+
+                    <!-- Sayfa içi navigasyon linkleri -->
+                    <li class="nav-item">
+                        <a class="nav-link nav-btn section-link" href="/Finance/Index#dashboard">Dashboard</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-btn section-link" href="/Finance/Index#charts">Grafikler</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-btn section-link" href="/Finance/Index#recent-transactions">Son İşlemler</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-btn section-link" href="/Finance/Index#transactions">İşlemler</a>
+                    </li>
+
+                    <!-- Yeni işlem ekleme sayfasına yönlendiren temel link -->
+                    <li class="nav-item">
+                        @Html.ActionLink("Yeni İşlem", "Create", "Finance", null,
+                        new { @class = "nav-link nav-btn nav-create" })
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Ana içerik alanı -->
+    <main class="container page-section">
+        <div class="page-card">
+
+            <!-- Her sayfanın kendi gövde içeriği burada render edilir -->
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- Alt bilgi -->
+    <footer class="border-top bg-white py-3 text-center text-muted small">
+        Mini Finans App • @DateTime.Now.Year
+    </footer>
+
+    <!-- Ortak JavaScript kütüphaneleri -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* --------------------------------------------
+               1) NAVBAR SCROLL DAVRANIŞI
+               Aşağı inerken navbar gizlenir,
+               yukarı çıkarken tekrar görünür.
+            --------------------------------------------- */
+            let lastScrollTop = 0;
+            const navbar = document.getElementById("mainNavbar");
+
+            window.addEventListener("scroll", function () {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    navbar.style.top = "-80px";
+                } else {
+                    navbar.style.top = "0";
+                }
+
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            });
+
+            /* --------------------------------------------
+               2) MOBİLDE BURGER MENÜYÜ KAPAT
+               Kullanıcı navbar linkine bastığında,
+               sadece mobil görünümde collapse menü kapanır.
+            --------------------------------------------- */
+            const navbarCollapse = document.getElementById("mainMenu");
+            const allNavLinks = document.querySelectorAll(".navbar-collapse .nav-link");
+
+            allNavLinks.forEach(function (link) {
+                link.addEventListener("click", function () {
+                    if (window.innerWidth < 992) {
+                        const bsCollapse =
+                            bootstrap.Collapse.getInstance(navbarCollapse) ||
+                            new bootstrap.Collapse(navbarCollapse, { toggle: false });
+
+                        bsCollapse.hide();
+                    }
+                });
+            });
+
+            /* --------------------------------------------
+               3) AKTİF SECTION LINK VURGUSU
+               Kullanıcı dashboard içinde gezerken,
+               ilgili bölümün navbar linki aktif görünür.
+            --------------------------------------------- */
+            const sectionLinks = document.querySelectorAll(".section-link");
+
+            const sections = ["dashboard", "charts", "recent-transactions", "transactions"]
+                .map(function (id) { return document.getElementById(id); })
+                .filter(function (section) { return section !== null; });
+
+            function setActiveSection() {
+                let scrollPosition = window.scrollY + 120;
+                let currentId = "";
+
+                sections.forEach(function (section) {
+                    if (scrollPosition >= section.offsetTop) {
+                        currentId = section.id;
+                    }
+                });
+
+                sectionLinks.forEach(function (link) {
+                    link.classList.remove("active");
+
+                    const href = link.getAttribute("href");
+                    if (href && href.indexOf("#" + currentId) !== -1) {
+                        link.classList.add("active");
+                    }
+                });
+            }
+
+            // Sayfa ilk açıldığında aktif section belirlenir
+            setActiveSection();
+
+            // Scroll oldukça aktif section güncellenir
+            window.addEventListener("scroll", setActiveSection);
+        });
+    </script>
+
+    <!-- Sayfaya özel scriptler varsa burada render edilir -->
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
