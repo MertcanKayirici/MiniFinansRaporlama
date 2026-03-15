@@ -1,35 +1,49 @@
-﻿# Mini Finans Raporlama
+﻿# Mini Financial Reporting
 
-Mini Finans Raporlama, **ASP.NET MVC ve Entity Framework** kullanılarak geliştirilmiş basit ve kullanıcı dostu bir **finans takip uygulamasıdır**.  
-Kullanıcılar gelir ve gider işlemlerini ekleyebilir, düzenleyebilir, silebilir ve finansal durumlarını grafikler üzerinden analiz edebilir.
+![ASP.NET MVC](https://img.shields.io/badge/ASP.NET-MVC-blue)
+![C#](https://img.shields.io/badge/C%23-.NET-blue)
+![Entity Framework](https://img.shields.io/badge/Entity%20Framework-ORM-purple)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-Database-red)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-UI-purple)
+![Chart.js](https://img.shields.io/badge/Chart.js-Visualization-orange)
 
-Bu proje, **CRUD işlemleri, veri görselleştirme, filtreleme ve log sistemi** gibi temel backend yeteneklerini göstermek amacıyla geliştirilmiştir.
+Mini Financial Reporting is a **simple financial tracking web application** built using **ASP.NET MVC and Entity Framework**.
+
+The application allows users to manage income and expense transactions, visualize financial data with charts, and analyze financial summaries through a dashboard interface.
+
+This project demonstrates fundamental backend development skills including:
+
+- CRUD operations
+- Data visualization
+- Filtering and querying
+- Logging system implementation
+- MVC architecture
 
 ---
 
-# Özellikler
+# Features
 
-• Gelir ve gider işlemleri ekleme  
-• İşlem düzenleme ve silme  
-• Dashboard finans özeti  
-• Grafikler ile veri görselleştirme  
-• Kategori bazlı gider analizi  
-• Tarih ve kategori filtreleme  
-• İşlem log sistemi  
-• Responsive arayüz  
+• Add income and expense transactions  
+• Edit and delete financial records  
+• Dashboard financial summary  
+• Chart-based data visualization  
+• Category-based expense analysis  
+• Date and category filtering  
+• Transaction logging system  
+• Responsive user interface  
 
 ---
 
-# Kullanılan Teknolojiler
+# Technologies Used
 
-Backend
+## Backend
 
 - ASP.NET MVC
 - C#
 - Entity Framework
 - SQL Server
 
-Frontend
+## Frontend
 
 - Bootstrap 5
 - Chart.js
@@ -37,83 +51,98 @@ Frontend
 
 ---
 
-# Dashboard Özellikleri
+# Dashboard
 
-Dashboard ekranında kullanıcılar:
+The dashboard provides a quick overview of the user's financial data.
 
-- Toplam gelir
-- Toplam gider
-- Net bakiye
-- Toplam işlem sayısı
+Users can view:
 
-gibi finansal özet bilgileri görüntüleyebilir.
+- Total income
+- Total expenses
+- Net balance
+- Total transaction count
 
-Ayrıca:
+Additionally, the system includes data visualization components such as:
 
-- Gelir / Gider dağılım grafiği
-- Kategori bazlı gider grafiği
+- Income vs Expense chart
+- Expense distribution by category
 
-gibi veri görselleştirme araçları bulunmaktadır.
+These visualizations help users better understand their financial behavior.
 
 ---
 
-# Veritabanı
+# Database
 
-Projede kullanılan veritabanı yapısı **Database klasöründe** bulunmaktadır.
+The database schema used in this project is provided in the **Database** folder.
 
 
 Database/MiniFinansRaporlama_DB.sql
 
 
-Script aşağıdaki tabloları oluşturur:
+This SQL script creates the following tables:
 
-- Transactions
-- Logs
+- **Transactions**
+- **Logs**
 
-Transactions tablosu finans işlemlerini saklar.  
-Logs tablosu ise sistemde yapılan işlemleri kayıt altına alır.
+### Transactions
+
+Stores financial records including:
+
+- date
+- transaction type
+- amount
+- category
+- description
+
+### Logs
+
+Stores system actions such as:
+
+- transaction creation
+- transaction updates
+- transaction deletions
 
 ---
 
-# Kurulum
+# Installation
 
-Projeyi çalıştırmak için aşağıdaki adımları takip edebilirsiniz.
+Follow these steps to run the project locally.
 
-### 1. SQL Server'da veritabanı oluştur
+### 1. Create a database in SQL Server
 
 
 MiniFinansDB
 
 
-### 2. Database scriptini çalıştır
+### 2. Run the database script
 
 
 Database/MiniFinansRaporlama_DB.sql
 
 
-### 3. Web.config dosyasını düzenle
+### 3. Configure the connection string
 
-Connection string içindeki server adını kendi bilgisayarınıza göre değiştirin.
+Update the **Web.config** connection string with your SQL Server name.
 
-Örnek:
+Example:
 
 
 data source=YOUR_SERVER_NAME
 
 
-veya
+or
 
 
 data source=.
 
 
-### 4. Projeyi çalıştır
+### 4. Run the project
 
-Visual Studio ile projeyi açıp çalıştırabilirsiniz.
+Open the solution in **Visual Studio** and start the application.
 
 ---
 
-## Ekran Görüntüleri
+# Screenshots
 
 | Dashboard Overview | Dashboard Charts |
 |-------------------|------------------|
@@ -129,7 +158,7 @@ Visual Studio ile projeyi açıp çalıştırabilirsiniz.
 
 ---
 
-# Proje Yapısı
+# Project Structure
 
 
 MiniFinansRaporlama
@@ -148,23 +177,23 @@ MiniFinansRaporlama
 
 ---
 
-# Amaç
+# Purpose
 
-Bu proje aşağıdaki konularda pratik yapmak amacıyla geliştirilmiştir:
+This project was developed to practice and demonstrate:
 
-- ASP.NET MVC mimarisi
-- Entity Framework kullanımı
-- CRUD işlemleri
-- Dashboard tasarımı
-- Veri görselleştirme
-- Filtreleme işlemleri
-- Log sistemi oluşturma
+- ASP.NET MVC architecture
+- Entity Framework integration
+- CRUD operations
+- Dashboard UI design
+- Data visualization
+- Filtering mechanisms
+- Logging system development
 
 ---
 
-# Geliştirici
+# Developer
 
-Mertcan Kayırıcı
+**Mertcan Kayırıcı**
 
-Hitit Üniversitesi  
-Bilgisayar Programcılığı
+Hitit University  
+Computer Programming
