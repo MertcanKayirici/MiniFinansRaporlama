@@ -113,19 +113,19 @@ Visual Studio ile projeyi açıp çalıştırabilirsiniz.
 
 ---
 
-# Ekran Görüntüleri
+## Ekran Görüntüleri
 
-### Dashboard
+| Dashboard Overview | Dashboard Charts |
+|-------------------|------------------|
+| ![](Screenshots/DashboardOverview.png) | ![](Screenshots/DashboardCharts.png) |
 
-![Dashboard](screenshots/dashboard.png)
+| Create Transaction | Edit Transaction |
+|-------------------|------------------|
+| ![](Screenshots/Create.png) | ![](Screenshots/Edit.png) |
 
-### İşlem Listesi
-
-![Transactions](screenshots/transactions.png)
-
-### Grafikler
-
-![Charts](screenshots/charts.png)
+| Transaction Details | Delete Transaction |
+|--------------------|--------------------|
+| ![](Screenshots/Details.png) | ![](Screenshots/Delete.png) |
 
 ---
 
