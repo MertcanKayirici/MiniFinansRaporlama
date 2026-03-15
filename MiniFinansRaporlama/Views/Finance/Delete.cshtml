@@ -1,0 +1,125 @@
+﻿@model MiniFinansRaporlama.Models.Transactions
+
+@{
+    ViewBag.Title = "İşlem Sil";
+}
+
+<!-- Sayfa Başlığı ve Geri Dönüş Butonu -->
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <h2 class="mb-1 text-danger">İşlem Sil</h2>
+        <p class="text-muted mb-0">Bu kaydı silmeden önce bilgileri kontrol et.</p>
+    </div>
+
+    <!-- Liste ekranına dönüş -->
+    <div>
+        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary" })
+    </div>
+</div>
+
+<!-- Silme Onay Kartı -->
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <!-- Kullanıcı uyarı mesajı -->
+        <div class="alert alert-warning mb-4">
+            Bu kaydı silmek istediğine emin misin? Bu işlem geri alınamaz.
+        </div>
+
+        <!-- Silinecek kayıt bilgileri -->
+        <div class="row g-3">
+
+            <!-- İşlem Tarihi -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tarih</label>
+                <div class="form-control bg-light">
+                    @(Model.Date != null ? Model.Date.ToString("dd.MM.yyyy") : "")
+                </div>
+            </div>
+
+            <!-- İşlem Kategorisi -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Kategori</label>
+                <div class="form-control bg-light">
+                    @Model.Category
+                </div>
+            </div>
+
+            <!-- İşlem Tipi -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tip</label>
+                <div class="form-control bg-light">
+                    @if (Model.Type == "Gelir")
+                    {
+                        <span class="badge text-bg-success">Gelir</span>
+                    }
+                    else
+                    {
+                        <span class="badge text-bg-danger">Gider</span>
+                    }
+                </div>
+            </div>
+
+            <!-- İşlem Tutarı -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tutar</label>
+                <div class="form-control bg-light">
+                    @Model.Amount.ToString("N2") ₺
+                </div>
+            </div>
+
+            <!-- İşlem Açıklaması -->
+            <div class="col-12">
+                <label class="form-label fw-semibold">Açıklama</label>
+                <div class="form-control bg-light" style="min-height: 90px;">
+                    @Model.Description
+                </div>
+            </div>
+        </div>
+
+        @* Silme işlemi için form başlangıcı *@
+        @using (Html.BeginForm("Delete", "Finance", FormMethod.Post, new { id = "deleteForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <!-- Form aksiyon butonları -->
+            <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
+
+                <!-- SweetAlert onayı sonrası form submit edilir -->
+                <button type="button" class="btn btn-danger" id="deleteBtn">
+                    Kaydı Sil
+                </button>
+
+                <!-- İşlemi iptal edip listeye dön -->
+                @Html.ActionLink("Vazgeç", "Index", null, new { @class = "btn btn-outline-dark" })
+            </div>
+        }
+        @* Form bitişi *@
+
+    </div>
+</div>
+
+<script>
+    // Silme butonuna tıklandığında kullanıcıdan son onay alınır
+    document.getElementById("deleteBtn").addEventListener("click", function () {
+
+        Swal.fire({
+            title: "Emin misin?",
+            text: "Bu işlem geri alınamaz!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Evet, Sil",
+            cancelButtonText: "Vazgeç"
+        }).then((result) => {
+
+            // Kullanıcı onay verirse form gönderilir
+            if (result.isConfirmed) {
+                document.getElementById("deleteForm").submit();
+            }
+
+        });
+
+    });
+</script>

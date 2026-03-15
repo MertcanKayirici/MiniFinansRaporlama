@@ -1,0 +1,116 @@
+﻿@model MiniFinansRaporlama.Models.Transactions
+
+@{
+    ViewBag.Title = "Yeni İşlem Ekle";
+}
+
+<!-- Sayfa Başlığı ve Üst Aksiyon Alanı -->
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <h2 class="mb-1">Yeni İşlem Ekle</h2>
+        <p class="text-muted mb-0">Yeni gelir veya gider kaydı oluştur.</p>
+    </div>
+
+    <!-- Liste ekranına geri dönüş butonu -->
+    <div>
+        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary" })
+    </div>
+</div>
+
+<!-- Form Kartı -->
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        @* Yeni işlem ekleme formu başlangıcı *@
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @* Genel doğrulama hataları burada gösterilir *@
+            @Html.ValidationSummary(false, "", new { @class = "text-danger mb-3" })
+
+            <!-- İşlem Tarihi -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(model => model.Date, "{0:yyyy-MM-dd}", new
+                {
+                    @class = "form-control",
+                    type = "date"
+                })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger small" })
+            </div>
+
+            <!-- Kategori Seçimi -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(
+                    model => model.Category,
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Maaş", Value = "Maaş" },
+                        new SelectListItem { Text = "Ek Gelir", Value = "Ek Gelir" },
+                        new SelectListItem { Text = "Market", Value = "Market" },
+                        new SelectListItem { Text = "Fatura", Value = "Fatura" },
+                        new SelectListItem { Text = "Ulaşım", Value = "Ulaşım" },
+                        new SelectListItem { Text = "Eğitim", Value = "Eğitim" },
+                        new SelectListItem { Text = "Diğer", Value = "Diğer" }
+                    },
+                    "Kategori Seçiniz",
+                    new { @class = "form-select" }
+                )
+
+                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger small" })
+            </div>
+
+            <!-- İşlem Türü: Gelir / Gider -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(
+                    model => model.Type,
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Gelir", Value = "Gelir" },
+                        new SelectListItem { Text = "Gider", Value = "Gider" }
+                    },
+                    "Seçiniz",
+                    new { @class = "form-select" }
+                )
+
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger small" })
+            </div>
+
+            <!-- Tutar Girişi -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(model => model.Amount, new
+                {
+                    @class = "form-control",
+                    placeholder = "Tutar giriniz"
+                })
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger small" })
+            </div>
+
+            <!-- Açıklama Alanı -->
+            <div class="mb-4">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label fw-semibold" })
+                @Html.TextAreaFor(model => model.Description, new
+                {
+                    @class = "form-control",
+                    rows = "4",
+                    placeholder = "Açıklama giriniz"
+                })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger small" })
+            </div>
+
+            <!-- Form Butonları -->
+            <div class="d-flex flex-column flex-sm-row gap-2">
+                <input type="submit" value="Kaydet" class="btn btn-success" />
+                @Html.ActionLink("Vazgeç", "Index", null, new { @class = "btn btn-outline-dark" })
+            </div>
+        }
+        @* Form bitişi *@
+
+    </div>
+</div>

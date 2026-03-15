@@ -1,0 +1,124 @@
+﻿@model MiniFinansRaporlama.Models.Transactions
+
+@{
+    // Sayfa başlığı (browser title ve layout içinde kullanılabilir)
+    ViewBag.Title = "İşlem Detayı";
+}
+
+<!-- Sayfa üst başlığı ve geri dönüş butonu -->
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <!-- Sayfa başlığı -->
+        <h2 class="mb-1">İşlem Detayı</h2>
+
+        <!-- Sayfa açıklaması -->
+        <p class="text-muted mb-0">İşleme ait tüm bilgileri buradan görüntüleyebilirsin.</p>
+    </div>
+
+    <!-- İşlem listesinin bulunduğu sayfaya geri dönüş -->
+    <div>
+        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary" })
+    </div>
+</div>
+
+<!-- İşlem bilgilerini gösteren kart -->
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <!-- İşlem detaylarının grid yapısı -->
+        <div class="row g-3">
+
+            <!-- İşlem Tarihi -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tarih</label>
+
+                <!-- Tarih bilgisi readonly görünümde gösteriliyor -->
+                <div class="form-control bg-light">
+                    @(Model.Amount.ToString("N2") + " ₺")
+                </div>
+            </div>
+
+            <!-- İşlem Kategorisi -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Kategori</label>
+
+                <!-- Veritabanından gelen kategori -->
+                <div class="form-control bg-light">
+                    @Model.Category
+                </div>
+            </div>
+
+            <!-- İşlem Tipi (Gelir / Gider) -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tip</label>
+
+                <!-- İşlem tipine göre renkli badge gösteriliyor -->
+                <div class="form-control bg-light">
+                    @if (Model.Type == "Gelir")
+                    {
+                        <span class="badge text-bg-success">Gelir</span>
+                    }
+                    else
+                    {
+                        <span class="badge text-bg-danger">Gider</span>
+                    }
+                </div>
+            </div>
+
+            <!-- İşlem Tutarı -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tutar</label>
+
+                <!-- Para formatında gösterim -->
+                <div class="form-control bg-light">
+                    @(Model.Amount.ToString("N2") + " ₺")
+                </div>
+            </div>
+
+            <!-- Kaydın oluşturulma zamanı -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Oluşturulma Tarihi</label>
+
+                <!-- Oluşturulma zamanı bilgisi -->
+                <div class="form-control bg-light">
+                    @(Model.Amount.ToString("N2") + " ₺")
+                </div>
+            </div>
+
+            <!-- Son güncellenme zamanı -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Güncellenme Tarihi</label>
+
+                <!-- Eğer kayıt güncellendiyse tarih gösterilir -->
+                <div class="form-control bg-light">
+                    @(Model.UpdatedAt != null ? Model.UpdatedAt.Value.ToString("dd.MM.yyyy HH:mm") : "")
+                </div>
+            </div>
+
+            <!-- İşlem açıklaması -->
+            <div class="col-12">
+                <label class="form-label fw-semibold">Açıklama</label>
+
+                <!-- Kullanıcının girdiği açıklama -->
+                <div class="form-control bg-light" style="min-height: 100px;">
+                    @Model.Description
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sayfa aksiyon butonları -->
+        <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
+
+            <!-- İşlemi düzenleme sayfasına yönlendirir -->
+            @Html.ActionLink("Düzenle", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+
+            <!-- İşlem silme sayfasına yönlendirir -->
+            @Html.ActionLink("Sil", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
+
+            <!-- İşlem listesine geri dön -->
+            @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-dark" })
+        </div>
+
+    </div>
+</div>
