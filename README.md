@@ -1,144 +1,77 @@
-﻿# Mini Financial Reporting
+﻿# Mini Finans Raporlama
 
-![ASP.NET MVC](https://img.shields.io/badge/ASP.NET-MVC-blue)
-![C#](https://img.shields.io/badge/C%23-.NET-blue)
-![Entity Framework](https://img.shields.io/badge/Entity%20Framework-ORM-purple)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-Database-red)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-UI-purple)
-![Chart.js](https://img.shields.io/badge/Chart.js-Visualization-orange)
+A simple **financial tracking web application** built with **ASP.NET MVC, Entity Framework and SQL Server**.  
+The application allows users to manage income and expense transactions and visualize financial data through dashboards and charts.
 
-Mini Financial Reporting is a **simple financial tracking web application** built using **ASP.NET MVC and Entity Framework**.
-
-The application allows users to manage income and expense transactions, visualize financial data with charts, and analyze financial summaries through a dashboard interface.
-
-This project demonstrates fundamental backend development skills including:
-
-- CRUD operations
-- Data visualization
-- Filtering and querying
-- Logging system implementation
-- MVC architecture
+This project demonstrates backend development concepts such as **CRUD operations, database design, filtering, logging systems, and data visualization**.
 
 ---
 
 # Features
 
-• Add income and expense transactions  
-• Edit and delete financial records  
-• Dashboard financial summary  
-• Chart-based data visualization  
-• Category-based expense analysis  
-• Date and category filtering  
-• Transaction logging system  
-• Responsive user interface  
+- Create, update and delete financial transactions
+- Dashboard overview with financial summary
+- Income / Expense visual analytics
+- Category based expense analysis
+- Date and category filtering
+- Transaction logging system
+- Responsive user interface
+- Chart-based data visualization
 
 ---
 
 # Technologies Used
 
-## Backend
+### Backend
 
 - ASP.NET MVC
 - C#
 - Entity Framework
 - SQL Server
+- LINQ
 
-## Frontend
+### Frontend
 
 - Bootstrap 5
 - Chart.js
 - SweetAlert2
+- Razor View Engine
 
 ---
 
-# Dashboard
+# Application Architecture
 
-The dashboard provides a quick overview of the user's financial data.
+This project follows the **ASP.NET MVC architecture pattern**.
 
-Users can view:
+### Controllers
+Handle incoming HTTP requests and control application flow.
+
+### Models
+Represent database entities and business data.
+
+### Views
+Provide the user interface using Razor templates.
+
+### Entity Framework
+Used as ORM (Object Relational Mapper) for database communication.
+
+This layered structure improves **code organization, maintainability, and separation of concerns**.
+
+---
+
+# Dashboard Features
+
+The dashboard provides a financial overview including:
 
 - Total income
 - Total expenses
 - Net balance
-- Total transaction count
+- Transaction count
 
-Additionally, the system includes data visualization components such as:
+It also includes visual data analysis:
 
-- Income vs Expense chart
-- Expense distribution by category
-
-These visualizations help users better understand their financial behavior.
-
----
-
-# Database
-
-The database schema used in this project is provided in the **Database** folder.
-
-
-Database/MiniFinansRaporlama_DB.sql
-
-
-This SQL script creates the following tables:
-
-- **Transactions**
-- **Logs**
-
-### Transactions
-
-Stores financial records including:
-
-- date
-- transaction type
-- amount
-- category
-- description
-
-### Logs
-
-Stores system actions such as:
-
-- transaction creation
-- transaction updates
-- transaction deletions
-
----
-
-# Installation
-
-Follow these steps to run the project locally.
-
-### 1. Create a database in SQL Server
-
-
-MiniFinansDB
-
-
-### 2. Run the database script
-
-
-Database/MiniFinansRaporlama_DB.sql
-
-
-### 3. Configure the connection string
-
-Update the **Web.config** connection string with your SQL Server name.
-
-Example:
-
-
-data source=YOUR_SERVER_NAME
-
-
-or
-
-
-data source=.
-
-
-### 4. Run the project
-
-Open the solution in **Visual Studio** and start the application.
+- Income / Expense distribution chart
+- Category based expense chart
 
 ---
 
@@ -158,6 +91,105 @@ Open the solution in **Visual Studio** and start the application.
 
 ---
 
+# Database Schema
+
+The project uses a simple relational database structure.
+
+### Transactions
+
+| Column | Description |
+|------|-------------|
+| Id | Primary key |
+| Date | Transaction date |
+| Type | Income or Expense |
+| Category | Transaction category |
+| Amount | Transaction amount |
+| Description | Transaction description |
+| CreatedAt | Creation timestamp |
+| UpdatedAt | Last update timestamp |
+
+### Logs
+
+| Column | Description |
+|------|-------------|
+| Id | Primary key |
+| Action | Performed action |
+| Description | Log description |
+| LogDate | Log timestamp |
+
+---
+
+# ER Diagram
+
+Database entity relationship overview:
+
+![ER Diagram](MiniFinansRaporlama/Screenshots/ERDiagram.png)
+
+---
+
+# Database Script
+
+The SQL script required to create the database structure is located in:
+
+
+Database/MiniFinansRaporlama_DB.sql
+
+
+This script creates the following tables:
+
+- Transactions
+- Logs
+
+---
+
+# Installation
+
+### 1 Clone the repository
+
+
+git clone https://github.com/MertcanKayirici/MiniFinansRaporlama.git
+
+
+### 2 Open with Visual Studio
+
+Open the project solution in **Visual Studio**.
+
+### 3 Create database
+
+Create a new database in SQL Server:
+
+
+MiniFinansDB
+
+
+### 4 Run database script
+
+Execute the SQL script:
+
+
+Database/MiniFinansRaporlama_DB.sql
+
+
+### 5 Configure connection string
+
+Update the **Web.config** connection string with your SQL Server name:
+
+
+data source=YOUR_SERVER_NAME
+
+
+Example:
+
+
+data source=.
+
+
+### 6 Run the project
+
+Run the project from Visual Studio.
+
+---
+
 # Project Structure
 
 
@@ -166,6 +198,7 @@ MiniFinansRaporlama
 ├── Controllers
 ├── Models
 ├── Views
+│
 ├── Database
 │ └── MiniFinansRaporlama_DB.sql
 │
@@ -177,17 +210,17 @@ MiniFinansRaporlama
 
 ---
 
-# Purpose
+# Learning Goals
 
-This project was developed to practice and demonstrate:
+This project was developed to practice the following concepts:
 
 - ASP.NET MVC architecture
-- Entity Framework integration
+- Entity Framework ORM usage
 - CRUD operations
+- LINQ queries
 - Dashboard UI design
 - Data visualization
-- Filtering mechanisms
-- Logging system development
+- Database logging systems
 
 ---
 
