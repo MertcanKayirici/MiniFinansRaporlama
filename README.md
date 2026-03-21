@@ -37,24 +37,6 @@ This project allows users to manage income and expense transactions while provid
 - SweetAlert2  
 - HTML5 / CSS3  
 
----
-
-## 🎥 Feature Demonstrations
-
-### 📊 Dashboard Overview
-![Dashboard](Screenshots/DashboardOverview.png)
-
-### 📈 Financial Charts
-![Charts](Screenshots/DashboardCharts.png)
-
-### ➕ Create Transaction
-![Create](Screenshots/Create.png)
-
-### ✏️ Edit Transaction
-![Edit](Screenshots/Edit.png)
-
----
-
 ## 📸 Screenshots
 
 ### 📊 Dashboard
@@ -102,8 +84,8 @@ This improves decision-making and user experience.
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/MertcanKayirici/MiniFinansRaporlama.git
-2. Open the project
 ```
+2. Open the project
 
 Open the solution file (.sln) in Visual Studio.
 
