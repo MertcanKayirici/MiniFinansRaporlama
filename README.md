@@ -87,7 +87,7 @@ It also includes visual data analysis:
 
 | Transaction Details | Delete Transaction |
 |--------------------|--------------------|
-| ![](MiniFinansRaporlama/Screenshots/Details.png) | ![](MiniFinansRaporlama/Screenshots/Delete.png) |
+| ![](Screenshots/Details.png) | ![](Screenshots/Delete.png) |
 
 ---
 
