@@ -139,8 +139,6 @@ Tables:
 ## ⚙️ Installation
 
 ### 1. Clone repository
-
-```bash
 git clone https://github.com/MertcanKayirici/MiniFinansRaporlama.git
 2. Open in Visual Studio
 3. Create database
