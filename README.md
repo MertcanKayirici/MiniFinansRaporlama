@@ -8,11 +8,11 @@ This project enables users to manage income and expense transactions while provi
 
 ### 🎬 Demo GIFs
 
-| 📊 Dashboard Overview | 
+| 📊 Dashboard Overview |
 |----------------------|
 | ![](Screenshots/MiniFinans_Dashboard.gif) |
 
-| ➕ Add Transaction |🔍 Filter Flow |
+| ➕ Add Transaction | 🔍 Filter Flow |
 |-------------------|----------------|
 | ![](Screenshots/MiniFinans_AddTransaction.gif) | ![](Screenshots/MiniFinans_Filter.gif) |
 
@@ -121,23 +121,23 @@ This project follows a **layered MVC architecture**:
 ```bash
 git clone https://github.com/MertcanKayirici/MiniFinansRaporlama.git
 ```
-2. Open the project
+### 2. Open the project
 
- Open the .sln file using Visual Studio
+Open the `.sln` file using Visual Studio
 
-3. Create database
+### 3. Create database
 
 Create a database named:
 ```plain
 MiniFinansDB
 ```
-4. Run SQL script
+### 4. Run SQL script
 
 Execute:
 ```bash
 Database/MiniFinansRaporlama_DB.sql
 ```
-5. Configure connection string
+### 5. Configure connection string
 
 Update your Web.config:
 ```xml
@@ -147,11 +147,11 @@ Update your Web.config:
        providerName="System.Data.SqlClient" />
 </connectionStrings>
 ```
-- ⚠️ Make sure to replace YOUR_SERVER_NAME with your SQL Server instance name.
+> ⚠️ Make sure to replace `YOUR_SERVER_NAME` with your SQL Server instance name.
 
-6. Run the project
+### 6. Run the project
 
-- Run the project using **Visual Studio (F5)** 🚀
+Run the project using **Visual Studio (F5)** 🚀
 
 ---
 
@@ -163,11 +163,11 @@ Update your Web.config:
 ---
 
 ## 📂 Project Structure
-- Controllers   → MVC Controllers  
-- Models        → Entity Framework Models  
-- Views         → Razor Views  
-- Database      → SQL Scripts  
-- Screenshots   → Images & GIF files
+Controllers   → MVC Controllers  
+Models        → Entity Framework Models  
+Views         → Razor Views  
+Database      → SQL Scripts  
+Screenshots   → Images & GIF files
 
 ---
 
