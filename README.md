@@ -1,84 +1,71 @@
-﻿# Mini Finans Raporlama
+# 💰 Mini Finans Raporlama
 
-A modern **financial tracking web application** built with **ASP.NET MVC, Entity Framework and SQL Server**.
+A modern and dynamic **financial tracking web application** built with **ASP.NET MVC, Entity Framework, and SQL Server**.
 
-The application allows users to manage income and expense transactions and visualize financial data through dashboards and charts.
-
----
-
-## 🎬 Application Demo
-
-<p align="center">
-  <img src="Screenshots/MiniFinansApp.gif" width="800"/>
-</p>
+This project allows users to manage income and expense transactions while providing powerful **dashboard analytics and visual reports**.
 
 ---
 
-## ✨ Features
+## 🎬 Demo
 
-- Create, update and delete financial transactions
-- Dashboard overview with financial summary
-- Income / Expense visual analytics
-- Category-based expense analysis
-- Date and category filtering
-- Transaction logging system
-- Responsive user interface
-- Chart-based data visualization
+> Financial dashboard and transaction management system in action
+
+![Mini Finans Demo](Screenshots/MiniFinansApp.gif)
 
 ---
 
-## 🛠 Technologies Used
+## ✨ Key Features
 
-### Backend
-- ASP.NET MVC
-- C#
-- Entity Framework
-- SQL Server
-- LINQ
-
-### Frontend
-- Bootstrap 5
-- Chart.js
-- SweetAlert2
-- Razor View Engine
+- 💸 Income & Expense Management  
+- 📊 Dashboard with Financial Summary  
+- 📈 Chart-based Data Visualization  
+- 🗂️ Category-based Expense Analysis  
+- 🔍 Date & Category Filtering  
+- 🧾 Transaction Logging System  
+- 🎨 Responsive UI (Bootstrap 5)  
+- ⚡ Fast and clean user experience  
 
 ---
 
-## 🧠 Application Architecture
+## 🛠️ Tech Stack
 
-This project follows the **ASP.NET MVC architecture pattern**.
-
-- **Controllers** → Handle HTTP requests and business flow  
-- **Models** → Represent database entities  
-- **Views** → User interface with Razor  
-
-Entity Framework is used as an ORM for database operations.
+- ASP.NET MVC (.NET Framework)  
+- Entity Framework  
+- Microsoft SQL Server  
+- Bootstrap 5  
+- Chart.js  
+- SweetAlert2  
+- HTML5 / CSS3  
 
 ---
 
-## 📊 Dashboard Features
+## 🎥 Feature Demonstrations
 
-- Total income
-- Total expenses
-- Net balance
-- Transaction count
+### 📊 Dashboard Overview
+![Dashboard](Screenshots/DashboardOverview.png)
 
-Visual analytics:
+### 📈 Financial Charts
+![Charts](Screenshots/DashboardCharts.png)
 
-- Income / Expense distribution chart
-- Category-based expense chart
+### ➕ Create Transaction
+![Create](Screenshots/Create.png)
+
+### ✏️ Edit Transaction
+![Edit](Screenshots/Edit.png)
 
 ---
 
 ## 📸 Screenshots
 
-### Dashboard
+### 📊 Dashboard
 
 | Overview | Charts |
 |----------|--------|
 | ![](Screenshots/DashboardOverview.png) | ![](Screenshots/DashboardCharts.png) |
 
-### Transactions
+---
+
+### 💸 Transactions
 
 | Create | Edit |
 |--------|------|
@@ -90,98 +77,76 @@ Visual analytics:
 
 ---
 
-## 🧩 ER Diagram
+## 🧠 Database Design
 
 ![ER Diagram](Screenshots/ERDiagram.png)
 
 ---
 
-## 🗄 Database Schema
+## ⚡ Highlight Feature
 
-### Transactions
+One of the key features of this project is the **interactive financial dashboard**.
 
-| Column | Description |
-|--------|------------|
-| Id | Primary key |
-| Date | Transaction date |
-| Type | Income / Expense |
-| Category | Transaction category |
-| Amount | Transaction amount |
-| Description | Transaction description |
-| CreatedAt | Creation timestamp |
-| UpdatedAt | Last update timestamp |
+Users can:
 
----
+- Instantly see income vs expense distribution  
+- Analyze category-based spending  
+- Track financial trends visually  
 
-### Logs
-
-| Column | Description |
-|--------|------------|
-| Id | Primary key |
-| Action | Performed action |
-| Description | Log description |
-| LogDate | Log timestamp |
-
----
-
-## 🗃 Database Script
-
-
-Database/MiniFinansRaporlama_DB.sql
-
-
-Tables:
-- Transactions
-- Logs
+This improves decision-making and user experience.
 
 ---
 
 ## ⚙️ Installation
 
-### 1. Clone repository
+### 1. Clone the repository
 ```bash
 git clone https://github.com/MertcanKayirici/MiniFinansRaporlama.git
+2. Open the project
 ```
-### 2. Open in Visual Studio
-### 3. Create database
+
+Open the solution file (.sln) in Visual Studio.
+
+3. Create database
+
+Create a database named:
+
 MiniFinansDB
-### 4. Run SQL script
+4. Run SQL script
+
+Execute:
+
 Database/MiniFinansRaporlama_DB.sql
-### 5. Configure connection string
-data source=YOUR_SERVER_NAME
+5. Configure connection string
+<connectionStrings>
+  <add name="MiniFinansDb"
+       connectionString="Data Source=YOUR_SERVER_NAME;Initial Catalog=MiniFinansDB;Integrated Security=True"
+       providerName="System.Data.SqlClient" />
+</connectionStrings>
+6. Run the project
 
-Example:
-data source=.
-6. Run project
+Press F5
 
----
-
-## 📁 Project Structure
-MiniFinansRaporlama
-│
-├── Controllers
-├── Models
-├── Views
-│
-├── Database
-│   └── MiniFinansRaporlama_DB.sql
-│
-├── Screenshots
-│
-├── README.md
-├── Web.config
-🎯 Learning Goals
-ASP.NET MVC architecture
-Entity Framework
-CRUD operations
-LINQ queries
-Dashboard UI design
-Data visualization
-Logging systems
-
----
-
-## 👨‍💻 Developer
+📌 Important Notes
+Ensure SQL Server is running
+Update connection string before running
+Do not share sensitive credentials
+📂 Project Structure
+Controllers → MVC Controllers
+Models → Entity Framework Models
+Views → Razor Views
+Database → SQL Scripts
+Screenshots → Images & GIF
+👨‍💻 Developer
 
 Mertcan Kayırıcı
-Hitit University – Computer Programming
+
+Backend-focused Full Stack Developer
+ASP.NET MVC & SQL Server
+⭐ Project Purpose
+
+This project was developed to simulate a real-world financial tracking system, focusing on:
+
+Clean architecture
+Data visualization
+User-friendly dashboard design
