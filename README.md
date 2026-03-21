@@ -139,20 +139,24 @@ Tables:
 ## ⚙️ Installation
 
 ### 1. Clone repository
+```bash
 git clone https://github.com/MertcanKayirici/MiniFinansRaporlama.git
-2. Open in Visual Studio
-3. Create database
+```
+### 2. Open in Visual Studio
+### 3. Create database
 MiniFinansDB
-4. Run SQL script
+### 4. Run SQL script
 Database/MiniFinansRaporlama_DB.sql
-5. Configure connection string
+### 5. Configure connection string
 data source=YOUR_SERVER_NAME
 
 Example:
-
 data source=.
 6. Run project
-📁 Project Structure
+
+---
+
+## 📁 Project Structure
 MiniFinansRaporlama
 │
 ├── Controllers
@@ -174,7 +178,10 @@ LINQ queries
 Dashboard UI design
 Data visualization
 Logging systems
-👨‍💻 Developer
+
+---
+
+## 👨‍💻 Developer
 
 Mertcan Kayırıcı
 Hitit University – Computer Programming
