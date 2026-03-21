@@ -8,58 +8,66 @@ using System.Web.Mvc;
 
 namespace MiniFinansRaporlama.Controllers
 {
+    /// <summary>
+    /// FinanceController
+    /// Handles financial transaction operations such as listing, filtering,
+    /// creating, updating, deleting, and generating dashboard data.
+    /// </summary>
     public class FinanceController : Controller
     {
-        // Veritabanı bağlantı nesnesi
+        // Entity Framework database context
         private MiniFinansDBEntities db = new MiniFinansDBEntities();
 
-        // İşlem listesi, filtreleme, özet veriler ve grafik verileri
+        // =========================================================
+        // INDEX - Dashboard, Listing and Filtering
+        // =========================================================
+        /// <summary>
+        /// Lists transactions, applies filters and prepares dashboard data.
+        /// </summary>
         public ActionResult Index(DateTime? startDate, DateTime? endDate, string category)
         {
-            // Transactions tablosu üzerinde sorgu başlatılır
+            // Initialize query on Transactions table
             var query = db.Transactions.AsQueryable();
 
-            // Başlangıç tarihi seçildiyse o tarihten sonraki kayıtlar filtrelenir
+            // Apply start date filter if provided
             if (startDate.HasValue)
             {
                 var start = startDate.Value.Date;
                 query = query.Where(x => x.Date >= start);
             }
 
-            // Bitiş tarihi seçildiyse o tarihe kadar olan kayıtlar filtrelenir
-            // AddDays(1) kullanılarak gün sonu dahil edilir
+            // Apply end date filter (inclusive of the day)
             if (endDate.HasValue)
             {
                 var end = endDate.Value.Date.AddDays(1);
                 query = query.Where(x => x.Date < end);
             }
 
-            // Kategori seçildiyse sadece o kategoriye ait kayıtlar getirilir
+            // Apply category filter if selected
             if (!string.IsNullOrEmpty(category))
             {
                 query = query.Where(x => x.Category == category);
             }
 
-            // Kayıtlar oluşturulma tarihine göre tersten sıralanır
+            // Order transactions by creation date descending
             var transactions = query
                 .OrderByDescending(x => x.CreatedAt)
                 .ToList();
 
-            // Toplam gelir hesaplanır
+            // Calculate total income
             var toplamGelir = transactions
                 .Where(x => x.Type == "Gelir")
                 .Sum(x => x.Amount);
 
-            // Toplam gider hesaplanır
+            // Calculate total expense
             var toplamGider = transactions
                 .Where(x => x.Type == "Gider")
                 .Sum(x => x.Amount);
 
-            // Giderler kategori bazında gruplanır
-            // Kategori boşsa "Diğer" olarak gösterilir
+            // Group expenses by category
             var giderKategorileri = transactions
                 .Where(x => x.Type == "Gider")
-                .GroupBy(x => string.IsNullOrEmpty(x.Category) ? "Diğer" : x.Category)
+                .GroupBy(x => string.IsNullOrEmpty(x.Category) ? "Other" : x.Category)
                 .Select(g => new
                 {
                     Category = g.Key,
@@ -67,216 +75,228 @@ namespace MiniFinansRaporlama.Controllers
                 })
                 .ToList();
 
-            // Aylık gelir ve gider verileri hazırlanır
+            // Prepare monthly income and expense data
             var aylikVeriler = transactions
                 .GroupBy(x => new { x.Date.Year, x.Date.Month })
                 .Select(g => new
                 {
-                    Yil = g.Key.Year,
-                    Ay = g.Key.Month,
-                    Gelir = g.Where(x => x.Type == "Gelir").Sum(x => x.Amount),
-                    Gider = g.Where(x => x.Type == "Gider").Sum(x => x.Amount)
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Income = g.Where(x => x.Type == "Gelir").Sum(x => x.Amount),
+                    Expense = g.Where(x => x.Type == "Gider").Sum(x => x.Amount)
                 })
-                .OrderBy(x => x.Yil)
-                .ThenBy(x => x.Ay)
+                .OrderBy(x => x.Year)
+                .ThenBy(x => x.Month)
                 .ToList();
 
-            // Grafik için ay etiketleri oluşturulur
+            // Create labels for chart (month names)
             var ayEtiketleri = aylikVeriler
-                .Select(x => new DateTime(x.Yil, x.Ay, 1).ToString("MMM yyyy", new System.Globalization.CultureInfo("tr-TR")))
+                .Select(x => new DateTime(x.Year, x.Month, 1)
+                .ToString("MMM yyyy", new System.Globalization.CultureInfo("en-US")))
                 .ToList();
 
-            // Aylık grafik verileri ViewBag ile View'a gönderilir
+            // Send chart data to View
             ViewBag.AylikLabels = ayEtiketleri;
-            ViewBag.AylikGelirler = aylikVeriler.Select(x => x.Gelir).ToList();
-            ViewBag.AylikGiderler = aylikVeriler.Select(x => x.Gider).ToList();
+            ViewBag.AylikGelirler = aylikVeriler.Select(x => x.Income).ToList();
+            ViewBag.AylikGiderler = aylikVeriler.Select(x => x.Expense).ToList();
 
-            // Dashboard kartlarında kullanılacak özet veriler
+            // Dashboard summary data
             ViewBag.ToplamGelir = toplamGelir;
             ViewBag.ToplamGider = toplamGider;
             ViewBag.NetBakiye = toplamGelir - toplamGider;
             ViewBag.IslemSayisi = transactions.Count();
             ViewBag.SonIslemler = transactions.Take(5).ToList();
 
-            // Filtre alanlarında seçili değerleri korumak için ViewBag'e atanır
+            // Preserve filter values
             ViewBag.StartDate = startDate;
             ViewBag.EndDate = endDate;
             ViewBag.Category = category;
 
-            // Kategori bazlı gider grafiği için label ve toplam değerler
+            // Expense category chart data
             ViewBag.GiderKategoriLabels = giderKategorileri.Select(x => x.Category).ToList();
             ViewBag.GiderKategoriTotals = giderKategorileri.Select(x => x.Total).ToList();
 
-            // Liste ekranına veriler gönderilir
+            // Return data to view
             return View(transactions);
         }
 
-        // Tek bir işlemin detay sayfası
+        // =========================================================
+        // DETAILS
+        // =========================================================
+        /// <summary>
+        /// Displays details of a single transaction.
+        /// </summary>
         public ActionResult Details(int? id)
         {
-            // Id boş gelirse 400 BadRequest döndürülür
+            // Return 400 if id is null
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            // İlgili kayıt veritabanından bulunur
+            // Find transaction
             Transactions transaction = db.Transactions.Find(id);
 
-            // Kayıt bulunamazsa 404 döndürülür
+            // Return 404 if not found
             if (transaction == null)
                 return HttpNotFound();
 
-            // Detay view'ına kayıt gönderilir
             return View(transaction);
         }
 
-        // Yeni işlem ekleme sayfası
+        // =========================================================
+        // CREATE
+        // =========================================================
+        /// <summary>
+        /// Returns create transaction view.
+        /// </summary>
         public ActionResult Create()
         {
             return View();
         }
 
-        // Yeni işlem ekleme POST işlemi
+        /// <summary>
+        /// Handles creation of a new transaction.
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Transactions transaction)
         {
-            // Model doğrulama başarılıysa kayıt eklenir
             if (ModelState.IsValid)
             {
-                // Oluşturulma ve güncellenme tarihleri atanır
-                transaction.CreatedAt = System.DateTime.Now;
-                transaction.UpdatedAt = System.DateTime.Now;
+                // Set timestamps
+                transaction.CreatedAt = DateTime.Now;
+                transaction.UpdatedAt = DateTime.Now;
 
-                // Yeni işlem veritabanına eklenir
+                // Save transaction
                 db.Transactions.Add(transaction);
                 db.SaveChanges();
 
-                // Log kaydı oluşturulur
-                Logs log = new Logs();
-                log.Action = "Create";
-                log.Description = "Yeni işlem eklendi. ID: " + transaction.Id +
-                                  " | Tür: " + transaction.Type +
-                                  " | Tutar: " + transaction.Amount;
-                log.LogDate = System.DateTime.Now;
+                // Create log
+                Logs log = new Logs
+                {
+                    Action = "Create",
+                    Description = "Transaction created. ID: " + transaction.Id +
+                                  " | Type: " + transaction.Type +
+                                  " | Amount: " + transaction.Amount,
+                    LogDate = DateTime.Now
+                };
 
-                // Log veritabanına eklenir
                 db.Logs.Add(log);
                 db.SaveChanges();
 
-                // Başarılı işlem sonrası liste sayfasına dönülür
                 return RedirectToAction("Index");
             }
 
-            // Model geçersizse form tekrar gösterilir
             return View(transaction);
         }
 
-        // İşlem düzenleme sayfası
+        // =========================================================
+        // EDIT
+        // =========================================================
+        /// <summary>
+        /// Returns edit page for a transaction.
+        /// </summary>
         public ActionResult Edit(int? id)
         {
-            // Id boşsa 400 döndürülür
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            // İlgili işlem bulunur
             Transactions transaction = db.Transactions.Find(id);
 
-            // Kayıt yoksa 404 döndürülür
             if (transaction == null)
                 return HttpNotFound();
 
-            // Düzenleme sayfasına veri gönderilir
             return View(transaction);
         }
 
-        // İşlem düzenleme POST işlemi
+        /// <summary>
+        /// Handles updating an existing transaction.
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Transactions transaction)
         {
-            // Model doğrulama başarılıysa güncelleme yapılır
             if (ModelState.IsValid)
             {
-                // Son güncellenme tarihi atanır
-                transaction.UpdatedAt = System.DateTime.Now;
+                transaction.UpdatedAt = DateTime.Now;
 
-                // Entity Framework'e bu kaydın güncellendiği bildirilir
                 db.Entry(transaction).State = EntityState.Modified;
                 db.SaveChanges();
 
-                // Log kaydı oluşturulur
-                Logs log = new Logs();
-                log.Action = "Update";
-                log.Description = "İşlem güncellendi. ID: " + transaction.Id +
-                                  " | Tür: " + transaction.Type +
-                                  " | Tutar: " + transaction.Amount;
-                log.LogDate = System.DateTime.Now;
+                Logs log = new Logs
+                {
+                    Action = "Update",
+                    Description = "Transaction updated. ID: " + transaction.Id +
+                                  " | Type: " + transaction.Type +
+                                  " | Amount: " + transaction.Amount,
+                    LogDate = DateTime.Now
+                };
 
-                // Log veritabanına eklenir
                 db.Logs.Add(log);
                 db.SaveChanges();
 
-                // Başarılı güncelleme sonrası listeye dönülür
                 return RedirectToAction("Index");
             }
 
-            // Model geçersizse form tekrar gösterilir
             return View(transaction);
         }
 
-        // Silme onay sayfası
+        // =========================================================
+        // DELETE
+        // =========================================================
+        /// <summary>
+        /// Returns delete confirmation page.
+        /// </summary>
         public ActionResult Delete(int? id)
         {
-            // Id boşsa 400 döndürülür
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            // Silinecek kayıt bulunur
             Transactions transaction = db.Transactions.Find(id);
 
-            // Kayıt bulunamazsa 404 döndürülür
             if (transaction == null)
                 return HttpNotFound();
 
-            // Silme onay ekranına veri gönderilir
             return View(transaction);
         }
 
-        // Silme işlemi POST
+        /// <summary>
+        /// Handles deletion of a transaction.
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            // İlgili işlem bulunur
             Transactions transaction = db.Transactions.Find(id);
 
             if (transaction != null)
             {
-                // Silme işleminden önce log açıklaması hazırlanır
-                string aciklama = "İşlem silindi. ID: " + transaction.Id +
-                                  " | Tür: " + transaction.Type +
-                                  " | Tutar: " + transaction.Amount;
+                string description = "Transaction deleted. ID: " + transaction.Id +
+                                     " | Type: " + transaction.Type +
+                                     " | Amount: " + transaction.Amount;
 
-                // Kayıt veritabanından silinir
                 db.Transactions.Remove(transaction);
                 db.SaveChanges();
 
-                // Silme log'u oluşturulur
-                Logs log = new Logs();
-                log.Action = "Delete";
-                log.Description = aciklama;
-                log.LogDate = System.DateTime.Now;
+                Logs log = new Logs
+                {
+                    Action = "Delete",
+                    Description = description,
+                    LogDate = DateTime.Now
+                };
 
-                // Log veritabanına eklenir
                 db.Logs.Add(log);
                 db.SaveChanges();
             }
 
-            // İşlem sonrası liste sayfasına dönülür
             return RedirectToAction("Index");
         }
 
-        // Controller dispose edilirken veritabanı bağlantısı kapatılır
+        // =========================================================
+        // DISPOSE
+        // =========================================================
+        /// <summary>
+        /// Disposes database context properly.
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

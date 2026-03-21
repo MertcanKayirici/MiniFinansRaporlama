@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<MiniFinansRaporlama.Models.Transactions>
 
 @{
-    // Sayfa başlığı
+    // Page title
     ViewBag.Title = "Finansal İşlemler";
 
-    // Sağ panelde gösterilecek son işlemler listesi
+    // Recent transactions list shown in the right panel
     var sonIslemler = ViewBag.SonIslemler as List<MiniFinansRaporlama.Models.Transactions>;
 }
 
 @section Styles {
     <style>
-        /* Grafik alanlarının kapsayıcı yapısı */
+        /* Wrapper used for chart areas */
         .chart-wrapper {
             position: relative;
             width: 100%;
@@ -21,14 +21,14 @@
             align-items: center;
         }
 
-            /* Grafik canvas boyut sınırları */
+            /* Canvas size limits inside chart wrapper */
             .chart-wrapper canvas {
                 max-width: 320px;
                 width: 100% !important;
                 height: 100% !important;
             }
 
-        /* Tablet ve üstü ekranlar için grafik yüksekliği */
+        /* Chart height for tablet and larger screens */
         @@media (min-width: 768px) {
             .chart-wrapper {
                 min-height: 320px;
@@ -40,7 +40,7 @@
                 }
         }
 
-        /* Büyük ekranlar için grafik yüksekliği */
+        /* Chart height for large screens */
         @@media (min-width: 1200px) {
             .chart-wrapper {
                 min-height: 340px;
@@ -54,39 +54,39 @@
     </style>
 }
 
-<!-- Sayfa üst başlığı ve yeni işlem ekleme butonu -->
+<!-- Page header and create transaction button -->
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
-        <!-- Sayfa başlığı -->
+        <!-- Page title -->
         <h2 class="fw-bold mb-1">Finansal İşlemler</h2>
 
-        <!-- Kullanıcıya kısa açıklama -->
+        <!-- Short description for the user -->
         <p class="text-muted mb-0">Gelir ve gider kayıtlarını buradan yönetebilirsin.</p>
     </div>
 
-    <!-- Yeni işlem ekleme sayfasına yönlendirme -->
+    <!-- Navigation to create transaction page -->
     <div>
         @Html.ActionLink("Yeni İşlem Ekle", "Create", null, new { @class = "btn btn-primary rounded-pill px-4 shadow-sm" })
     </div>
 </div>
 
-<!-- Filtreleme Alanı -->
+<!-- Filter section -->
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
             <div>
-                <!-- Filtre kartı başlığı -->
+                <!-- Filter card title -->
                 <h5 class="mb-1">Filtreleme</h5>
 
-                <!-- Filtre kartı açıklaması -->
+                <!-- Filter card description -->
                 <p class="text-muted mb-0 small">Tarih ve kategoriye göre işlemleri filtreleyebilirsin.</p>
             </div>
         </div>
 
-        <!-- Filtre formu -->
+        <!-- Filter form -->
         @using (Html.BeginForm("Index", "Finance", FormMethod.Get, new { @class = "row g-3 align-items-end" }))
         {
-            <!-- Başlangıç tarihi -->
+            <!-- Start date -->
             <div class="col-12 col-md-3">
                 <label for="startDate" class="form-label fw-semibold">Başlangıç Tarihi</label>
                 <input type="date"
@@ -96,7 +96,7 @@
                        value="@(ViewBag.StartDate != null ? ((DateTime)ViewBag.StartDate).ToString("yyyy-MM-dd") : "")" />
             </div>
 
-            <!-- Bitiş tarihi -->
+            <!-- End date -->
             <div class="col-12 col-md-3">
                 <label for="endDate" class="form-label fw-semibold">Bitiş Tarihi</label>
                 <input type="date"
@@ -106,7 +106,7 @@
                        value="@(ViewBag.EndDate != null ? ((DateTime)ViewBag.EndDate).ToString("yyyy-MM-dd") : "")" />
             </div>
 
-            <!-- Kategori seçimi -->
+            <!-- Category selection -->
             <div class="col-12 col-md-3">
                 <label for="category" class="form-label fw-semibold">Kategori</label>
                 <select name="category" id="category" class="form-select">
@@ -121,7 +121,7 @@
                 </select>
             </div>
 
-            <!-- Filtre butonları -->
+            <!-- Filter action buttons -->
             <div class="col-12 col-md-3">
                 <div class="d-grid d-sm-flex gap-2">
                     <button type="submit" class="btn btn-primary px-4">Filtrele</button>
@@ -132,10 +132,10 @@
     </div>
 </div>
 
-<!-- Üst Özet Kartları / Dashboard -->
+<!-- Summary dashboard cards -->
 <div id="dashboard" class="row g-3 mb-4">
 
-    <!-- Toplam gelir kartı -->
+    <!-- Total income card -->
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center justify-content-between">
@@ -148,7 +148,7 @@
         </div>
     </div>
 
-    <!-- Toplam gider kartı -->
+    <!-- Total expense card -->
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center justify-content-between">
@@ -161,7 +161,7 @@
         </div>
     </div>
 
-    <!-- Net bakiye kartı -->
+    <!-- Net balance card -->
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center justify-content-between">
@@ -176,7 +176,7 @@
         </div>
     </div>
 
-    <!-- İşlem sayısı kartı -->
+    <!-- Transaction count card -->
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center justify-content-between">
@@ -191,14 +191,14 @@
 
 </div>
 
-<!-- Grafikler ve sağ panel alanı -->
+<!-- Charts and right-side panel -->
 <div class="row g-4 mb-4">
 
-    <!-- Sol bölüm: grafikler -->
+    <!-- Left section for charts -->
     <div id="charts" class="col-12 col-xl-9">
         <div class="row g-4">
 
-            <!-- Gelir / Gider pasta grafiği -->
+            <!-- Income / expense pie chart -->
             <div class="col-12">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body p-3 p-md-4">
@@ -217,7 +217,7 @@
                             }
                             else
                             {
-                                <!-- Grafik verisi yoksa bilgi mesajı -->
+                                <!-- Message shown when there is no chart data -->
                                 <div class="text-center w-100">
                                     <div class="fs-1 mb-2">📊</div>
                                     <h6 class="fw-bold mb-1">Grafik verisi yok</h6>
@@ -229,7 +229,7 @@
                 </div>
             </div>
 
-            <!-- Kategori bazlı gider dağılım grafiği -->
+            <!-- Expense distribution by category chart -->
             <div class="col-12">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body p-3 p-md-4">
@@ -248,7 +248,7 @@
                             }
                             else
                             {
-                                <!-- Kategori verisi yoksa bilgi mesajı -->
+                                <!-- Message shown when there is no category data -->
                                 <div class="text-center w-100">
                                     <div class="fs-1 mb-2">🍩</div>
                                     <h6 class="fw-bold mb-1">Kategori verisi yok</h6>
@@ -260,6 +260,10 @@
                 </div>
             </div>
 
+            <!-- Future feature: monthly income / expense chart
+                 This section is intentionally kept commented out
+                 so it can be enabled later as an advanced feature.
+            -->
             <!-- Aylık Gelir / Gider
             <div class="col-12">
                 <div class="card border-0 shadow-sm h-100">
@@ -294,11 +298,11 @@
         </div>
     </div>
 
-    <!-- Sağ bölüm: son işlemler -->
+    <!-- Right section for recent transactions -->
     <div id="recent-transactions" class="col-12 col-xl-3">
         <div class="d-flex flex-column gap-4">
 
-            <!-- Son işlemler kartı -->
+            <!-- Recent transactions card -->
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-3 p-md-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -313,16 +317,16 @@
                         <div class="d-flex flex-column gap-3">
                             @foreach (var item in sonIslemler)
                             {
-                                <!-- Tekil son işlem kartı -->
+                                <!-- Single recent transaction item -->
                                 <div class="border rounded-3 p-3 bg-light">
                                     <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
 
-                                        <!-- İşlem tarihi -->
+                                        <!-- Transaction date -->
                                         <div class="fw-semibold">
                                             @(item.Date != null ? item.Date.ToString("dd.MM.yyyy") : "")
                                         </div>
 
-                                        <!-- İşlem tipine göre renkli badge -->
+                                        <!-- Badge based on transaction type -->
                                         @if (item.Type == "Gelir")
                                         {
                                             <span class="badge text-bg-success">Gelir</span>
@@ -333,22 +337,22 @@
                                         }
                                     </div>
 
-                                    <!-- İşlem tutarı -->
+                                    <!-- Transaction amount -->
                                     <div class="fw-bold mb-2">
                                         @item.Amount.ToString("N2") ₺
                                     </div>
 
-                                    <!-- İşlem kategorisi -->
+                                    <!-- Transaction category -->
                                     <div class="mb-2">
                                         <span class="badge text-bg-secondary">@item.Category</span>
                                     </div>
 
-                                    <!-- İşlem açıklaması -->
+                                    <!-- Transaction description -->
                                     <div class="text-muted small mb-3">
                                         @item.Description
                                     </div>
 
-                                    <!-- Detay sayfasına git -->
+                                    <!-- Link to details page -->
                                     <div>
                                         @Html.ActionLink("Detay", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-outline-dark w-100" })
                                     </div>
@@ -358,7 +362,7 @@
                     }
                     else
                     {
-                        <!-- Son işlem yoksa gösterilecek boş durum mesajı -->
+                        <!-- Empty state when there are no recent transactions -->
                         <div class="text-center py-4">
                             <div class="fs-1 mb-2">🧾</div>
                             <h6 class="fw-bold mb-1">Son işlem bulunamadı</h6>
@@ -372,7 +376,7 @@
 
 </div>
 
-<!-- Ana işlem tablosu -->
+<!-- Main transactions table -->
 <div id="transactions" class="card border-0 shadow-sm">
     <div class="card-body p-0">
         @if (Model != null && Model.Any())
@@ -393,13 +397,13 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <!-- Tarih -->
+                                <!-- Transaction date -->
                                 <td class="ps-3">@(item.Date != null ? item.Date.ToString("dd.MM.yyyy") : "")</td>
 
-                                <!-- Kategori -->
+                                <!-- Transaction category -->
                                 <td><span class="badge text-bg-secondary">@item.Category</span></td>
 
-                                <!-- Tip -->
+                                <!-- Transaction type -->
                                 <td>
                                     @if (item.Type == "Gelir")
                                     {
@@ -411,13 +415,13 @@
                                     }
                                 </td>
 
-                                <!-- Tutar -->
+                                <!-- Transaction amount -->
                                 <td class="fw-semibold">@item.Amount.ToString("N2") ₺</td>
 
-                                <!-- Açıklama -->
+                                <!-- Transaction description -->
                                 <td>@item.Description</td>
 
-                                <!-- Aksiyon butonları -->
+                                <!-- Action buttons -->
                                 <td class="pe-3">
                                     <div class="d-grid gap-2 action-stack">
                                         @Html.ActionLink("Detay", "Details", new { id = item.Id }, new { @class = "btn btn-outline-info btn-sm" })
@@ -433,7 +437,7 @@
         }
         else
         {
-            <!-- Veri bulunamazsa gösterilecek uyarı -->
+            <!-- Warning shown when no records are found -->
             <div class="p-4">
                 <div class="alert alert-warning d-flex align-items-center mb-0" role="alert">
                     <div>
@@ -448,15 +452,15 @@
 
 @section Scripts {
     <script>
-        // Aylık gelir-gider grafiği için ViewBag verileri JavaScript tarafına aktarılıyor
+        // Transfer monthly chart data from ViewBag to JavaScript
         const aylikLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikLabels));
         const aylikGelirler = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikGelirler));
         const aylikGiderler = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikGiderler));
 
-        // Aylık grafik canvas elementi alınıyor
+        // Get monthly chart canvas element
         const monthlyCtx = document.getElementById('monthlyFinanceChart');
 
-        // Eğer canvas varsa ve veri geldiyse grafik oluşturulur
+        // Create monthly chart if canvas exists and data is available
         if (monthlyCtx && aylikLabels.length > 0) {
             new Chart(monthlyCtx, {
                 type: 'bar',
@@ -507,15 +511,15 @@
             });
         }
 
-        // Toplam gelir ve gider değerleri JavaScript değişkenlerine aktarılıyor
+        // Transfer total income and total expense values to JavaScript
         const gelir = @Html.Raw(Convert.ToDecimal(ViewBag.ToplamGelir).ToString(System.Globalization.CultureInfo.InvariantCulture));
         const gider = @Html.Raw(Convert.ToDecimal(ViewBag.ToplamGider).ToString(System.Globalization.CultureInfo.InvariantCulture));
         const toplam = gelir + gider;
 
-        // Gelir / gider pasta grafiği canvas elementi alınıyor
+        // Get pie chart canvas element
         const financeCtx = document.getElementById('financeChart');
 
-        // Veri varsa pasta grafik oluşturulur
+        // Create pie chart if data is available
         if (financeCtx && toplam > 0) {
             new Chart(financeCtx, {
                 type: 'pie',
@@ -563,15 +567,15 @@
             });
         }
 
-        // Kategori bazlı gider grafiği için veriler aktarılıyor
+        // Transfer expense by category data to JavaScript
         const categoryLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GiderKategoriLabels));
         const categoryTotals = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GiderKategoriTotals));
         const categoryToplam = categoryTotals.reduce((a, b) => a + b, 0);
 
-        // Donut grafik canvas elementi alınıyor
+        // Get doughnut chart canvas element
         const categoryCtx = document.getElementById('categoryExpenseChart');
 
-        // Veri varsa kategori bazlı gider dağılım grafiği oluşturulur
+        // Create category-based expense chart if data is available
         if (categoryCtx && categoryLabels.length > 0 && categoryToplam > 0) {
             new Chart(categoryCtx, {
                 type: 'doughnut',

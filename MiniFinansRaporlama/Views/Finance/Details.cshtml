@@ -1,58 +1,58 @@
 ﻿@model MiniFinansRaporlama.Models.Transactions
 
 @{
-    // Sayfa başlığı (browser title ve layout içinde kullanılabilir)
+    // Page title used in browser tab and layout
     ViewBag.Title = "İşlem Detayı";
 }
 
-<!-- Sayfa üst başlığı ve geri dönüş butonu -->
+<!-- Page header and back button -->
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
     <div>
-        <!-- Sayfa başlığı -->
+        <!-- Main page title -->
         <h2 class="mb-1">İşlem Detayı</h2>
 
-        <!-- Sayfa açıklaması -->
+        <!-- Short page description -->
         <p class="text-muted mb-0">İşleme ait tüm bilgileri buradan görüntüleyebilirsin.</p>
     </div>
 
-    <!-- İşlem listesinin bulunduğu sayfaya geri dönüş -->
+    <!-- Button to return to transaction list -->
     <div>
         @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary" })
     </div>
 </div>
 
-<!-- İşlem bilgilerini gösteren kart -->
+<!-- Main card showing transaction details -->
 <div class="card shadow-sm border-0">
     <div class="card-body p-4">
 
-        <!-- İşlem detaylarının grid yapısı -->
+        <!-- Grid layout for transaction fields -->
         <div class="row g-3">
 
-            <!-- İşlem Tarihi -->
+            <!-- Transaction date -->
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Tarih</label>
 
-                <!-- Tarih bilgisi readonly görünümde gösteriliyor -->
+                <!-- Read-only display area -->
                 <div class="form-control bg-light">
                     @(Model.Amount.ToString("N2") + " ₺")
                 </div>
             </div>
 
-            <!-- İşlem Kategorisi -->
+            <!-- Transaction category -->
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Kategori</label>
 
-                <!-- Veritabanından gelen kategori -->
+                <!-- Category value from model -->
                 <div class="form-control bg-light">
                     @Model.Category
                 </div>
             </div>
 
-            <!-- İşlem Tipi (Gelir / Gider) -->
+            <!-- Transaction type -->
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Tip</label>
 
-                <!-- İşlem tipine göre renkli badge gösteriliyor -->
+                <!-- Badge changes based on transaction type -->
                 <div class="form-control bg-light">
                     @if (Model.Type == "Gelir")
                     {
@@ -65,41 +65,41 @@
                 </div>
             </div>
 
-            <!-- İşlem Tutarı -->
+            <!-- Transaction amount -->
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Tutar</label>
 
-                <!-- Para formatında gösterim -->
+                <!-- Amount displayed in currency format -->
                 <div class="form-control bg-light">
                     @(Model.Amount.ToString("N2") + " ₺")
                 </div>
             </div>
 
-            <!-- Kaydın oluşturulma zamanı -->
+            <!-- Record creation date -->
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Oluşturulma Tarihi</label>
 
-                <!-- Oluşturulma zamanı bilgisi -->
+                <!-- CreatedAt value display -->
                 <div class="form-control bg-light">
                     @(Model.Amount.ToString("N2") + " ₺")
                 </div>
             </div>
 
-            <!-- Son güncellenme zamanı -->
+            <!-- Record last update date -->
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Güncellenme Tarihi</label>
 
-                <!-- Eğer kayıt güncellendiyse tarih gösterilir -->
+                <!-- UpdatedAt value display if available -->
                 <div class="form-control bg-light">
                     @(Model.UpdatedAt != null ? Model.UpdatedAt.Value.ToString("dd.MM.yyyy HH:mm") : "")
                 </div>
             </div>
 
-            <!-- İşlem açıklaması -->
+            <!-- Transaction description -->
             <div class="col-12">
                 <label class="form-label fw-semibold">Açıklama</label>
 
-                <!-- Kullanıcının girdiği açıklama -->
+                <!-- Multi-line description display -->
                 <div class="form-control bg-light" style="min-height: 100px;">
                     @Model.Description
                 </div>
@@ -107,16 +107,16 @@
 
         </div>
 
-        <!-- Sayfa aksiyon butonları -->
+        <!-- Action buttons -->
         <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
 
-            <!-- İşlemi düzenleme sayfasına yönlendirir -->
+            <!-- Button to navigate to edit page -->
             @Html.ActionLink("Düzenle", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
 
-            <!-- İşlem silme sayfasına yönlendirir -->
+            <!-- Button to navigate to delete page -->
             @Html.ActionLink("Sil", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
 
-            <!-- İşlem listesine geri dön -->
+            <!-- Button to return to list page -->
             @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-dark" })
         </div>
 
