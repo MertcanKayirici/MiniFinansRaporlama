@@ -1,4 +1,4 @@
-# 💰 Mini Financial Reporting System
+﻿# 💰 Mini Financial Reporting System
 
 A modern and dynamic **financial tracking web application** built with **ASP.NET MVC, Entity Framework, and SQL Server**.
 
@@ -8,9 +8,13 @@ This project enables users to manage income and expense transactions while provi
 
 ### 🎬 Demo GIFs
 
-| 📊 Dashboard Overview | 💸 Transaction Flow |
-|----------------------|---------------------|
-| ![](Screenshots/MiniFinansApp.gif) | ![](Screenshots/MiniFinans_Transactions.gif) |
+| 📊 Dashboard Overview | 
+|----------------------|
+| ![](Screenshots/MiniFinans_Dashboard.gif) |
+
+| ➕ Add Transaction |🔍 Filter Flow |
+|-------------------|----------------|
+| ![](Screenshots/MiniFinans_AddTransaction.gif) | ![](Screenshots/MiniFinans_Filter.gif) |
 
 ---
 
