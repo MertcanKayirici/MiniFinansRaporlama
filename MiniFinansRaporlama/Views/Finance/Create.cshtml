@@ -4,124 +4,285 @@
     ViewBag.Title = "Yeni İşlem Ekle";
 }
 
-<!-- Page header with title and navigation -->
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+@section Styles {
+    <style>
+        .page-title {
+            font-weight: 800;
+            letter-spacing: -.4px;
+            color: #0f172a;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+        }
+
+        .soft-card {
+            border-radius: 24px;
+            border: 1px solid #e7edf5;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: .2rem;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: .88rem;
+            margin-bottom: 0;
+        }
+
+        .form-shell {
+            border: 1px solid #e7edf5;
+            border-radius: 20px;
+            background: #ffffff;
+            padding: 1.25rem;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+        }
+
+        .form-label {
+            font-weight: 700 !important;
+            color: #334155;
+            margin-bottom: .55rem;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 52px;
+            border-radius: 14px;
+            border: 1px solid #dbe4ee;
+            background-color: #fff;
+            box-shadow: none;
+            transition: all .2s ease;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 .2rem rgba(99, 102, 241, 0.12);
+        }
+
+        .text-danger.small,
+        .field-validation-error {
+            display: block;
+            margin-top: .4rem;
+            font-size: .82rem;
+            font-weight: 600;
+        }
+
+        .validation-summary-errors,
+        .validation-summary-valid {
+            margin-bottom: 1rem;
+        }
+
+        .validation-summary-errors {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.18);
+            color: #b91c1c;
+            border-radius: 16px;
+            padding: 1rem 1rem .85rem 1rem;
+        }
+
+            .validation-summary-errors ul {
+                margin: 0;
+                padding-left: 1.2rem;
+            }
+
+        .mini-info-card {
+            border-radius: 18px;
+            border: 1px solid #e7edf5;
+            background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+            padding: 1rem;
+            height: 100%;
+        }
+
+        .mini-info-title {
+            font-size: .85rem;
+            color: #64748b;
+            margin-bottom: .35rem;
+            font-weight: 600;
+        }
+
+        .mini-info-value {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0;
+        }
+
+        .action-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .75rem;
+            margin-top: 1.75rem;
+        }
+
+            .action-wrap .btn,
+            .action-wrap input[type="submit"] {
+                min-width: 150px;
+                min-height: 48px;
+                border-radius: 14px;
+                font-weight: 700;
+            }
+
+        .save-btn {
+            box-shadow: 0 10px 24px rgba(34, 197, 94, 0.18);
+        }
+
+        .top-action-btn {
+            border-radius: 14px;
+            padding: .75rem 1.1rem;
+            font-weight: 700;
+        }
+
+        @@media (max-width: 576px) {
+            .action-wrap .btn,
+            .action-wrap input[type="submit"],
+            .top-action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+}
+
+<div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3 mb-4">
     <div>
-        <h2 class="mb-1">Yeni İşlem Ekle</h2>
-        <p class="text-muted mb-0">Yeni gelir veya gider kaydı oluştur.</p>
+        <h2 class="page-title mb-1">Yeni İşlem Ekle</h2>
+        <p class="page-subtitle mb-0">Yeni gelir veya gider kaydını hızlı ve düzenli şekilde oluşturabilirsin.</p>
     </div>
 
-    <!-- Button to return to list page -->
     <div>
-        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary" })
+        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary top-action-btn" })
     </div>
 </div>
 
-<!-- Main form container -->
-<div class="card shadow-sm border-0">
-    <div class="card-body p-4">
+<div class="soft-card p-4">
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="mini-info-card">
+                <div class="mini-info-title">İşlem Türü</div>
+                <p class="mini-info-value">Gelir veya gider ekle</p>
+            </div>
+        </div>
 
-        @* Begin form for creating a new transaction *@
+        <div class="col-12 col-md-4">
+            <div class="mini-info-card">
+                <div class="mini-info-title">Kategori</div>
+                <p class="mini-info-value">Finans hareketini sınıflandır</p>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="mini-info-card">
+                <div class="mini-info-title">Kayıt</div>
+                <p class="mini-info-value">Düzenli takip için anında kaydet</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <h5 class="section-title">İşlem Formu</h5>
+        <p class="section-subtitle">Aşağıdaki alanları doldurarak yeni finans kaydı oluştur.</p>
+    </div>
+
+    <div class="form-shell">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
-            @* Displays validation errors *@
             @Html.ValidationSummary(false, "", new { @class = "text-danger mb-3" })
 
-            <!-- Transaction date input -->
-            <div class="mb-3">
-                @Html.LabelFor(model => model.Date, new { @class = "form-label fw-semibold" })
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    @Html.LabelFor(model => model.Date, new { @class = "form-label" })
 
-                @* HTML5 date input with formatted value *@
-                @Html.TextBoxFor(model => model.Date, "{0:yyyy-MM-dd}", new
-                {
-                    @class = "form-control",
-                    type = "date"
-                })
-
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger small" })
-            </div>
-
-            <!-- Category selection dropdown -->
-            <div class="mb-3">
-                @Html.LabelFor(model => model.Category, new { @class = "form-label fw-semibold" })
-
-                @Html.DropDownListFor(
-                    model => model.Category,
-                    new List<SelectListItem>
+                    @Html.TextBoxFor(model => model.Date, "{0:yyyy-MM-dd}", new
                     {
-                        new SelectListItem { Text = "Maaş", Value = "Maaş" },
-                        new SelectListItem { Text = "Ek Gelir", Value = "Ek Gelir" },
-                        new SelectListItem { Text = "Market", Value = "Market" },
-                        new SelectListItem { Text = "Fatura", Value = "Fatura" },
-                        new SelectListItem { Text = "Ulaşım", Value = "Ulaşım" },
-                        new SelectListItem { Text = "Eğitim", Value = "Eğitim" },
-                        new SelectListItem { Text = "Diğer", Value = "Diğer" }
-                    },
-                    "Kategori Seçiniz",
-                    new { @class = "form-select" }
-                )
+                        @class = "form-control",
+                        type = "date"
+                    })
 
-                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger small" })
-            </div>
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger small" })
+                </div>
 
-            <!-- Transaction type (income or expense) -->
-            <div class="mb-3">
-                @Html.LabelFor(model => model.Type, new { @class = "form-label fw-semibold" })
+                <div class="col-12 col-md-6">
+                    @Html.LabelFor(model => model.Category, new { @class = "form-label" })
 
-                @Html.DropDownListFor(
-                    model => model.Type,
-                    new List<SelectListItem>
+                    @Html.DropDownListFor(
+                        model => model.Category,
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Maaş", Value = "Maaş" },
+                            new SelectListItem { Text = "Ek Gelir", Value = "Ek Gelir" },
+                            new SelectListItem { Text = "Market", Value = "Market" },
+                            new SelectListItem { Text = "Fatura", Value = "Fatura" },
+                            new SelectListItem { Text = "Ulaşım", Value = "Ulaşım" },
+                            new SelectListItem { Text = "Eğitim", Value = "Eğitim" },
+                            new SelectListItem { Text = "Diğer", Value = "Diğer" }
+                        },
+                        "Kategori Seçiniz",
+                        new { @class = "form-select" }
+                    )
+
+                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="col-12 col-md-6">
+                    @Html.LabelFor(model => model.Type, new { @class = "form-label" })
+
+                    @Html.DropDownListFor(
+                        model => model.Type,
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Gelir", Value = "Gelir" },
+                            new SelectListItem { Text = "Gider", Value = "Gider" }
+                        },
+                        "Seçiniz",
+                        new { @class = "form-select" }
+                    )
+
+                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="col-12 col-md-6">
+                    @Html.LabelFor(model => model.Amount, new { @class = "form-label" })
+
+                    @Html.TextBoxFor(model => model.Amount, new
                     {
-                        new SelectListItem { Text = "Gelir", Value = "Gelir" },
-                        new SelectListItem { Text = "Gider", Value = "Gider" }
-                    },
-                    "Seçiniz",
-                    new { @class = "form-select" }
-                )
+                        @class = "form-control",
+                        placeholder = "Tutar giriniz"
+                    })
 
-                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger small" })
+                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="col-12">
+                    @Html.LabelFor(model => model.Description, new { @class = "form-label" })
+
+                    @Html.TextAreaFor(model => model.Description, new
+                    {
+                        @class = "form-control",
+                        rows = "5",
+                        placeholder = "İşlem hakkında kısa bir açıklama giriniz"
+                    })
+
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger small" })
+                </div>
             </div>
 
-            <!-- Amount input -->
-            <div class="mb-3">
-                @Html.LabelFor(model => model.Amount, new { @class = "form-label fw-semibold" })
-
-                @Html.TextBoxFor(model => model.Amount, new
-                {
-                    @class = "form-control",
-                    placeholder = "Tutar giriniz"
-                })
-
-                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger small" })
-            </div>
-
-            <!-- Description textarea -->
-            <div class="mb-4">
-                @Html.LabelFor(model => model.Description, new { @class = "form-label fw-semibold" })
-
-                @Html.TextAreaFor(model => model.Description, new
-                {
-                    @class = "form-control",
-                    rows = "4",
-                    placeholder = "Açıklama giriniz"
-                })
-
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger small" })
-            </div>
-
-            <!-- Form buttons -->
-            <div class="d-flex flex-column flex-sm-row gap-2">
-
-                @* Submit button *@
-                <input type="submit" value="Kaydet" class="btn btn-success" />
-
-                @* Cancel button *@
+            <div class="action-wrap">
+                <input type="submit" value="Kaydet" class="btn btn-success save-btn" />
                 @Html.ActionLink("Vazgeç", "Index", null, new { @class = "btn btn-outline-dark" })
             </div>
         }
-        @* End form *@
-
     </div>
 </div>

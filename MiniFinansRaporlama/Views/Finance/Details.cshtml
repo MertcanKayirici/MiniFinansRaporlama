@@ -1,59 +1,237 @@
 ﻿@model MiniFinansRaporlama.Models.Transactions
 
 @{
-    // Page title used in browser tab and layout
     ViewBag.Title = "İşlem Detayı";
 }
 
-<!-- Page header and back button -->
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-    <div>
-        <!-- Main page title -->
-        <h2 class="mb-1">İşlem Detayı</h2>
+@section Styles {
+    <style>
+        .page-title {
+            font-weight: 800;
+            letter-spacing: -.4px;
+            color: #0f172a;
+        }
 
-        <!-- Short page description -->
-        <p class="text-muted mb-0">İşleme ait tüm bilgileri buradan görüntüleyebilirsin.</p>
+        .page-subtitle {
+            color: #64748b;
+        }
+
+        .soft-card {
+            border-radius: 24px;
+            border: 1px solid #e7edf5;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+        }
+
+        .detail-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .55rem .9rem;
+            border-radius: 999px;
+            font-size: .85rem;
+            font-weight: 700;
+        }
+
+        .badge-income-soft {
+            background: rgba(34, 197, 94, 0.12);
+            color: #15803d;
+        }
+
+        .badge-expense-soft {
+            background: rgba(239, 68, 68, 0.12);
+            color: #b91c1c;
+        }
+
+        .detail-summary-card {
+            border-radius: 20px;
+            border: 1px solid #ebf1f7;
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+            padding: 1.2rem;
+            height: 100%;
+        }
+
+        .summary-label {
+            color: #64748b;
+            font-size: .85rem;
+            margin-bottom: .35rem;
+        }
+
+        .summary-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 0;
+            color: #0f172a;
+        }
+
+        .section-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: .2rem;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: .88rem;
+            margin-bottom: 0;
+        }
+
+        .detail-field {
+            border: 1px solid #e7edf5;
+            border-radius: 18px;
+            background: #fff;
+            padding: 1rem;
+            height: 100%;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
+        }
+
+        .detail-label {
+            font-size: .82rem;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: .45rem;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            word-break: break-word;
+        }
+
+        .detail-value-muted {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .description-box {
+            border: 1px solid #e7edf5;
+            border-radius: 18px;
+            background: #f8fafc;
+            min-height: 120px;
+            padding: 1rem;
+            color: #334155;
+            white-space: pre-line;
+        }
+
+        .action-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .75rem;
+            margin-top: 1.75rem;
+        }
+
+            .action-wrap .btn {
+                min-width: 140px;
+                border-radius: 14px;
+                font-weight: 700;
+            }
+
+        .highlight-amount-income {
+            color: #16a34a;
+        }
+
+        .highlight-amount-expense {
+            color: #dc2626;
+        }
+
+        @@media (max-width: 576px) {
+            .action-wrap .btn {
+                width: 100%;
+            }
+        }
+    </style>
+}
+
+<div class="detail-topbar">
+    <div>
+        <h2 class="page-title mb-1">İşlem Detayı</h2>
+        <p class="page-subtitle mb-0">İşleme ait tüm bilgileri buradan detaylı olarak görüntüleyebilirsin.</p>
     </div>
 
-    <!-- Button to return to transaction list -->
     <div>
-        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary" })
+        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary rounded-3 px-4" })
     </div>
 </div>
 
-<!-- Main card showing transaction details -->
-<div class="card shadow-sm border-0">
-    <div class="card-body p-4">
+<div class="soft-card p-4 p-md-4">
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="detail-summary-card">
+                <div class="summary-label">İşlem Tutarı</div>
+                <h4 class="summary-value @(Model.Type == "Gelir" ? "highlight-amount-income" : "highlight-amount-expense")">
+                    @Model.Amount.ToString("N2") ₺
+                </h4>
+            </div>
+        </div>
 
-        <!-- Grid layout for transaction fields -->
-        <div class="row g-3">
-
-            <!-- Transaction date -->
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Tarih</label>
-
-                <!-- Read-only display area -->
-                <div class="form-control bg-light">
-                    @(Model.Amount.ToString("N2") + " ₺")
+        <div class="col-12 col-md-4">
+            <div class="detail-summary-card">
+                <div class="summary-label">İşlem Tipi</div>
+                <div class="mt-2">
+                    @if (Model.Type == "Gelir")
+                    {
+                        <span class="detail-badge badge-income-soft">⬆ Gelir</span>
+                    }
+                    else
+                    {
+                        <span class="detail-badge badge-expense-soft">⬇ Gider</span>
+                    }
                 </div>
             </div>
+        </div>
 
-            <!-- Transaction category -->
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Kategori</label>
+        <div class="col-12 col-md-4">
+            <div class="detail-summary-card">
+                <div class="summary-label">Kategori</div>
+                <h4 class="summary-value">
+                    @(string.IsNullOrWhiteSpace(Model.Category) ? "Diğer" : Model.Category)
+                </h4>
+            </div>
+        </div>
+    </div>
 
-                <!-- Category value from model -->
-                <div class="form-control bg-light">
-                    @Model.Category
+    <div class="mb-4">
+        <h5 class="section-title">İşlem Bilgileri</h5>
+        <p class="section-subtitle">Kayda ait temel alanlar aşağıda listelenmiştir.</p>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-md-6">
+            <div class="detail-field">
+                <div class="detail-label">Tarih</div>
+                <div class="detail-value">
+                    @Model.Date.ToString("dd.MM.yyyy")
                 </div>
             </div>
+        </div>
 
-            <!-- Transaction type -->
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Tip</label>
+        <div class="col-12 col-md-6">
+            <div class="detail-field">
+                <div class="detail-label">Kategori</div>
+                <div class="detail-value">
+                    @(string.IsNullOrWhiteSpace(Model.Category) ? "Diğer" : Model.Category)
+                </div>
+            </div>
+        </div>
 
-                <!-- Badge changes based on transaction type -->
-                <div class="form-control bg-light">
+        <div class="col-12 col-md-6">
+            <div class="detail-field">
+                <div class="detail-label">Tip</div>
+                <div class="detail-value">
                     @if (Model.Type == "Gelir")
                     {
                         <span class="badge text-bg-success">Gelir</span>
@@ -64,61 +242,48 @@
                     }
                 </div>
             </div>
-
-            <!-- Transaction amount -->
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Tutar</label>
-
-                <!-- Amount displayed in currency format -->
-                <div class="form-control bg-light">
-                    @(Model.Amount.ToString("N2") + " ₺")
-                </div>
-            </div>
-
-            <!-- Record creation date -->
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Oluşturulma Tarihi</label>
-
-                <!-- CreatedAt value display -->
-                <div class="form-control bg-light">
-                    @(Model.Amount.ToString("N2") + " ₺")
-                </div>
-            </div>
-
-            <!-- Record last update date -->
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Güncellenme Tarihi</label>
-
-                <!-- UpdatedAt value display if available -->
-                <div class="form-control bg-light">
-                    @(Model.UpdatedAt != null ? Model.UpdatedAt.Value.ToString("dd.MM.yyyy HH:mm") : "")
-                </div>
-            </div>
-
-            <!-- Transaction description -->
-            <div class="col-12">
-                <label class="form-label fw-semibold">Açıklama</label>
-
-                <!-- Multi-line description display -->
-                <div class="form-control bg-light" style="min-height: 100px;">
-                    @Model.Description
-                </div>
-            </div>
-
         </div>
 
-        <!-- Action buttons -->
-        <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
-
-            <!-- Button to navigate to edit page -->
-            @Html.ActionLink("Düzenle", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
-
-            <!-- Button to navigate to delete page -->
-            @Html.ActionLink("Sil", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
-
-            <!-- Button to return to list page -->
-            @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-dark" })
+        <div class="col-12 col-md-6">
+            <div class="detail-field">
+                <div class="detail-label">Tutar</div>
+                <div class="detail-value @(Model.Type == "Gelir" ? "highlight-amount-income" : "highlight-amount-expense")">
+                    @Model.Amount.ToString("N2") ₺
+                </div>
+            </div>
         </div>
 
+        <div class="col-12 col-md-6">
+            <div class="detail-field">
+                <div class="detail-label">Oluşturulma Tarihi</div>
+                <div class="detail-value">
+                    @(Model.CreatedAt != null ? Model.CreatedAt.ToString("dd.MM.yyyy HH:mm") : "-")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="detail-field">
+                <div class="detail-label">Güncellenme Tarihi</div>
+                <div class="detail-value">
+                    @(Model.UpdatedAt != null ? Model.UpdatedAt.Value.ToString("dd.MM.yyyy HH:mm") : "-")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="detail-field">
+                <div class="detail-label">Açıklama</div>
+                <div class="description-box">
+                    @(string.IsNullOrWhiteSpace(Model.Description) ? "Bu işlem için açıklama girilmemiş." : Model.Description)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-wrap">
+        @Html.ActionLink("Düzenle", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+
+        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-dark" })
     </div>
 </div>

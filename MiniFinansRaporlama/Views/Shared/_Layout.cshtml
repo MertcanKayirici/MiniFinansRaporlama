@@ -4,110 +4,487 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Page title, each view provides its own ViewBag.Title -->
     <title>@ViewBag.Title - Mini Finans App</title>
 
-    <!-- Bootstrap 5 stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
-        /* Enables smooth scrolling for anchor navigation */
+        :root {
+            --bg-main: #f4f7fb;
+            --bg-soft: #ffffff;
+            --bg-soft-2: #f8fbff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-soft: #e2e8f0;
+            --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.08);
+            --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.06);
+            --primary-gradient: linear-gradient(135deg, #2563eb, #4f46e5);
+            --success-gradient: linear-gradient(135deg, #16a34a, #22c55e);
+            --danger-gradient: linear-gradient(135deg, #dc2626, #ef4444);
+            --dark-gradient: linear-gradient(135deg, #0f172a, #1e293b);
+            --success-soft: rgba(25, 135, 84, 0.12);
+            --danger-soft: rgba(220, 53, 69, 0.12);
+            --warning-soft: rgba(255, 193, 7, 0.16);
+            --info-soft: rgba(13, 110, 253, 0.12);
+        }
+
         html {
             scroll-behavior: smooth;
         }
 
-        /* Adds top spacing so fixed navbar does not overlap content */
         body {
-            background-color: #f8f9fa;
-            padding-top: 70px;
+            background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), transparent 28%), radial-gradient(circle at top right, rgba(37, 99, 235, 0.07), transparent 24%), var(--bg-main);
+            color: var(--text-main);
+            padding-top: 88px;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Brand text style in navbar */
+        a {
+            text-decoration: none;
+        }
+
+        ::selection {
+            background: rgba(79, 70, 229, 0.18);
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar-finance {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: top 0.3s ease;
+        }
+
         .navbar-brand {
-            font-weight: 700;
-            letter-spacing: .3px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
         }
 
-        /* Shared button-like style for navbar links */
+        .brand-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: var(--success-gradient);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            box-shadow: 0 10px 20px rgba(34, 197, 94, 0.25);
+        }
+
         .nav-btn {
-            padding: .45rem .9rem;
-            border-radius: .6rem;
+            color: #e2e8f0 !important;
+            padding: .62rem 1rem !important;
+            border-radius: 12px;
+            font-size: .95rem;
+            font-weight: 500;
             transition: all .2s ease;
         }
 
-            /* Hover effect for navbar buttons */
             .nav-btn:hover {
-                background: rgba(255,255,255,.15);
+                background: rgba(255, 255, 255, .08);
+                color: #ffffff !important;
+                transform: translateY(-1px);
             }
 
-        /* Active section link style */
         .section-link.active {
-            background: rgba(255,255,255,.2);
-            font-weight: 600;
+            background: rgba(255, 255, 255, .12);
+            color: #ffffff !important;
+            font-weight: 700;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
         }
 
-        /* Special style for create transaction button */
         .nav-create {
-            background: #0d6efd;
+            background: var(--primary-gradient);
+            color: #fff !important;
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
         }
 
-            /* Hover state for create transaction button */
             .nav-create:hover {
-                background: #0b5ed7;
+                background: linear-gradient(135deg, #1d4ed8, #4338ca);
+                color: #fff !important;
             }
 
-        /* Vertical spacing for the main page section */
-        .page-section {
-            padding-top: 2rem;
+        .navbar-toggler {
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 12px;
+            padding: .45rem .7rem;
+        }
+
+            .navbar-toggler:focus {
+                box-shadow: none;
+            }
+
+        /* ===== PAGE WRAPPER ===== */
+        .page-shell {
+            padding-top: 1.5rem;
             padding-bottom: 2rem;
         }
 
-        /* Shared card style used across pages */
         .page-card {
-            background: #ffffff;
-            border-radius: 1rem;
+            background: rgba(255,255,255,.88);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 28px;
             padding: 1.5rem;
-            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, .06);
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
-        /* Helper style for dashboard cards */
-        .stat-card {
+        .content-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .content-topbar-title {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.2px;
+        }
+
+        .content-topbar-subtitle {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: .92rem;
+        }
+
+        .quick-links {
+            display: flex;
+            gap: .75rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-link {
+            border: 1px solid var(--border-soft);
+            background: #fff;
+            color: var(--text-main);
+            padding: .7rem 1rem;
+            border-radius: 14px;
+            font-size: .92rem;
+            font-weight: 600;
+            transition: all .2s ease;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+        }
+
+            .quick-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 22px rgba(15, 23, 42, 0.08);
+                color: #1d4ed8;
+                border-color: #cbd5e1;
+            }
+
+        /* ===== GLOBAL UTILITY BLOCKS ===== */
+        .section-shell {
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 22px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            margin: 0 0 .2rem 0;
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .section-subtitle {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: .88rem;
+        }
+
+        .info-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            border-radius: 999px;
+            padding: .55rem .85rem;
+            background: #eef4ff;
+            color: #1d4ed8;
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .stat-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-mini-card {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid #e8eef7;
+            border-radius: 18px;
+            padding: 1rem;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+        }
+
+        .stat-mini-label {
+            color: var(--text-muted);
+            font-size: .82rem;
+            margin-bottom: .2rem;
+        }
+
+        .stat-mini-value {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto .8rem auto;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #eef4ff, #f8fbff);
+            font-size: 1.5rem;
+        }
+
+        .soft-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 1rem 0;
+        }
+
+        /* ===== COMMON COMPONENT LOOK ===== */
+        .card,
+        .table,
+        .form-control,
+        .form-select,
+        .btn,
+        .badge,
+        .alert {
+            transition: all .2s ease;
+        }
+
+        .card {
+            border-radius: 22px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: var(--shadow-card);
+        }
+
+            .card:hover {
+                transform: translateY(-2px);
+            }
+
+        .btn {
+            border-radius: 14px;
+            font-weight: 700;
+            padding: .7rem 1rem;
+        }
+
+            .btn:hover {
+                transform: translateY(-1px);
+            }
+
+        .btn-primary {
+            background: var(--primary-gradient);
             border: none;
-            border-radius: 1rem;
-            box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, .08);
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
         }
 
-        /* Prevents table headers from wrapping */
-        .table thead th {
-            white-space: nowrap;
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #1d4ed8, #4338ca);
+            }
+
+        .btn-success {
+            box-shadow: 0 12px 22px rgba(25, 135, 84, 0.16);
         }
 
-        /* Makes action buttons full width on mobile */
+        .btn-danger {
+            box-shadow: 0 12px 22px rgba(220, 53, 69, 0.16);
+        }
+
+        .btn-outline-secondary,
+        .btn-outline-dark,
+        .btn-outline-info,
+        .btn-outline-warning,
+        .btn-outline-danger,
+        .btn-outline-primary {
+            border-width: 1px;
+            background: #fff;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 48px;
+            border-radius: 14px;
+            border: 1px solid #dbe4f0;
+            box-shadow: none;
+            background-color: #fff;
+        }
+
+            .form-control:focus,
+            .form-select:focus {
+                border-color: #6366f1;
+                box-shadow: 0 0 0 .2rem rgba(99, 102, 241, 0.12);
+            }
+
+        .badge {
+            border-radius: 999px;
+            padding: .55rem .8rem;
+            font-weight: 600;
+        }
+
+        .alert {
+            border-radius: 18px;
+            border: 1px solid transparent;
+        }
+
+        .table {
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+            .table thead th {
+                white-space: nowrap;
+                background: #f8fafc;
+                color: #334155;
+                border-bottom: 1px solid #e2e8f0;
+                font-weight: 700;
+            }
+
+            .table tbody tr:hover {
+                background: #f8fbff;
+            }
+
         .action-stack .btn {
             width: 100%;
         }
 
-        /* Smooth transition when navbar hides or shows */
-        #mainNavbar {
-            transition: top 0.3s ease;
+        /* ===== COMMON FEEDBACK ===== */
+        .form-validation-summary-errors,
+        .validation-summary-errors {
+            background: rgba(220, 53, 69, 0.08);
+            color: #b91c1c;
+            border: 1px solid rgba(220, 53, 69, 0.14);
+            border-radius: 16px;
+            padding: .9rem 1rem;
+            margin-bottom: 1rem;
         }
 
-        /* Prevent anchor targets from staying under navbar */
+        .field-validation-error,
+        .text-danger.small {
+            font-size: .82rem;
+            font-weight: 600;
+        }
+
+        /* ===== ANCHOR OFFSET ===== */
         #dashboard,
         #charts,
-        #transactions,
-        #recent-transactions {
-            scroll-margin-top: 90px;
+        #recent-transactions,
+        #transactions {
+            scroll-margin-top: 105px;
         }
 
-        /* Extra visual style for active section link */
-        .section-link.active {
-            color: #ffffff !important;
-            font-weight: 600;
-            position: relative;
+        /* ===== FOOTER ===== */
+        .footer-finance {
+            margin-top: 2rem;
+            padding: 1rem 0 2rem;
         }
 
-        /* Align action buttons horizontally on tablet and larger screens */
+        .footer-card {
+            background: rgba(255,255,255,.88);
+            border: 1px solid rgba(226,232,240,.8);
+            border-radius: 22px;
+            box-shadow: var(--shadow-card);
+            padding: 1rem 1.25rem;
+        }
+
+        .footer-title {
+            font-weight: 800;
+            margin-bottom: .2rem;
+        }
+
+        .footer-subtitle {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: .92rem;
+        }
+
+        .footer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .45rem .75rem;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: .8rem;
+            font-weight: 700;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @@media (max-width: 991.98px) {
+            body {
+                padding-top: 84px;
+            }
+
+            .page-card {
+                border-radius: 22px;
+                padding: 1rem;
+            }
+
+            .content-topbar {
+                align-items: flex-start;
+            }
+
+            .stat-strip {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @@media (max-width: 575.98px) {
+            .stat-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-links {
+                width: 100%;
+            }
+
+            .quick-link {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
         @@media (min-width: 768px) {
             .action-stack {
                 display: flex;
@@ -121,24 +498,17 @@
         }
     </style>
 
-    <!-- Renders page-specific styles if provided -->
     @RenderSection("Styles", required: false)
 </head>
 <body>
 
-    <!--
-        Top navbar
-        - Stays fixed at the top of the page
-        - Works as a collapsible menu on mobile
-        - Provides quick access to main dashboard sections
-    -->
-    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top">
+    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark navbar-finance shadow-sm fixed-top">
         <div class="container">
+            <a href="@Url.Action("Index", "Finance")" class="navbar-brand text-white">
+                <span class="brand-badge">₺</span>
+                <span>Mini Finans App</span>
+            </a>
 
-            <!-- Application brand / home link -->
-            @Html.ActionLink("Mini Finans App", "Index", "Finance", null, new { @class = "navbar-brand" })
-
-            <!-- Hamburger menu button for mobile view -->
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
@@ -149,11 +519,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- Navbar menu area -->
             <div class="collapse navbar-collapse" id="mainMenu">
-                <ul class="navbar-nav ms-auto gap-2">
-
-                    <!-- In-page navigation links -->
+                <ul class="navbar-nav ms-auto gap-2 mt-3 mt-lg-0">
                     <li class="nav-item">
                         <a class="nav-link nav-btn section-link" href="/Finance/Index#dashboard">Dashboard</a>
                     </li>
@@ -167,35 +534,51 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link nav-btn section-link" href="/Finance/Index#transactions">İşlemler</a>
+                        <a class="nav-link nav-btn section-link" href="/Finance/Index#transactions">Tablo</a>
                     </li>
 
-                    <!-- Main link for navigating to create transaction page -->
                     <li class="nav-item">
-                        @Html.ActionLink("Yeni İşlem", "Create", "Finance", null,
-                        new { @class = "nav-link nav-btn nav-create" })
+                        @Html.ActionLink("＋ Yeni İşlem", "Create", "Finance", null, new { @class = "nav-link nav-btn nav-create" })
                     </li>
-
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main content area -->
-    <main class="container page-section">
+    <main class="container page-shell">
         <div class="page-card">
+            <div class="content-topbar">
+                <div>
+                    <h1 class="content-topbar-title">@ViewBag.Title</h1>
+                    <p class="content-topbar-subtitle">Finans işlemlerini modern ve düzenli bir panel üzerinden yönet.</p>
+                </div>
 
-            <!-- Renders the body content of each page -->
+                <div class="quick-links">
+                    <a href="/Finance/Index#dashboard" class="quick-link">📌 Dashboard</a>
+                    <a href="/Finance/Index#charts" class="quick-link">📈 Grafikler</a>
+                    <a href="/Finance/Index#transactions" class="quick-link">🧾 İşlem Tablosu</a>
+                </div>
+            </div>
+
             @RenderBody()
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-top bg-white py-3 text-center text-muted small">
-        Mini Finans App • @DateTime.Now.Year
+    <footer class="container footer-finance">
+        <div class="footer-card d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+            <div>
+                <div class="footer-title">Mini Finans App</div>
+                <p class="footer-subtitle">Gelir, gider, rapor ve dashboard yönetimi • @DateTime.Now.Year</p>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <span class="footer-badge">📊 Finans Dashboard</span>
+                <span class="footer-badge">🧾 İşlem Yönetimi</span>
+                <span class="footer-badge">🛡️ Audit Log</span>
+            </div>
+        </div>
     </footer>
 
-    <!-- Shared JavaScript libraries -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -203,8 +586,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-
-            /* Navbar hide/show behavior on scroll */
             let lastScrollTop = 0;
             const navbar = document.getElementById("mainNavbar");
 
@@ -212,7 +593,7 @@
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
                 if (scrollTop > lastScrollTop && scrollTop > 100) {
-                    navbar.style.top = "-80px";
+                    navbar.style.top = "-95px";
                 } else {
                     navbar.style.top = "0";
                 }
@@ -220,7 +601,6 @@
                 lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
             });
 
-            /* Closes mobile menu when a navigation link is clicked */
             const navbarCollapse = document.getElementById("mainMenu");
             const allNavLinks = document.querySelectorAll(".navbar-collapse .nav-link");
 
@@ -236,7 +616,6 @@
                 });
             });
 
-            /* Highlights the active section link while scrolling */
             const sectionLinks = document.querySelectorAll(".section-link");
 
             const sections = ["dashboard", "charts", "recent-transactions", "transactions"]
@@ -244,7 +623,7 @@
                 .filter(function (section) { return section !== null; });
 
             function setActiveSection() {
-                let scrollPosition = window.scrollY + 120;
+                let scrollPosition = window.scrollY + 140;
                 let currentId = "";
 
                 sections.forEach(function (section) {
@@ -263,15 +642,14 @@
                 });
             }
 
-            /* Sets active section on first page load */
             setActiveSection();
-
-            /* Updates active section during scroll */
             window.addEventListener("scroll", setActiveSection);
         });
     </script>
 
-    <!-- Renders page-specific scripts if provided -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
