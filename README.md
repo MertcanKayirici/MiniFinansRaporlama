@@ -1,14 +1,12 @@
-﻿# 💰 Mini Financial Reporting System
+# 💰 Mini Financial Reporting System
 
 <p align="center">
-
   <img src="https://img.shields.io/badge/.NET-Framework-blue?style=for-the-badge&logo=dotnet" />
   <img src="https://img.shields.io/badge/ASP.NET-MVC-purple?style=for-the-badge&logo=dotnet" />
   <img src="https://img.shields.io/badge/Database-SQL%20Server-red?style=for-the-badge&logo=microsoftsqlserver" />
   <img src="https://img.shields.io/badge/ORM-Entity%20Framework-green?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Frontend-Bootstrap%205-blue?style=for-the-badge&logo=bootstrap" />
   <img src="https://img.shields.io/badge/Charts-Chart.js-orange?style=for-the-badge&logo=chartdotjs" />
-
 </p>
 
 ---
@@ -23,11 +21,11 @@ This project provides a complete system for managing financial transactions with
 
 | Dashboard |
 |------------|
-| ![](Screenshots/after/dashboard_overview.gif) |
+| ![Dashboard Overview](Screenshots/after/dashboard_overview.gif) |
 
 | Export | Filter |
 |--------|--------|
-| ![](Screenshots/after/export_pdf.gif.gif) | ![](Screenshots/after/dashboard_filter.gif) |
+| ![Export PDF Demo](Screenshots/after/export_pdf.gif) | ![Dashboard Filter Demo](Screenshots/after/dashboard_filter.gif) |
 
 ---
 
@@ -37,7 +35,7 @@ This project provides a complete system for managing financial transactions with
 
 | Before | After |
 |--------|------|
-| ![](Screenshots/before/MiniFinans_Dashboard.gif) | ![](Screenshots/after/dashboard_overview.gif) |
+| ![Old Dashboard UI](Screenshots/before/MiniFinans_Dashboard.gif) | ![New Dashboard UI](Screenshots/after/dashboard_overview.gif) |
 
 ---
 
@@ -45,11 +43,11 @@ This project provides a complete system for managing financial transactions with
 
 | Create | Edit |
 |--------|------|
-| ![](Screenshots/before/Create.png) | ![](Screenshots/after/finance_edit.png) |
+| ![Create Transaction Page Old](Screenshots/before/Create.png) | ![Edit Transaction Page New](Screenshots/after/finance_edit.png) |
 
 | Details | Delete |
 |--------|--------|
-| ![](Screenshots/before/Details.png) | ![](Screenshots/before/Delete.png) |
+| ![Transaction Details Old](Screenshots/before/Details.png) | ![Delete Confirmation Page](Screenshots/before/Delete.png) |
 
 ---
 
@@ -57,9 +55,32 @@ This project provides a complete system for managing financial transactions with
 
 ## 💸 Financial Management
 - Full CRUD operations (Create, Edit, Delete, Details)
-- Income & Expense tracking
+- Managed income & expense transactions with categorized tracking
 - Category-based system
 - Date-based filtering
+
+---
+
+## 🧩 System Overview
+
+This application follows a classic MVC architecture:
+
+- Controllers handle user requests and business flow
+- Models represent the data structure and database relations
+- Views provide the user interface using Razor and Bootstrap
+
+The system is designed to be modular, scalable, and easy to maintain.
+
+---
+
+## 🔄 Application Workflow
+
+1. User creates a transaction (income or expense)
+2. Data is saved into SQL Server via Entity Framework
+3. Dashboard updates automatically with new calculations
+4. User can filter data by category or date
+5. Reports can be exported as PDF or Excel
+6. All actions are logged in the audit system
 
 ---
 
@@ -101,32 +122,54 @@ This project provides a complete system for managing financial transactions with
 
 | Dashboard |
 |----------|
-| ![](Screenshots/after/dashboard.png) |
+| ![Dashboard Screenshot](Screenshots/after/dashboard.png) |
 
 | Create | Edit |
 |--------|------|
-| ![](Screenshots/after/finance_create.png) | ![](Screenshots/after/finance_edit.png) |
+| ![Create Transaction Screenshot](Screenshots/after/finance_create.png) | ![Edit Transaction Screenshot](Screenshots/after/finance_edit.png) |
 
 | Details |
 |--------|
-| ![](Screenshots/after/finance_details.png) |
+| ![Transaction Details Screenshot](Screenshots/after/finance_details.png) |
 
 ---
 
 # 🧠 Database Design
 
-![](Screenshots/ERDiagram.png)
+![ER Diagram](Screenshots/ERDiagram.png)
 
 ---
 
-# 🚀 Key Highlights
+## 🚀 Key Highlights
 
-- Modern financial dashboard  
-- Export system (Excel & PDF)  
-- Audit logging system  
-- Advanced filtering  
-- Clean UI/UX  
-- Scalable architecture  
+- Built a complete financial tracking workflow (CRUD + analytics + reporting)
+- Implemented export system (Excel & PDF) for real-world usage
+- Designed audit logging system for data transparency
+- Developed interactive dashboard using Chart.js
+- Focused on clean and scalable architecture
+
+---
+
+## 🎯 Why This Project?
+
+This project was built to simulate a real-world financial management system.
+
+The goal was not only to implement CRUD operations but also to:
+- Design a complete data-driven workflow
+- Apply reporting and analytics features
+- Improve UI/UX with modern design principles
+- Build a system that reflects real business needs
+
+---
+
+## 🧠 Challenges & Learnings
+
+- Implementing dynamic filtering with date ranges
+- Designing a clean and readable dashboard UI
+- Creating export functionality using iText7 and ClosedXML
+- Structuring audit logging for tracking user actions
+
+This project significantly improved my understanding of backend architecture and data handling.
 
 ---
 
@@ -145,7 +188,8 @@ This project provides a complete system for managing financial transactions with
 
 # ⚙️ Installation
 
-### Clone
+### 1. Clone the repository
+
 ```bash
 git clone https://github.com/MertcanKayirici/MiniFinansRaporlama.git
 ```
@@ -191,30 +235,35 @@ Run the project using **Visual Studio (F5)** 🚀
 ---
 
 ## 📂 Project Structure
-Controllers   → MVC Controllers  
-Models        → Entity Framework Models  
-Views         → Razor Views  
-Database      → SQL Scripts  
-Screenshots   → Images & GIF files
+Controllers → Handles HTTP requests and application flow
+Models → Entity Framework models and database structure
+Views → Razor-based UI components  
+Database → SQL scripts and database setup
+Screenshots → Images and demo assets
 
 ---
 
 ## 👨‍💻 Developer
 
-Mertcan Kayırıcı
+**Mertcan Kayırıcı**  
+Backend-focused Full Stack Developer  
 
-Backend-focused Full Stack Developer
-ASP.NET MVC & SQL Server
+🔗 GitHub: https://github.com/MertcanKayirici  
+🔗 LinkedIn: https://www.linkedin.com/in/mertcankayirici
 
 ---
 
 ## ⭐ Project Purpose
 
-This project was developed to simulate a real-world financial tracking system, focusing on:
+This project was designed as a portfolio piece to demonstrate backend development skills and real-world system design.
 
-- Clean architecture principles
-- Data visualization
-- Scalable backend design
-- Modern UI/UX experience 
+---
+
+## 🚀 Future Improvements
+
+- API-based architecture (ASP.NET Core Web API)
+- AJAX-based real-time updates
+- Role-based authentication system
+- Advanced financial analytics
 
 ---
