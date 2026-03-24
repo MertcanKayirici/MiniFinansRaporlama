@@ -2,11 +2,11 @@
 
 A modern and dynamic **financial tracking web application** built with **ASP.NET MVC, Entity Framework, and SQL Server**.
 
-This project enables users to manage income and expense transactions while providing an **interactive dashboard with analytical insights and visual reports**.
+This project enables users to manage income and expense transactions while providing an **interactive dashboard with analytical insights, export features, and audit logging system**.
 
 ---
 
-### 🎬 Demo GIFs
+## 🎬 Demo GIFs
 
 | 📊 Dashboard Overview |
 |----------------------|
@@ -22,20 +22,43 @@ This project enables users to manage income and expense transactions while provi
 
 ### 💸 Financial Management
 - Income & Expense tracking  
-- Transaction logging system  
-- Category-based expense analysis  
-- Date-based filtering system  
+- Full CRUD operations (Create, Edit, Details, Delete)  
+- Category-based transaction system  
+- Date-based filtering (start / end date)  
+
+---
 
 ### 📊 Dashboard & Analytics
-- Real-time financial summary  
-- Interactive charts (Chart.js)  
-- Financial trend visualization  
-- Category-based reporting  
+- Real-time financial summary cards  
+- Total income, total expense, net balance  
+- Category-based expense distribution  
+- Interactive charts using **Chart.js**  
+- Monthly financial visualization  
 
-### 🎨 User Experience
-- Responsive UI (Bootstrap 5)  
-- Clean and modern design  
-- Fast and intuitive interaction  
+---
+
+### 📁 Export Features (NEW 🚀)
+- Export transactions to **Excel**  
+- Export transactions to **PDF**  
+- Filter-based export (date & category)  
+- Clean formatted report output  
+
+---
+
+### 📝 Audit Log System (NEW 🚀)
+- Logs all actions (Create, Update, Delete)  
+- Stores timestamp and descriptions  
+- Tracks user activity flow  
+- Improves traceability and system transparency  
+
+---
+
+### 🎨 UI / UX Improvements (NEW 🚀)
+- Fully redesigned **Edit / Create / Details pages**  
+- Modern card-based UI  
+- Improved form usability  
+- SweetAlert confirmation system  
+- Clean and responsive layout  
 
 ---
 
@@ -47,6 +70,8 @@ This project enables users to manage income and expense transactions while provi
 - Bootstrap 5  
 - Chart.js  
 - SweetAlert2  
+- iText7 (PDF Export)  
+- ClosedXML (Excel Export)  
 - HTML5 / CSS3  
 
 ---
@@ -83,10 +108,12 @@ This project enables users to manage income and expense transactions while provi
 
 ## 🚀 Key Highlights
 
-- Real-time financial dashboard with dynamic charts  
-- Advanced filtering system (date & category)  
-- Clean and scalable relational database design  
-- Fast and responsive financial tracking experience  
+- Dynamic financial dashboard with real-time analytics  
+- Export system (Excel & PDF)  
+- Audit logging for all operations  
+- Advanced filtering (date & category based)  
+- Clean UI/UX with modern design  
+- Scalable and maintainable architecture  
 
 ---
 
@@ -110,8 +137,9 @@ This project follows a **layered MVC architecture**:
 ### 🌐 User Flow
 1. User interacts with the dashboard  
 2. Data is retrieved from SQL Server via Entity Framework  
-3. Controllers process requests  
+3. Controllers process business logic  
 4. Views display dynamic financial data  
+5. Logs are recorded for each action  
 
 ---
 
@@ -185,7 +213,8 @@ ASP.NET MVC & SQL Server
 This project was developed to simulate a real-world financial tracking system, focusing on:
 
 - Clean architecture principles
-- Data visualization techniques
-- User-friendly dashboard design
+- Data visualization 
+- Scalable backend design
+- Modern UI/UX experience 
 
 ---

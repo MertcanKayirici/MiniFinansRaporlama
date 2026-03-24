@@ -355,178 +355,43 @@
             color: #1d4ed8;
         }
 
-        .delete-modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.55);
-            backdrop-filter: blur(4px);
-            z-index: 1040;
-            opacity: 0;
-            visibility: hidden;
-            transition: all .25s ease;
+        .finance-swal-popup {
+            border-radius: 24px !important;
+            padding: 1.4rem !important;
+            border: 1px solid #e7edf5 !important;
+            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18) !important;
         }
 
-        .delete-modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.62);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity .25s ease, visibility .25s ease;
+        .finance-swal-title {
+            font-weight: 800 !important;
+            color: #0f172a !important;
+            font-size: 1.5rem !important;
         }
 
-        .delete-modal-box {
-            position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            width: min(92%, 540px);
-            transform: translate(-50%, -50%) scale(.96);
-            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-            border: 1px solid #e7edf5;
-            border-radius: 26px;
-            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.28);
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity .25s ease, visibility .25s ease, transform .25s ease;
-            overflow: hidden;
-            display: block;
+        .finance-swal-confirm,
+        .finance-swal-cancel {
+            min-width: 140px;
+            min-height: 46px;
+            border-radius: 14px !important;
+            font-weight: 700 !important;
+            border: none !important;
+            padding: .75rem 1rem !important;
+            margin: 0 .25rem !important;
         }
 
-            .delete-modal-backdrop.show,
-            .delete-modal-box.show {
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .delete-modal-box.show {
-                transform: translate(-50%, -50%) scale(1);
-            }
-
-        .delete-modal-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1.35rem 1.35rem 1rem 1.35rem;
-            border-bottom: 1px solid #edf2f7;
-            background: linear-gradient(135deg, #fff 0%, #f8fbff 100%);
+        .finance-swal-confirm {
+            background: #dc2626 !important;
+            color: #fff !important;
+            box-shadow: 0 10px 24px rgba(220, 38, 38, 0.20) !important;
         }
 
-        .delete-modal-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(239, 68, 68, 0.12);
-            color: #dc2626;
-            font-size: 1.45rem;
-            flex-shrink: 0;
-            box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.08);
+        .finance-swal-cancel {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
         }
 
-        .delete-modal-title {
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        .delete-modal-subtitle {
-            color: #64748b;
-            font-size: .92rem;
-            line-height: 1.5;
-        }
-
-        .delete-modal-body {
-            padding: 1.2rem 1.35rem;
-        }
-
-        .delete-info-card {
-            border: 1px solid #e7edf5;
-            border-radius: 18px;
-            background: #ffffff;
-            padding: 1rem 1rem .45rem 1rem;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.03);
-        }
-
-        .delete-info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            padding-bottom: .75rem;
-            margin-bottom: .75rem;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-
-            .delete-info-row:last-child {
-                border-bottom: none;
-                margin-bottom: 0;
-                padding-bottom: 0;
-            }
-
-            .delete-info-row span {
-                color: #64748b;
-                font-weight: 700;
-                font-size: .88rem;
-            }
-
-            .delete-info-row strong {
-                color: #0f172a;
-                text-align: right;
-                font-size: .95rem;
-            }
-
-        .delete-warning-box {
-            margin-top: 1rem;
-            border: 1px solid rgba(239, 68, 68, 0.14);
-            background: rgba(239, 68, 68, 0.07);
-            color: #b91c1c;
-            border-radius: 16px;
-            padding: .95rem 1rem;
-            font-size: .9rem;
-            line-height: 1.5;
-        }
-
-        .delete-modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: .75rem;
-            padding: 1rem 1.35rem 1.35rem 1.35rem;
-            border-top: 1px solid #edf2f7;
-            background: #fcfdff;
-        }
-
-            .delete-modal-footer .btn {
-                min-width: 130px;
-                min-height: 46px;
-                border-radius: 14px;
-                font-weight: 700;
-            }
-
-        body.modal-open {
-            overflow: hidden;
-        }
-
-        @@media (max-width: 576px) {
-            .delete-modal-box {
-                width: calc(100% - 1.25rem);
-            }
-
-            .delete-modal-footer {
-                flex-direction: column-reverse;
-            }
-
-                .delete-modal-footer .btn {
-                    width: 100%;
-                }
-        }
-
-        body.modal-open {
-            overflow: hidden;
+        div:where(.swal2-container) {
+            z-index: 99999 !important;
         }
 
         @@media (min-width: 1200px) {
@@ -990,7 +855,7 @@
                                     @Html.ActionLink("Düzenle", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-warning btn-sm" })
 
                                     <button type="button"
-                                            class="btn btn-outline-danger btn-sm w-100 open-delete-modal"
+                                            class="btn btn-outline-danger btn-sm w-100 open-delete-alert"
                                             data-id="@item.Id"
                                             data-category="@(string.IsNullOrWhiteSpace(item.Category) ? "Diğer" : item.Category)"
                                             data-amount="@item.Amount.ToString("N2")"
@@ -1016,86 +881,11 @@
     </div>
 </div>
 
-<div class="delete-modal-backdrop" id="deleteModalBackdrop"></div>
-
-<div class="delete-modal-box" id="deleteModal">
-    <div class="delete-modal-header">
-        <div class="delete-modal-icon">🗑️</div>
-        <div>
-            <h5 class="delete-modal-title mb-1">Kaydı Sil</h5>
-            <p class="delete-modal-subtitle mb-0">
-                Bu işlem geri alınamaz. Silmeden önce bilgileri kontrol et.
-            </p>
-        </div>
-    </div>
-
-    <div class="delete-modal-backdrop" id="deleteModalBackdrop"></div>
-
-    <div class="delete-modal-box" id="deleteModal" aria-hidden="true">
-        <div class="delete-modal-header">
-            <div class="delete-modal-icon">🗑️</div>
-            <div>
-                <h5 class="delete-modal-title mb-1">Kaydı Sil</h5>
-                <p class="delete-modal-subtitle mb-0">
-                    Bu işlem geri alınamaz. Silmeden önce işlem bilgilerini kontrol et.
-                </p>
-            </div>
-        </div>
-
-        <div class="delete-modal-body">
-            <div class="delete-info-card">
-                <div class="delete-info-row">
-                    <span>Tarih</span>
-                    <strong id="deleteDate">-</strong>
-                </div>
-
-                <div class="delete-info-row">
-                    <span>Kategori</span>
-                    <strong id="deleteCategory">-</strong>
-                </div>
-
-                <div class="delete-info-row">
-                    <span>Tutar</span>
-                    <strong id="deleteAmount">-</strong>
-                </div>
-            </div>
-
-            <div class="delete-warning-box">
-                <strong>Dikkat:</strong> Bu kayıt silindiğinde geri getirilemez ve ilgili işlem geçmişi etkilenebilir.
-            </div>
-        </div>
-
-        <div class="delete-modal-footer">
-            <button type="button" class="btn btn-outline-secondary" id="cancelDeleteBtn">
-                Vazgeç
-            </button>
-
-            @using (Html.BeginForm("Delete", "Finance", FormMethod.Post, new { id = "deleteForm" }))
-            {
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="id" id="deleteItemId" />
-                <button type="submit" class="btn btn-danger">
-                    Evet, Sil
-                </button>
-            }
-        </div>
-    </div>
-
-    <div class="delete-modal-footer">
-        <button type="button" class="btn btn-outline-secondary px-4" id="cancelDeleteBtn">
-            Vazgeç
-        </button>
-
-        @using (Html.BeginForm("Delete", "Finance", FormMethod.Post, new { id = "deleteForm" }))
-        {
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="id" id="deleteItemId" />
-            <button type="submit" class="btn btn-danger px-4">
-                Evet, Sil
-            </button>
-        }
-    </div>
-</div>
+@using (Html.BeginForm("Delete", "Finance", FormMethod.Post, new { id = "deleteForm" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" id="deleteItemId" />
+}
 
 @section Scripts {
     <script>
@@ -1254,62 +1044,63 @@
                 }
             });
         }
+
         document.addEventListener("DOMContentLoaded", function () {
-            const deleteModal = document.getElementById("deleteModal");
-            const deleteBackdrop = document.getElementById("deleteModalBackdrop");
+            const deleteButtons = document.querySelectorAll(".open-delete-alert");
+            const deleteForm = document.getElementById("deleteForm");
             const deleteItemIdInput = document.getElementById("deleteItemId");
-            const deleteDate = document.getElementById("deleteDate");
-            const deleteCategory = document.getElementById("deleteCategory");
-            const deleteAmount = document.getElementById("deleteAmount");
-            const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
-            const deleteButtons = document.querySelectorAll(".open-delete-modal");
-
-            function openDeleteModal(id, date, category, amount) {
-                if (!deleteModal || !deleteBackdrop) return;
-
-                deleteItemIdInput.value = id || "";
-                deleteDate.textContent = date || "-";
-                deleteCategory.textContent = category || "-";
-                deleteAmount.textContent = (amount || "0,00") + " ₺";
-
-                deleteBackdrop.classList.add("show");
-                deleteModal.classList.add("show");
-                deleteModal.setAttribute("aria-hidden", "false");
-                document.body.classList.add("modal-open");
-            }
-
-            function closeDeleteModal() {
-                if (!deleteModal || !deleteBackdrop) return;
-
-                deleteBackdrop.classList.remove("show");
-                deleteModal.classList.remove("show");
-                deleteModal.setAttribute("aria-hidden", "true");
-                document.body.classList.remove("modal-open");
-            }
 
             deleteButtons.forEach(button => {
                 button.addEventListener("click", function () {
-                    openDeleteModal(
-                        this.dataset.id,
-                        this.dataset.date,
-                        this.dataset.category,
-                        this.dataset.amount
-                    );
+                    const id = this.dataset.id || "";
+                    const date = this.dataset.date || "-";
+                    const category = this.dataset.category || "-";
+                    const amount = this.dataset.amount || "0,00";
+
+                    Swal.fire({
+                        title: 'Kaydı Sil',
+                        html: `
+                            <div style="text-align:left; margin-top:10px;">
+                                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:16px;">
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                                        <span style="color:#64748b; font-weight:600;">Tarih</span>
+                                        <strong style="color:#0f172a;">${date}</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                                        <span style="color:#64748b; font-weight:600;">Kategori</span>
+                                        <strong style="color:#0f172a;">${category}</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between;">
+                                        <span style="color:#64748b; font-weight:600;">Tutar</span>
+                                        <strong style="color:#dc2626;">${amount} ₺</strong>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top:14px; background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; border-radius:14px; padding:12px 14px; font-size:14px;">
+                                    <strong>Dikkat:</strong> Bu kayıt silindiğinde geri getirilemez.
+                                </div>
+                            </div>
+                        `,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Evet, Sil',
+                        cancelButtonText: 'Vazgeç',
+                        reverseButtons: true,
+                        focusCancel: true,
+                        buttonsStyling: false,
+                        customClass: {
+                            popup: 'finance-swal-popup',
+                            title: 'finance-swal-title',
+                            confirmButton: 'finance-swal-confirm',
+                            cancelButton: 'finance-swal-cancel'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            deleteItemIdInput.value = id;
+                            deleteForm.submit();
+                        }
+                    });
                 });
-            });
-
-            if (cancelDeleteBtn) {
-                cancelDeleteBtn.addEventListener("click", closeDeleteModal);
-            }
-
-            if (deleteBackdrop) {
-                deleteBackdrop.addEventListener("click", closeDeleteModal);
-            }
-
-            document.addEventListener("keydown", function (e) {
-                if (e.key === "Escape" && deleteModal.classList.contains("show")) {
-                    closeDeleteModal();
-                }
             });
         });
     </script>

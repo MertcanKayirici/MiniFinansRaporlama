@@ -1,43 +1,7 @@
-﻿@model IEnumerable<MiniFinansRaporlama.Models.Transactions>
+﻿@model MiniFinansRaporlama.Models.Transactions
 
 @{
-    ViewBag.Title = "Finansal İşlemler";
-
-    var sonIslemler = ViewBag.SonIslemler as List<MiniFinansRaporlama.Models.Transactions>;
-    var sonLoglar = ViewBag.SonLoglar as List<MiniFinansRaporlama.Models.Logs>;
-    var topCategories = ViewBag.TopCategories as List<MiniFinansRaporlama.Controllers.CategorySummaryViewModel>;
-
-    string currentStartDate = ViewBag.StartDate != null
-        ? ((DateTime)ViewBag.StartDate).ToString("yyyy-MM-dd")
-        : "";
-
-    string currentEndDate = ViewBag.EndDate != null
-        ? ((DateTime)ViewBag.EndDate).ToString("yyyy-MM-dd")
-        : "";
-
-    string currentCategory = ViewBag.Category != null
-        ? ViewBag.Category.ToString()
-        : "";
-
-    string filterSummary = "Tüm kayıtlar gösteriliyor";
-
-    if (!string.IsNullOrWhiteSpace(currentCategory) || !string.IsNullOrWhiteSpace(currentStartDate) || !string.IsNullOrWhiteSpace(currentEndDate))
-    {
-        filterSummary = "Filtre aktif";
-
-        if (!string.IsNullOrWhiteSpace(currentCategory))
-        {
-            filterSummary += " | Kategori: " + currentCategory;
-        }
-
-        if (!string.IsNullOrWhiteSpace(currentStartDate) || !string.IsNullOrWhiteSpace(currentEndDate))
-        {
-            filterSummary += " | Tarih: " +
-                             (string.IsNullOrWhiteSpace(currentStartDate) ? "-" : currentStartDate) +
-                             " / " +
-                             (string.IsNullOrWhiteSpace(currentEndDate) ? "-" : currentEndDate);
-        }
-    }
+    ViewBag.Title = "İşlem Düzenle";
 }
 
 @section Styles {
@@ -45,6 +9,7 @@
         .page-title {
             font-weight: 800;
             letter-spacing: -.4px;
+            color: #0f172a;
         }
 
         .page-subtitle {
@@ -52,15 +17,47 @@
         }
 
         .soft-card {
-            border-radius: 22px;
+            border-radius: 24px;
             border: 1px solid #e7edf5;
             background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+        }
+
+        .edit-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .edit-summary-card {
+            border-radius: 20px;
+            border: 1px solid #ebf1f7;
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+            padding: 1.2rem;
+            height: 100%;
+        }
+
+        .summary-label {
+            color: #64748b;
+            font-size: .85rem;
+            margin-bottom: .35rem;
+        }
+
+        .summary-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 0;
+            color: #0f172a;
         }
 
         .section-title {
             font-size: 1.05rem;
             font-weight: 700;
+            color: #0f172a;
             margin-bottom: .2rem;
         }
 
@@ -70,1149 +67,261 @@
             margin-bottom: 0;
         }
 
-        .hero-actions {
+        .detail-field {
+            border: 1px solid #e7edf5;
+            border-radius: 18px;
+            background: #fff;
+            padding: 1rem;
+            height: 100%;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
+        }
+
+        .detail-label {
+            font-size: .82rem;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: .45rem;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 14px;
+            min-height: 48px;
+            border: 1px solid #dbe4f0;
+            box-shadow: none;
+            font-weight: 500;
+        }
+
+            .form-control:focus,
+            .form-select:focus {
+                border-color: #6366f1;
+                box-shadow: 0 0 0 .2rem rgba(99,102,241,.12);
+            }
+
+        textarea.form-control {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .description-box {
+            border: 1px solid #e7edf5;
+            border-radius: 18px;
+            background: #f8fafc;
+            min-height: 120px;
+            padding: 1rem;
+            color: #334155;
+        }
+
+        .action-wrap {
             display: flex;
             flex-wrap: wrap;
             gap: .75rem;
+            margin-top: 1.75rem;
         }
 
-        .hero-btn {
-            min-width: 140px;
-            justify-content: center;
-            display: inline-flex;
-            align-items: center;
-            gap: .5rem;
-            border-radius: 14px;
-            font-weight: 700;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-        }
-
-        .filter-panel {
-            border-radius: 22px;
-            border: 1px solid #e7edf5;
-            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
-        }
-
-        .summary-card {
-            position: relative;
-            overflow: hidden;
-            border-radius: 20px;
-            border: 1px solid #ebf1f7;
-            background: #fff;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
-        }
-
-            .summary-card::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 4px;
-            }
-
-        .summary-income::before {
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-        }
-
-        .summary-expense::before {
-            background: linear-gradient(90deg, #ef4444, #dc2626);
-        }
-
-        .summary-balance::before {
-            background: linear-gradient(90deg, #3b82f6, #2563eb);
-        }
-
-        .summary-count::before {
-            background: linear-gradient(90deg, #8b5cf6, #7c3aed);
-        }
-
-        .mini-summary::before {
-            background: linear-gradient(90deg, #06b6d4, #3b82f6);
-        }
-
-        .mini-log::before {
-            background: linear-gradient(90deg, #f59e0b, #f97316);
-        }
-
-        .summary-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .icon-income {
-            background: rgba(34, 197, 94, 0.12);
-            color: #16a34a;
-        }
-
-        .icon-expense {
-            background: rgba(239, 68, 68, 0.12);
-            color: #dc2626;
-        }
-
-        .icon-balance {
-            background: rgba(59, 130, 246, 0.12);
-            color: #2563eb;
-        }
-
-        .icon-count {
-            background: rgba(139, 92, 246, 0.12);
-            color: #7c3aed;
-        }
-
-        .icon-mini {
-            background: rgba(14, 165, 233, 0.12);
-            color: #0369a1;
-        }
-
-        .icon-log {
-            background: rgba(245, 158, 11, 0.14);
-            color: #c2410c;
-        }
-
-        .summary-label {
-            color: #64748b;
-            font-size: .86rem;
-            margin-bottom: .2rem;
-        }
-
-        .summary-value {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 0;
-        }
-
-        .summary-sub {
-            color: #64748b;
-            font-size: .82rem;
-            margin-top: .3rem;
-        }
-
-        .chart-card {
-            border-radius: 22px;
-            border: 1px solid #e7edf5;
-            background: #fff;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
-        }
-
-        .chart-wrapper {
-            position: relative;
-            width: 100%;
-            min-height: 300px;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .chart-wrapper-lg {
-            min-height: 360px;
-            height: 360px;
-        }
-
-        .chart-wrapper canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 2rem 1rem;
-        }
-
-        .empty-icon {
-            font-size: 2rem;
-            margin-bottom: .6rem;
-        }
-
-        .side-list-item {
-            border: 1px solid #edf2f7;
-            border-radius: 18px;
-            background: #f8fafc;
-            padding: 1rem;
-        }
-
-            .side-list-item + .side-list-item {
-                margin-top: .8rem;
-            }
-
-        .top-category-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            padding: .85rem 0;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-
-            .top-category-row:last-child {
-                border-bottom: none;
-            }
-
-        .activity-item {
-            position: relative;
-            padding-left: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-            .activity-item::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                top: .45rem;
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-            }
-
-        .activity-create::before {
-            background: #22c55e;
-        }
-
-        .activity-update::before {
-            background: #f59e0b;
-        }
-
-        .activity-delete::before {
-            background: #ef4444;
-        }
-
-        .filter-summary-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .4rem;
-            padding: .55rem .85rem;
-            border-radius: 999px;
-            background: #eef4ff;
-            color: #1d4ed8;
-            font-size: .85rem;
-            font-weight: 600;
-        }
-
-        .table-shell {
-            border-radius: 22px;
-            overflow: hidden;
-            border: 1px solid #e7edf5;
-            background: #fff;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
-        }
-
-        .table thead th {
-            background: #f8fbff;
-            color: #334155;
-            font-weight: 700;
-            white-space: nowrap;
-            border-bottom: 1px solid #e7edf5;
-        }
-
-        .table tbody tr:hover {
-            background: #fbfdff;
-        }
-
-        .action-stack {
-            display: flex;
-            flex-direction: column;
-            gap: .45rem;
-        }
-
-            .action-stack .btn {
-                border-radius: 12px;
-                font-weight: 600;
-            }
-
-        .metric-chip {
-            display: inline-flex;
-            align-items: center;
-            padding: .35rem .65rem;
-            border-radius: 999px;
-            font-size: .78rem;
-            font-weight: 700;
-        }
-
-        .chip-success {
-            background: rgba(34, 197, 94, 0.12);
-            color: #15803d;
-        }
-
-        .chip-danger {
-            background: rgba(239, 68, 68, 0.12);
-            color: #b91c1c;
-        }
-
-        .chip-warning {
-            background: rgba(245, 158, 11, 0.12);
-            color: #b45309;
-        }
-
-        .chip-info {
-            background: rgba(59, 130, 246, 0.12);
-            color: #1d4ed8;
-        }
-
-        .delete-modal-content {
-            border: 1px solid #e7edf5;
-            border-radius: 24px;
-            overflow: hidden;
-            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.20);
-        }
-
-        .delete-modal-header {
-            border-bottom: 1px solid #edf2f7;
-            padding: 1.35rem 1.35rem 1rem 1.35rem;
-            background: linear-gradient(135deg, #fff 0%, #f8fbff 100%);
-        }
-
-        .delete-head-wrap {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .delete-modal-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(239, 68, 68, 0.12);
-            color: #dc2626;
-            font-size: 1.45rem;
-            flex-shrink: 0;
-        }
-
-        .delete-modal-title {
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: .25rem;
-        }
-
-        .delete-modal-subtitle {
-            color: #64748b;
-            font-size: .92rem;
-            line-height: 1.5;
-            margin-bottom: 0;
-        }
-
-        .delete-modal-body {
-            padding: 1.2rem 1.35rem;
-        }
-
-        .delete-info-card {
-            border: 1px solid #e7edf5;
-            border-radius: 18px;
-            background: #ffffff;
-            padding: 1rem 1rem .45rem 1rem;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.03);
-        }
-
-        .delete-info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            padding-bottom: .75rem;
-            margin-bottom: .75rem;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-
-            .delete-info-row:last-child {
-                border-bottom: none;
-                margin-bottom: 0;
-                padding-bottom: 0;
-            }
-
-            .delete-info-row span {
-                color: #64748b;
-                font-weight: 700;
-                font-size: .88rem;
-            }
-
-            .delete-info-row strong {
-                color: #0f172a;
-                text-align: right;
-                font-size: .95rem;
-            }
-
-        .delete-warning-box {
-            margin-top: 1rem;
-            border: 1px solid rgba(239, 68, 68, 0.14);
-            background: rgba(239, 68, 68, 0.07);
-            color: #b91c1c;
-            border-radius: 16px;
-            padding: .95rem 1rem;
-            font-size: .9rem;
-            line-height: 1.5;
-        }
-
-        .delete-modal-footer {
-            border-top: 1px solid #edf2f7;
-            padding: 1rem 1.35rem 1.35rem 1.35rem;
-            background: #fcfdff;
-        }
-
-            .delete-modal-footer .btn {
-                min-width: 130px;
-                min-height: 46px;
+            .action-wrap .btn {
+                min-width: 140px;
                 border-radius: 14px;
                 font-weight: 700;
             }
 
-        @@media (min-width: 1200px) {
-            .chart-wrapper {
-                min-height: 340px;
-                height: 340px;
-            }
+        .highlight-amount-income {
+            color: #16a34a;
+        }
 
-            .chart-wrapper-lg {
-                min-height: 390px;
-                height: 390px;
-            }
+        .highlight-amount-expense {
+            color: #dc2626;
+        }
+
+        .detail-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .55rem .9rem;
+            border-radius: 999px;
+            font-size: .85rem;
+            font-weight: 700;
+        }
+
+        .badge-income-soft {
+            background: rgba(34, 197, 94, 0.12);
+            color: #15803d;
+        }
+
+        .badge-expense-soft {
+            background: rgba(239, 68, 68, 0.12);
+            color: #b91c1c;
+        }
+
+        .validation-summary-errors {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.14);
+            border-radius: 16px;
+            padding: .9rem 1rem;
+            margin-bottom: 1rem;
+            color: #b91c1c;
+        }
+
+        .field-validation-error,
+        .text-danger {
+            font-size: .82rem;
+            font-weight: 600;
         }
 
         @@media (max-width: 576px) {
-            .delete-head-wrap {
-                flex-direction: column;
-            }
-
-            .delete-modal-footer .d-flex {
-                flex-direction: column-reverse;
-            }
-
-            .delete-modal-footer .btn {
+            .action-wrap .btn {
                 width: 100%;
             }
         }
     </style>
 }
 
-<div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3 mb-4">
+<div class="edit-topbar">
     <div>
-        <h2 class="page-title mb-1">Finansal İşlemler</h2>
-        <p class="page-subtitle mb-0">Gelir ve gider kayıtlarını modern finans panelinden yönetebilirsin.</p>
+        <h2 class="page-title mb-1">İşlem Düzenle</h2>
+        <p class="page-subtitle mb-0">Mevcut işleme ait bilgileri güncelleyebilirsin.</p>
     </div>
 
-    <div class="hero-actions">
-        @Html.ActionLink("➕ Yeni İşlem Ekle", "Create", null, new { @class = "btn btn-primary hero-btn" })
-
-        <a href="@Url.Action("ExportToExcel", "Finance", new { startDate = currentStartDate, endDate = currentEndDate, category = currentCategory })"
-           class="btn btn-success hero-btn">
-            📊 Excel
-        </a>
-
-        <a href="@Url.Action("ExportToPdf", "Finance", new { startDate = currentStartDate, endDate = currentEndDate, category = currentCategory })"
-           class="btn btn-danger hero-btn">
-            📄 PDF
-        </a>
+    <div>
+        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary rounded-3 px-4" })
     </div>
 </div>
 
-<div class="filter-panel p-4 mb-4">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
-        <div>
-            <h5 class="section-title">Filtreleme</h5>
-            <p class="section-subtitle">Tarih ve kategoriye göre işlemleri filtreleyebilirsin.</p>
+<div class="soft-card p-4 p-md-4">
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="edit-summary-card">
+                <div class="summary-label">Mevcut Tutar</div>
+                <h4 class="summary-value @(Model.Type == "Gelir" ? "highlight-amount-income" : "highlight-amount-expense")">
+                    @Model.Amount.ToString("N2") ₺
+                </h4>
+            </div>
         </div>
 
-        <div class="filter-summary-badge">
-            🔎 @filterSummary
+        <div class="col-12 col-md-4">
+            <div class="edit-summary-card">
+                <div class="summary-label">Mevcut Tip</div>
+                <div class="mt-2">
+                    @if (Model.Type == "Gelir")
+                    {
+                        <span class="detail-badge badge-income-soft">⬆ Gelir</span>
+                    }
+                    else
+                    {
+                        <span class="detail-badge badge-expense-soft">⬇ Gider</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="edit-summary-card">
+                <div class="summary-label">Mevcut Kategori</div>
+                <h4 class="summary-value">
+                    @(string.IsNullOrWhiteSpace(Model.Category) ? "Diğer" : Model.Category)
+                </h4>
+            </div>
         </div>
     </div>
 
-    @using (Html.BeginForm("Index", "Finance", FormMethod.Get, new { @class = "row g-3 align-items-end" }))
+    <div class="mb-4">
+        <h5 class="section-title">Düzenleme Formu</h5>
+        <p class="section-subtitle">Aşağıdaki alanları güncelleyerek işlemi kaydedebilirsin.</p>
+    </div>
+
+    @using (Html.BeginForm("Edit", "Finance", FormMethod.Post))
     {
-        <div class="col-12 col-md-3">
-            <label for="startDate" class="form-label fw-semibold">Başlangıç Tarihi</label>
-            <input type="date" name="startDate" id="startDate" class="form-control" value="@currentStartDate" />
-        </div>
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.CreatedAt)
 
-        <div class="col-12 col-md-3">
-            <label for="endDate" class="form-label fw-semibold">Bitiş Tarihi</label>
-            <input type="date" name="endDate" id="endDate" class="form-control" value="@currentEndDate" />
-        </div>
+        @Html.ValidationSummary(false, "", new { })
 
-        <div class="col-12 col-md-3">
-            <label for="category" class="form-label fw-semibold">Kategori</label>
-            <select name="category" id="category" class="form-select">
-                <option value="">Tüm Kategoriler</option>
-                <option value="Maaş" @(currentCategory == "Maaş" ? "selected" : "")>Maaş</option>
-                <option value="Ek Gelir" @(currentCategory == "Ek Gelir" ? "selected" : "")>Ek Gelir</option>
-                <option value="Market" @(currentCategory == "Market" ? "selected" : "")>Market</option>
-                <option value="Fatura" @(currentCategory == "Fatura" ? "selected" : "")>Fatura</option>
-                <option value="Ulaşım" @(currentCategory == "Ulaşım" ? "selected" : "")>Ulaşım</option>
-                <option value="Eğitim" @(currentCategory == "Eğitim" ? "selected" : "")>Eğitim</option>
-                <option value="Diğer" @(currentCategory == "Diğer" ? "selected" : "")>Diğer</option>
-            </select>
-        </div>
-
-        <div class="col-12 col-md-3">
-            <div class="d-grid d-sm-flex gap-2">
-                <button type="submit" class="btn btn-primary px-4">Filtrele</button>
-                <a href="@Url.Action("Index", "Finance")" class="btn btn-outline-secondary px-4">Temizle</a>
+        <div class="row g-3">
+            <div class="col-12 col-md-6">
+                <div class="detail-field">
+                    <div class="detail-label">Tarih</div>
+                    @Html.TextBoxFor(x => x.Date, "{0:yyyy-MM-dd}", new
+                    {
+                        @class = "form-control",
+                        type = "date"
+                    })
+                    @Html.ValidationMessageFor(x => x.Date, "", new { @class = "text-danger mt-2 d-block" })
+                </div>
             </div>
+
+            <div class="col-12 col-md-6">
+                <div class="detail-field">
+                    <div class="detail-label">Tutar</div>
+                    @Html.TextBoxFor(x => x.Amount, new
+                    {
+                        @class = "form-control",
+                        type = "text",
+                        inputmode = "decimal",
+                        placeholder = "Tutar giriniz"
+                    })
+                    @Html.ValidationMessageFor(x => x.Amount, "", new { @class = "text-danger mt-2 d-block" })
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="detail-field">
+                    <div class="detail-label">Kategori</div>
+                    @Html.DropDownListFor(
+                        x => x.Category,
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Maaş", Value = "Maaş" },
+                            new SelectListItem { Text = "Ek Gelir", Value = "Ek Gelir" },
+                            new SelectListItem { Text = "Market", Value = "Market" },
+                            new SelectListItem { Text = "Fatura", Value = "Fatura" },
+                            new SelectListItem { Text = "Ulaşım", Value = "Ulaşım" },
+                            new SelectListItem { Text = "Eğitim", Value = "Eğitim" },
+                            new SelectListItem { Text = "Diğer", Value = "Diğer" }
+                        },
+                        "Seçiniz",
+                        new { @class = "form-select" }
+                    )
+                    @Html.ValidationMessageFor(x => x.Category, "", new { @class = "text-danger mt-2 d-block" })
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="detail-field">
+                    <div class="detail-label">Tip</div>
+                    @Html.DropDownListFor(
+                        x => x.Type,
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Gelir", Value = "Gelir" },
+                            new SelectListItem { Text = "Gider", Value = "Gider" }
+                        },
+                        "Seçiniz",
+                        new { @class = "form-select" }
+                    )
+                    @Html.ValidationMessageFor(x => x.Type, "", new { @class = "text-danger mt-2 d-block" })
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="detail-field">
+                    <div class="detail-label">Açıklama</div>
+                    @Html.TextAreaFor(x => x.Description, new
+                    {
+                        @class = "form-control",
+                        rows = 5,
+                        placeholder = "İşlem açıklaması giriniz"
+                    })
+                    @Html.ValidationMessageFor(x => x.Description, "", new { @class = "text-danger mt-2 d-block" })
+                </div>
+            </div>
+        </div>
+
+        <div class="action-wrap">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            @Html.ActionLink("İptal", "Index", null, new { @class = "btn btn-outline-dark" })
         </div>
     }
 </div>
-
-<div id="dashboard" class="row g-3 mb-4">
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="summary-card summary-income p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="summary-label">Toplam Gelir</div>
-                    <h4 class="summary-value text-success">@String.Format("{0:N2} ₺", ViewBag.ToplamGelir)</h4>
-                    <div class="summary-sub">Filtrelenmiş toplam gelir</div>
-                </div>
-                <div class="summary-icon icon-income">₺</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="summary-card summary-expense p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="summary-label">Toplam Gider</div>
-                    <h4 class="summary-value text-danger">@String.Format("{0:N2} ₺", ViewBag.ToplamGider)</h4>
-                    <div class="summary-sub">Filtrelenmiş toplam gider</div>
-                </div>
-                <div class="summary-icon icon-expense">₺</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="summary-card summary-balance p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="summary-label">Net Bakiye</div>
-                    <h4 class="summary-value @(ViewBag.NetBakiye >= 0 ? "text-success" : "text-danger")">
-                        @String.Format("{0:N2} ₺", ViewBag.NetBakiye)
-                    </h4>
-                    <div class="summary-sub">Tasarruf oranı: %@ViewBag.TasarrufOrani</div>
-                </div>
-                <div class="summary-icon icon-balance">📈</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="summary-card summary-count p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="summary-label">Toplam İşlem</div>
-                    <h4 class="summary-value">@ViewBag.IslemSayisi</h4>
-                    <div class="summary-sub">Ortalama: @String.Format("{0:N2} ₺", ViewBag.OrtalamaIslemTutari)</div>
-                </div>
-                <div class="summary-icon icon-count">🧾</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row g-3 mb-4">
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="summary-card mini-summary p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="summary-label">Bu Ay Gelir</div>
-                    <h5 class="summary-value text-success">@String.Format("{0:N2} ₺", ViewBag.ThisMonthIncome)</h5>
-                    <div class="summary-sub">Değişim: %@ViewBag.IncomeChangePercentage</div>
-                </div>
-                <div class="summary-icon icon-mini">💹</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="summary-card mini-summary p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="summary-label">Bu Ay Gider</div>
-                    <h5 class="summary-value text-danger">@String.Format("{0:N2} ₺", ViewBag.ThisMonthExpense)</h5>
-                    <div class="summary-sub">Değişim: %@ViewBag.ExpenseChangePercentage</div>
-                </div>
-                <div class="summary-icon icon-mini">📉</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="summary-card mini-log p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="summary-label">Toplam Log</div>
-                    <h5 class="summary-value">@ViewBag.ToplamLog</h5>
-                    <div class="summary-sub">Bugün: @ViewBag.BugunkuLog</div>
-                </div>
-                <div class="summary-icon icon-log">🛡️</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="summary-card mini-log p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="summary-label">Finans Skoru</div>
-                    <h5 class="summary-value">@ViewBag.FinansSkoru</h5>
-                    <div class="summary-sub">En yüksek işlem: @String.Format("{0:N2} ₺", ViewBag.EnYuksekIslemTutari)</div>
-                </div>
-                <div class="summary-icon icon-log">⭐</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row g-4 mb-4">
-    <div class="col-12">
-        <div class="chart-card p-3 p-md-4">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                    <h5 class="section-title">Aylık Gelir / Gider Analizi</h5>
-                    <p class="section-subtitle">Aylara göre gelir ve gider değişimini inceleyebilirsin.</p>
-                </div>
-                <span class="metric-chip chip-info">Aylık Trend</span>
-            </div>
-
-            <div class="chart-wrapper chart-wrapper-lg">
-                @if (ViewBag.AylikLabels != null && ((List<string>)ViewBag.AylikLabels).Any())
-                {
-                    <canvas id="monthlyFinanceChart"></canvas>
-                }
-                else
-                {
-                    <div class="empty-state w-100">
-                        <div class="empty-icon">📈</div>
-                        <h6 class="fw-bold mb-1">Aylık grafik verisi yok</h6>
-                        <p class="text-muted small mb-0">Farklı aylarda kayıt oluştukça grafik burada görünecek.</p>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="charts" class="row g-4 mb-4">
-    <div class="col-12 col-xl-6">
-        <div class="chart-card p-3 p-md-4 h-100">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                    <h5 class="section-title">Gelir / Gider Grafiği</h5>
-                    <p class="section-subtitle">Finansal dağılımı görsel olarak inceleyebilirsin.</p>
-                </div>
-                <span class="metric-chip chip-success">Genel Özet</span>
-            </div>
-
-            <div class="chart-wrapper">
-                @if ((decimal)ViewBag.ToplamGelir + (decimal)ViewBag.ToplamGider > 0)
-                {
-                    <canvas id="financeChart"></canvas>
-                }
-                else
-                {
-                    <div class="empty-state w-100">
-                        <div class="empty-icon">📊</div>
-                        <h6 class="fw-bold mb-1">Grafik verisi yok</h6>
-                        <p class="text-muted small mb-0">Gelir veya gider kaydı eklendiğinde grafik burada görünecek.</p>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-xl-6">
-        <div class="chart-card p-3 p-md-4 h-100">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                    <h5 class="section-title">Kategori Bazlı Gider Dağılımı</h5>
-                    <p class="section-subtitle">Giderlerin kategorilere göre dağılımını inceleyebilirsin.</p>
-                </div>
-                <span class="metric-chip chip-warning">Gider Analizi</span>
-            </div>
-
-            <div class="chart-wrapper">
-                @if (ViewBag.GiderKategoriLabels != null && ((List<string>)ViewBag.GiderKategoriLabels).Any())
-                {
-                    <canvas id="categoryExpenseChart"></canvas>
-                }
-                else
-                {
-                    <div class="empty-state w-100">
-                        <div class="empty-icon">🍩</div>
-                        <h6 class="fw-bold mb-1">Kategori verisi yok</h6>
-                        <p class="text-muted small mb-0">Gider kaydı ve kategori eklendiğinde dağılım grafiği burada görünecek.</p>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row g-4 mb-4">
-    <div class="col-12 col-xl-4">
-        <div class="soft-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                    <h5 class="section-title">Kategori Top List</h5>
-                    <p class="section-subtitle">En yüksek gider kategorilerini görüntüle.</p>
-                </div>
-                <span class="metric-chip chip-danger">Top 5</span>
-            </div>
-
-            @if (topCategories != null && topCategories.Any())
-            {
-                foreach (var item in topCategories)
-                {
-                    <div class="top-category-row">
-                        <div>
-                            <div class="fw-semibold">@item.Category</div>
-                        </div>
-                        <div class="fw-bold text-danger">@item.Total.ToString("N2") ₺</div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="empty-state">
-                    <div class="empty-icon">📂</div>
-                    <h6 class="fw-bold mb-1">Kategori özeti yok</h6>
-                    <p class="text-muted small mb-0">Gider verisi oluştuğunda burada görüntülenecek.</p>
-                </div>
-            }
-        </div>
-    </div>
-
-    <div class="col-12 col-xl-4" id="recent-transactions">
-        <div class="soft-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                    <h5 class="section-title">Son İşlemler</h5>
-                    <p class="section-subtitle">En son eklenen 3 kayıt</p>
-                </div>
-                <span class="metric-chip chip-info">Canlı Liste</span>
-            </div>
-
-            @if (sonIslemler != null && sonIslemler.Any())
-            {
-                foreach (var item in sonIslemler)
-                {
-                    <div class="side-list-item">
-                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-                            <div class="fw-semibold">@item.Date.ToString("dd.MM.yyyy")</div>
-
-                            @if (item.Type == "Gelir")
-                            {
-                                <span class="badge text-bg-success">Gelir</span>
-                            }
-                            else
-                            {
-                                <span class="badge text-bg-danger">Gider</span>
-                            }
-                        </div>
-
-                        <div class="fw-bold mb-2">@item.Amount.ToString("N2") ₺</div>
-
-                        <div class="mb-2">
-                            <span class="badge text-bg-secondary">@(string.IsNullOrWhiteSpace(item.Category) ? "Diğer" : item.Category)</span>
-                        </div>
-
-                        <div class="text-muted small mb-3">
-                            @(string.IsNullOrWhiteSpace(item.Description) ? "-" : item.Description)
-                        </div>
-
-                        @Html.ActionLink("Detay", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-outline-dark w-100" })
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="empty-state">
-                    <div class="empty-icon">🧾</div>
-                    <h6 class="fw-bold mb-1">Son işlem bulunamadı</h6>
-                    <p class="text-muted small mb-0">Henüz görüntülenecek bir kayıt yok.</p>
-                </div>
-            }
-        </div>
-    </div>
-
-    <div class="col-12 col-xl-4">
-        <div class="soft-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                    <h5 class="section-title">Audit Log Aktiviteleri</h5>
-                    <p class="section-subtitle">Son sistem hareketlerini görüntüle.</p>
-                </div>
-                <span class="metric-chip chip-warning">Güvenlik</span>
-            </div>
-
-            <div class="d-flex flex-wrap gap-2 mb-3">
-                <span class="metric-chip chip-success">Create: @ViewBag.CreateLogCount</span>
-                <span class="metric-chip chip-warning">Update: @ViewBag.UpdateLogCount</span>
-                <span class="metric-chip chip-danger">Delete: @ViewBag.DeleteLogCount</span>
-            </div>
-
-            @if (sonLoglar != null && sonLoglar.Any())
-            {
-                foreach (var log in sonLoglar)
-                {
-                    var activityClass = "activity-item";
-                    if (log.Action == "Create") { activityClass += " activity-create"; }
-                    else if (log.Action == "Update") { activityClass += " activity-update"; }
-                    else { activityClass += " activity-delete"; }
-
-                    <div class="@activityClass">
-                        <div class="d-flex justify-content-between align-items-start gap-2">
-                            <div class="fw-semibold">@log.Action</div>
-                            <div class="text-muted small">@(log.LogDate.HasValue ? log.LogDate.Value.ToString("dd.MM.yyyy HH:mm") : "-")</div>
-                        </div>
-                        <div class="text-muted small mt-1">@log.Description</div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="empty-state">
-                    <div class="empty-icon">🛡️</div>
-                    <h6 class="fw-bold mb-1">Log bulunamadı</h6>
-                    <p class="text-muted small mb-0">Henüz sistem hareketi kaydı yok.</p>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-<div id="transactions" class="table-shell">
-    <div class="p-4 border-bottom">
-        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
-            <div>
-                <h5 class="section-title mb-1">İşlem Tablosu</h5>
-                <p class="section-subtitle mb-0">@Model.Count() kayıt listeleniyor</p>
-            </div>
-            <span class="metric-chip chip-info">@filterSummary</span>
-        </div>
-    </div>
-
-    <div class="table-responsive">
-        @if (Model != null && Model.Any())
-        {
-            <table class="table table-hover align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th class="ps-4">Tarih</th>
-                        <th>Kategori</th>
-                        <th>Tip</th>
-                        <th>Tutar</th>
-                        <th>Açıklama</th>
-                        <th style="width: 220px;" class="pe-4">İşlemler</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td class="ps-4">@item.Date.ToString("dd.MM.yyyy")</td>
-                            <td>
-                                <span class="badge text-bg-secondary">@(string.IsNullOrWhiteSpace(item.Category) ? "Diğer" : item.Category)</span>
-                            </td>
-                            <td>
-                                @if (item.Type == "Gelir")
-                                {
-                                    <span class="badge rounded-pill text-bg-success">Gelir</span>
-                                }
-                                else
-                                {
-                                    <span class="badge rounded-pill text-bg-danger">Gider</span>
-                                }
-                            </td>
-                            <td class="fw-semibold">@item.Amount.ToString("N2") ₺</td>
-                            <td>@(string.IsNullOrWhiteSpace(item.Description) ? "-" : item.Description)</td>
-                            <td class="pe-4">
-                                <div class="action-stack">
-                                    @Html.ActionLink("Detay", "Details", new { id = item.Id }, new { @class = "btn btn-outline-info btn-sm" })
-                                    @Html.ActionLink("Düzenle", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-warning btn-sm" })
-
-                                    <button type="button"
-                                            class="btn btn-outline-danger btn-sm w-100 open-delete-modal"
-                                            data-id="@item.Id"
-                                            data-category="@(string.IsNullOrWhiteSpace(item.Category) ? "Diğer" : item.Category)"
-                                            data-amount="@item.Amount.ToString("N2")"
-                                            data-date="@item.Date.ToString("dd.MM.yyyy")">
-                                        Sil
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <div class="p-4">
-                <div class="alert alert-warning mb-0">
-                    <strong>Kayıt bulunamadı.</strong><br />
-                    Bu filtreye ait kayıt bulunamadı.
-                </div>
-            </div>
-        }
-    </div>
-</div>
-
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content delete-modal-content">
-            <div class="delete-modal-header">
-                <div class="delete-head-wrap">
-                    <div class="delete-modal-icon">🗑️</div>
-                    <div>
-                        <h5 class="delete-modal-title">Kaydı Sil</h5>
-                        <p class="delete-modal-subtitle">
-                            Bu işlem geri alınamaz. Silmeden önce işlem bilgilerini kontrol et.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="delete-modal-body">
-                <div class="delete-info-card">
-                    <div class="delete-info-row">
-                        <span>Tarih</span>
-                        <strong id="deleteDate">-</strong>
-                    </div>
-
-                    <div class="delete-info-row">
-                        <span>Kategori</span>
-                        <strong id="deleteCategory">-</strong>
-                    </div>
-
-                    <div class="delete-info-row">
-                        <span>Tutar</span>
-                        <strong id="deleteAmount">-</strong>
-                    </div>
-                </div>
-
-                <div class="delete-warning-box">
-                    <strong>Dikkat:</strong> Bu kayıt silindiğinde geri getirilemez.
-                </div>
-            </div>
-
-            <div class="delete-modal-footer">
-                <div class="d-flex justify-content-end gap-2 flex-wrap">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Vazgeç
-                    </button>
-
-                    @using (Html.BeginForm("Delete", "Finance", FormMethod.Post, new { id = "deleteForm" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" id="deleteItemId" />
-                        <button type="submit" class="btn btn-danger">
-                            Evet, Sil
-                        </button>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        const aylikLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikLabels));
-        const aylikGelirler = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikGelirler));
-        const aylikGiderler = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikGiderler));
-
-        const monthlyCtx = document.getElementById('monthlyFinanceChart');
-
-        if (monthlyCtx && aylikLabels.length > 0) {
-            new Chart(monthlyCtx, {
-                type: 'bar',
-                data: {
-                    labels: aylikLabels,
-                    datasets: [
-                        {
-                            label: 'Gelir',
-                            data: aylikGelirler,
-                            backgroundColor: '#16a34a',
-                            borderRadius: 8
-                        },
-                        {
-                            label: 'Gider',
-                            data: aylikGiderler,
-                            backgroundColor: '#dc2626',
-                            borderRadius: 8
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    return context.dataset.label + ': ' + context.raw.toLocaleString('tr-TR') + ' ₺';
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function (value) {
-                                    return value.toLocaleString('tr-TR') + ' ₺';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        const gelir = @Html.Raw(Convert.ToDecimal(ViewBag.ToplamGelir).ToString(System.Globalization.CultureInfo.InvariantCulture));
-        const gider = @Html.Raw(Convert.ToDecimal(ViewBag.ToplamGider).ToString(System.Globalization.CultureInfo.InvariantCulture));
-        const toplam = gelir + gider;
-
-        const financeCtx = document.getElementById('financeChart');
-
-        if (financeCtx && toplam > 0) {
-            new Chart(financeCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Gelir', 'Gider'],
-                    datasets: [{
-                        data: [gelir, gider],
-                        backgroundColor: ['#16a34a', '#dc2626'],
-                        borderWidth: 2
-                    }]
-                },
-                plugins: [ChartDataLabels],
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    const value = context.raw;
-                                    const percentage = ((value / toplam) * 100).toFixed(1);
-                                    return context.label + ': ' + value.toLocaleString('tr-TR') + ' ₺' + ' (%' + percentage + ')';
-                                }
-                            }
-                        },
-                        datalabels: {
-                            color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 13
-                            },
-                            formatter: function (value) {
-                                return '%' + ((value / toplam) * 100).toFixed(1);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        const categoryLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GiderKategoriLabels));
-        const categoryTotals = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GiderKategoriTotals));
-        const categoryToplam = categoryTotals.reduce((a, b) => a + b, 0);
-
-        const categoryCtx = document.getElementById('categoryExpenseChart');
-
-        if (categoryCtx && categoryLabels.length > 0 && categoryToplam > 0) {
-            new Chart(categoryCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: categoryLabels,
-                    datasets: [{
-                        data: categoryTotals,
-                        backgroundColor: [
-                            '#ef4444',
-                            '#f97316',
-                            '#f59e0b',
-                            '#10b981',
-                            '#3b82f6',
-                            '#8b5cf6',
-                            '#6b7280'
-                        ],
-                        borderWidth: 2
-                    }]
-                },
-                plugins: [ChartDataLabels],
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '48%',
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    const value = context.raw;
-                                    const percentage = ((value / categoryToplam) * 100).toFixed(1);
-                                    return context.label + ': ' + value.toLocaleString('tr-TR') + ' ₺' + ' (%' + percentage + ')';
-                                }
-                            }
-                        },
-                        datalabels: {
-                            color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 12
-                            },
-                            formatter: function (value) {
-                                return '%' + ((value / categoryToplam) * 100).toFixed(1);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const deleteItemIdInput = document.getElementById("deleteItemId");
-            const deleteDate = document.getElementById("deleteDate");
-            const deleteCategory = document.getElementById("deleteCategory");
-            const deleteAmount = document.getElementById("deleteAmount");
-            const deleteButtons = document.querySelectorAll(".open-delete-modal");
-            const deleteModalElement = document.getElementById("deleteModal");
-
-            let deleteModalInstance = null;
-
-            if (deleteModalElement && typeof bootstrap !== "undefined") {
-                deleteModalInstance = new bootstrap.Modal(deleteModalElement);
-            }
-
-            deleteButtons.forEach(button => {
-                button.addEventListener("click", function () {
-                    const id = this.dataset.id || "";
-                    const date = this.dataset.date || "-";
-                    const category = this.dataset.category || "-";
-                    const amount = this.dataset.amount || "0,00";
-
-                    deleteItemIdInput.value = id;
-                    deleteDate.textContent = date;
-                    deleteCategory.textContent = category;
-                    deleteAmount.textContent = amount + " ₺";
-
-                    if (deleteModalInstance) {
-                        deleteModalInstance.show();
-                    }
-                });
-            });
-        });
-    </script>
-}
