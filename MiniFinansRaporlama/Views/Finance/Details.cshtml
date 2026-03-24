@@ -1,21 +1,25 @@
 ﻿@model MiniFinansRaporlama.Models.Transactions
 
 @{
+    // Page title for layout
     ViewBag.Title = "İşlem Detayı";
 }
 
 @section Styles {
     <style>
+        /* Page title styling */
         .page-title {
             font-weight: 800;
             letter-spacing: -.4px;
             color: #0f172a;
         }
 
+        /* Subtitle under page title */
         .page-subtitle {
             color: #64748b;
         }
 
+        /* Main container card */
         .soft-card {
             border-radius: 24px;
             border: 1px solid #e7edf5;
@@ -23,6 +27,7 @@
             box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
         }
 
+        /* Top section layout (title + back button) */
         .detail-topbar {
             display: flex;
             justify-content: space-between;
@@ -32,6 +37,7 @@
             margin-bottom: 1.5rem;
         }
 
+        /* Badge for transaction type */
         .detail-badge {
             display: inline-flex;
             align-items: center;
@@ -42,16 +48,19 @@
             font-weight: 700;
         }
 
+        /* Income badge style */
         .badge-income-soft {
             background: rgba(34, 197, 94, 0.12);
             color: #15803d;
         }
 
+        /* Expense badge style */
         .badge-expense-soft {
             background: rgba(239, 68, 68, 0.12);
             color: #b91c1c;
         }
 
+        /* Summary cards (amount, type, category) */
         .detail-summary-card {
             border-radius: 20px;
             border: 1px solid #ebf1f7;
@@ -61,12 +70,14 @@
             height: 100%;
         }
 
+        /* Summary labels */
         .summary-label {
             color: #64748b;
             font-size: .85rem;
             margin-bottom: .35rem;
         }
 
+        /* Summary values */
         .summary-value {
             font-size: 1.3rem;
             font-weight: 800;
@@ -74,6 +85,7 @@
             color: #0f172a;
         }
 
+        /* Section titles */
         .section-title {
             font-size: 1.05rem;
             font-weight: 700;
@@ -87,6 +99,7 @@
             margin-bottom: 0;
         }
 
+        /* Detail field container */
         .detail-field {
             border: 1px solid #e7edf5;
             border-radius: 18px;
@@ -96,6 +109,7 @@
             box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
         }
 
+        /* Field label */
         .detail-label {
             font-size: .82rem;
             font-weight: 700;
@@ -105,6 +119,7 @@
             letter-spacing: .3px;
         }
 
+        /* Field value */
         .detail-value {
             font-size: 1rem;
             font-weight: 600;
@@ -112,11 +127,13 @@
             word-break: break-word;
         }
 
+        /* Muted text for empty values */
         .detail-value-muted {
             color: #94a3b8;
             font-weight: 500;
         }
 
+        /* Description box styling */
         .description-box {
             border: 1px solid #e7edf5;
             border-radius: 18px;
@@ -127,6 +144,7 @@
             white-space: pre-line;
         }
 
+        /* Action buttons container */
         .action-wrap {
             display: flex;
             flex-wrap: wrap;
@@ -134,12 +152,14 @@
             margin-top: 1.75rem;
         }
 
+            /* Action buttons */
             .action-wrap .btn {
                 min-width: 140px;
                 border-radius: 14px;
                 font-weight: 700;
             }
 
+        /* Highlight styles for amounts */
         .highlight-amount-income {
             color: #16a34a;
         }
@@ -148,6 +168,7 @@
             color: #dc2626;
         }
 
+        /* Responsive adjustments */
         @@media (max-width: 576px) {
             .action-wrap .btn {
                 width: 100%;
@@ -156,19 +177,28 @@
     </style>
 }
 
+<!-- PAGE HEADER -->
 <div class="detail-topbar">
     <div>
         <h2 class="page-title mb-1">İşlem Detayı</h2>
-        <p class="page-subtitle mb-0">İşleme ait tüm bilgileri buradan detaylı olarak görüntüleyebilirsin.</p>
+        <p class="page-subtitle mb-0">
+            View all details of the selected transaction.
+        </p>
     </div>
 
+    <!-- Navigation back to list -->
     <div>
         @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary rounded-3 px-4" })
     </div>
 </div>
 
+<!-- MAIN CONTENT -->
 <div class="soft-card p-4 p-md-4">
+
+    <!-- SUMMARY CARDS -->
     <div class="row g-3 mb-4">
+
+        <!-- Amount -->
         <div class="col-12 col-md-4">
             <div class="detail-summary-card">
                 <div class="summary-label">İşlem Tutarı</div>
@@ -178,6 +208,7 @@
             </div>
         </div>
 
+        <!-- Type -->
         <div class="col-12 col-md-4">
             <div class="detail-summary-card">
                 <div class="summary-label">İşlem Tipi</div>
@@ -194,6 +225,7 @@
             </div>
         </div>
 
+        <!-- Category -->
         <div class="col-12 col-md-4">
             <div class="detail-summary-card">
                 <div class="summary-label">Kategori</div>
@@ -204,12 +236,18 @@
         </div>
     </div>
 
+    <!-- DETAIL SECTION HEADER -->
     <div class="mb-4">
         <h5 class="section-title">İşlem Bilgileri</h5>
-        <p class="section-subtitle">Kayda ait temel alanlar aşağıda listelenmiştir.</p>
+        <p class="section-subtitle">
+            Core transaction fields are listed below.
+        </p>
     </div>
 
+    <!-- DETAIL FIELDS -->
     <div class="row g-3">
+
+        <!-- Date -->
         <div class="col-12 col-md-6">
             <div class="detail-field">
                 <div class="detail-label">Tarih</div>
@@ -219,6 +257,7 @@
             </div>
         </div>
 
+        <!-- Category -->
         <div class="col-12 col-md-6">
             <div class="detail-field">
                 <div class="detail-label">Kategori</div>
@@ -228,6 +267,7 @@
             </div>
         </div>
 
+        <!-- Type -->
         <div class="col-12 col-md-6">
             <div class="detail-field">
                 <div class="detail-label">Tip</div>
@@ -244,6 +284,7 @@
             </div>
         </div>
 
+        <!-- Amount -->
         <div class="col-12 col-md-6">
             <div class="detail-field">
                 <div class="detail-label">Tutar</div>
@@ -253,6 +294,7 @@
             </div>
         </div>
 
+        <!-- Created At -->
         <div class="col-12 col-md-6">
             <div class="detail-field">
                 <div class="detail-label">Oluşturulma Tarihi</div>
@@ -262,6 +304,7 @@
             </div>
         </div>
 
+        <!-- Updated At -->
         <div class="col-12 col-md-6">
             <div class="detail-field">
                 <div class="detail-label">Güncellenme Tarihi</div>
@@ -271,19 +314,24 @@
             </div>
         </div>
 
+        <!-- Description -->
         <div class="col-12">
             <div class="detail-field">
                 <div class="detail-label">Açıklama</div>
                 <div class="description-box">
-                    @(string.IsNullOrWhiteSpace(Model.Description) ? "Bu işlem için açıklama girilmemiş." : Model.Description)
+                    @(string.IsNullOrWhiteSpace(Model.Description) ? "No description provided." : Model.Description)
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ACTION BUTTONS -->
     <div class="action-wrap">
+
+        <!-- Edit button -->
         @Html.ActionLink("Düzenle", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
 
+        <!-- Back to list -->
         @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-dark" })
     </div>
 </div>

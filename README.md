@@ -1,151 +1,151 @@
 ﻿# 💰 Mini Financial Reporting System
 
+<p align="center">
+
+  <img src="https://img.shields.io/badge/.NET-Framework-blue?style=for-the-badge&logo=dotnet" />
+  <img src="https://img.shields.io/badge/ASP.NET-MVC-purple?style=for-the-badge&logo=dotnet" />
+  <img src="https://img.shields.io/badge/Database-SQL%20Server-red?style=for-the-badge&logo=microsoftsqlserver" />
+  <img src="https://img.shields.io/badge/ORM-Entity%20Framework-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Frontend-Bootstrap%205-blue?style=for-the-badge&logo=bootstrap" />
+  <img src="https://img.shields.io/badge/Charts-Chart.js-orange?style=for-the-badge&logo=chartdotjs" />
+
+</p>
+
+---
+
 A modern and dynamic **financial tracking web application** built with **ASP.NET MVC, Entity Framework, and SQL Server**.
 
-This project enables users to manage income and expense transactions while providing an **interactive dashboard with analytical insights, export features, and audit logging system**.
+This project provides a complete system for managing financial transactions with a **modern dashboard, export system, and audit logging**.
 
 ---
 
-## 🎬 Demo GIFs
+# 🎬 Demo
 
-| 📊 Dashboard Overview |
-|----------------------|
-| ![](Screenshots/MiniFinans_Dashboard.gif) |
+| Dashboard |
+|------------|
+| ![](Screenshots/after/dashboard_overview.gif) |
 
-| ➕ Add Transaction | 🔍 Filter Flow |
-|-------------------|----------------|
-| ![](Screenshots/MiniFinans_AddTransaction.gif) | ![](Screenshots/MiniFinans_Filter.gif) |
-
----
-
-## ✨ Features
-
-### 💸 Financial Management
-- Income & Expense tracking  
-- Full CRUD operations (Create, Edit, Details, Delete)  
-- Category-based transaction system  
-- Date-based filtering (start / end date)  
+| Export | Filter |
+|--------|--------|
+| ![](Screenshots/after/export_pdf.gif.gif) | ![](Screenshots/after/dashboard_filter.gif) |
 
 ---
 
-### 📊 Dashboard & Analytics
-- Real-time financial summary cards  
-- Total income, total expense, net balance  
-- Category-based expense distribution  
-- Interactive charts using **Chart.js**  
-- Monthly financial visualization  
+# 🔄 UI Evolution (Before vs After)
+
+## 📊 Dashboard
+
+| Before | After |
+|--------|------|
+| ![](Screenshots/before/MiniFinans_Dashboard.gif) | ![](Screenshots/after/dashboard_overview.gif) |
 
 ---
 
-### 📁 Export Features (NEW 🚀)
-- Export transactions to **Excel**  
-- Export transactions to **PDF**  
-- Filter-based export (date & category)  
-- Clean formatted report output  
-
----
-
-### 📝 Audit Log System (NEW 🚀)
-- Logs all actions (Create, Update, Delete)  
-- Stores timestamp and descriptions  
-- Tracks user activity flow  
-- Improves traceability and system transparency  
-
----
-
-### 🎨 UI / UX Improvements (NEW 🚀)
-- Fully redesigned **Edit / Create / Details pages**  
-- Modern card-based UI  
-- Improved form usability  
-- SweetAlert confirmation system  
-- Clean and responsive layout  
-
----
-
-## 🛠️ Tech Stack
-
-- ASP.NET MVC (.NET Framework)  
-- Entity Framework  
-- Microsoft SQL Server  
-- Bootstrap 5  
-- Chart.js  
-- SweetAlert2  
-- iText7 (PDF Export)  
-- ClosedXML (Excel Export)  
-- HTML5 / CSS3  
-
----
-
-## 📸 Screenshots
-
-### 📊 Dashboard
-
-| Overview | Charts |
-|----------|--------|
-| ![](Screenshots/DashboardOverview.png) | ![](Screenshots/DashboardCharts.png) |
-
----
-
-### 💸 Transactions
+## 💸 Transaction Pages
 
 | Create | Edit |
 |--------|------|
-| ![](Screenshots/Create.png) | ![](Screenshots/Edit.png) |
+| ![](Screenshots/before/Create.png) | ![](Screenshots/after/finance_edit.png) |
 
 | Details | Delete |
 |--------|--------|
-| ![](Screenshots/Details.png) | ![](Screenshots/Delete.png) |
+| ![](Screenshots/before/Details.png) | ![](Screenshots/before/Delete.png) |
 
 ---
 
-## 🧠 Database Design
+# ✨ Features
 
-> Relational database structure designed for scalable financial tracking
+## 💸 Financial Management
+- Full CRUD operations (Create, Edit, Delete, Details)
+- Income & Expense tracking
+- Category-based system
+- Date-based filtering
+
+---
+
+## 📊 Dashboard & Analytics
+- Real-time financial summary
+- Income / Expense cards
+- Category distribution charts
+- Chart.js integration
+- Monthly financial overview
+
+---
+
+## 📁 Export System (NEW 🚀)
+- Export to Excel
+- Export to PDF
+- Filter-based export
+- Clean report formatting
+
+---
+
+## 📝 Audit Log System (NEW 🚀)
+- Tracks Create / Update / Delete actions
+- Stores timestamps
+- Logs user operations
+- Improves system transparency
+
+---
+
+## 🎨 UI / UX Improvements (NEW 🚀)
+- Redesigned Edit / Create / Details pages
+- Modern card-based UI
+- Better form usability
+- SweetAlert confirmations
+- Responsive layout
+
+---
+
+# 📸 Screenshots
+
+| Dashboard |
+|----------|
+| ![](Screenshots/after/dashboard.png) |
+
+| Create | Edit |
+|--------|------|
+| ![](Screenshots/after/finance_create.png) | ![](Screenshots/after/finance_edit.png) |
+
+| Details |
+|--------|
+| ![](Screenshots/after/finance_details.png) |
+
+---
+
+# 🧠 Database Design
 
 ![](Screenshots/ERDiagram.png)
 
 ---
 
-## 🚀 Key Highlights
+# 🚀 Key Highlights
 
-- Dynamic financial dashboard with real-time analytics  
+- Modern financial dashboard  
 - Export system (Excel & PDF)  
-- Audit logging for all operations  
-- Advanced filtering (date & category based)  
-- Clean UI/UX with modern design  
-- Scalable and maintainable architecture  
+- Audit logging system  
+- Advanced filtering  
+- Clean UI/UX  
+- Scalable architecture  
 
 ---
 
-## 🏗️ Architecture
+# 🛠️ Tech Stack
 
-This project follows a **layered MVC architecture**:
-
-### 🧩 Application Layers
-- Controllers → Handle HTTP requests and application flow  
-- Models → Represent database entities (Entity Framework)  
-- Views → Razor-based UI rendering  
-
-### 🗄️ Data Layer
-- Entity Framework for ORM and data access  
-- Structured relational database (SQL Server)  
+- ASP.NET MVC (.NET Framework)
+- Entity Framework
+- SQL Server
+- Bootstrap 5
+- Chart.js
+- SweetAlert2
+- iText7 (PDF)
+- ClosedXML (Excel)
 
 ---
 
-## 🔄 How It Works
+# ⚙️ Installation
 
-### 🌐 User Flow
-1. User interacts with the dashboard  
-2. Data is retrieved from SQL Server via Entity Framework  
-3. Controllers process business logic  
-4. Views display dynamic financial data  
-5. Logs are recorded for each action  
-
----
-
-## ⚙️ Installation
-
-### 1. Clone the repository
+### Clone
 ```bash
 git clone https://github.com/MertcanKayirici/MiniFinansRaporlama.git
 ```
@@ -213,7 +213,7 @@ ASP.NET MVC & SQL Server
 This project was developed to simulate a real-world financial tracking system, focusing on:
 
 - Clean architecture principles
-- Data visualization 
+- Data visualization
 - Scalable backend design
 - Modern UI/UX experience 
 

@@ -1,26 +1,37 @@
 ﻿@model IEnumerable<MiniFinansRaporlama.Models.Transactions>
 
 @{
+    // Page title displayed in the shared layout
     ViewBag.Title = "Finansal İşlemler";
 
+    // Recent transactions displayed in the side panel
     var sonIslemler = ViewBag.SonIslemler as List<MiniFinansRaporlama.Models.Transactions>;
+
+    // Recent audit logs displayed in the activity panel
     var sonLoglar = ViewBag.SonLoglar as List<MiniFinansRaporlama.Models.Logs>;
+
+    // Top expense categories used in the summary section
     var topCategories = ViewBag.TopCategories as List<MiniFinansRaporlama.Controllers.CategorySummaryViewModel>;
 
+    // Preserve selected start date in the filter form
     string currentStartDate = ViewBag.StartDate != null
         ? ((DateTime)ViewBag.StartDate).ToString("yyyy-MM-dd")
         : "";
 
+    // Preserve selected end date in the filter form
     string currentEndDate = ViewBag.EndDate != null
         ? ((DateTime)ViewBag.EndDate).ToString("yyyy-MM-dd")
         : "";
 
+    // Preserve selected category in the filter form
     string currentCategory = ViewBag.Category != null
         ? ViewBag.Category.ToString()
         : "";
 
+    // Default text shown when no filters are active
     string filterSummary = "Tüm kayıtlar gösteriliyor";
 
+    // Build a readable filter summary when at least one filter is active
     if (!string.IsNullOrWhiteSpace(currentCategory) || !string.IsNullOrWhiteSpace(currentStartDate) || !string.IsNullOrWhiteSpace(currentEndDate))
     {
         filterSummary = "Filtre aktif";
@@ -42,15 +53,18 @@
 
 @section Styles {
     <style>
+        /* Main page title styling */
         .page-title {
             font-weight: 800;
             letter-spacing: -.4px;
         }
 
+        /* Subtitle text shown below the page title */
         .page-subtitle {
             color: #64748b;
         }
 
+        /* Reusable soft card used in side sections */
         .soft-card {
             border-radius: 22px;
             border: 1px solid #e7edf5;
@@ -58,24 +72,28 @@
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
         }
 
+        /* Section heading style */
         .section-title {
             font-size: 1.05rem;
             font-weight: 700;
             margin-bottom: .2rem;
         }
 
+        /* Secondary section description text */
         .section-subtitle {
             color: #64748b;
             font-size: .88rem;
             margin-bottom: 0;
         }
 
+        /* Action button area in the hero section */
         .hero-actions {
             display: flex;
             flex-wrap: wrap;
             gap: .75rem;
         }
 
+        /* Shared style for hero action buttons */
         .hero-btn {
             min-width: 140px;
             justify-content: center;
@@ -87,12 +105,14 @@
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
         }
 
+        /* Filter panel container */
         .filter-panel {
             border-radius: 22px;
             border: 1px solid #e7edf5;
             background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
         }
 
+        /* Dashboard summary card */
         .summary-card {
             position: relative;
             overflow: hidden;
@@ -102,6 +122,7 @@
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
         }
 
+            /* Decorative top line for summary cards */
             .summary-card::before {
                 content: "";
                 position: absolute;
@@ -111,30 +132,37 @@
                 height: 4px;
             }
 
+        /* Income summary accent color */
         .summary-income::before {
             background: linear-gradient(90deg, #22c55e, #16a34a);
         }
 
+        /* Expense summary accent color */
         .summary-expense::before {
             background: linear-gradient(90deg, #ef4444, #dc2626);
         }
 
+        /* Balance summary accent color */
         .summary-balance::before {
             background: linear-gradient(90deg, #3b82f6, #2563eb);
         }
 
+        /* Transaction count summary accent color */
         .summary-count::before {
             background: linear-gradient(90deg, #8b5cf6, #7c3aed);
         }
 
+        /* Mini summary accent color */
         .mini-summary::before {
             background: linear-gradient(90deg, #06b6d4, #3b82f6);
         }
 
+        /* Mini log accent color */
         .mini-log::before {
             background: linear-gradient(90deg, #f59e0b, #f97316);
         }
 
+        /* Icon container inside summary cards */
         .summary-icon {
             width: 56px;
             height: 56px;
@@ -146,54 +174,64 @@
             font-weight: bold;
         }
 
+        /* Income icon styling */
         .icon-income {
             background: rgba(34, 197, 94, 0.12);
             color: #16a34a;
         }
 
+        /* Expense icon styling */
         .icon-expense {
             background: rgba(239, 68, 68, 0.12);
             color: #dc2626;
         }
 
+        /* Balance icon styling */
         .icon-balance {
             background: rgba(59, 130, 246, 0.12);
             color: #2563eb;
         }
 
+        /* Count icon styling */
         .icon-count {
             background: rgba(139, 92, 246, 0.12);
             color: #7c3aed;
         }
 
+        /* Mini metric icon styling */
         .icon-mini {
             background: rgba(14, 165, 233, 0.12);
             color: #0369a1;
         }
 
+        /* Log metric icon styling */
         .icon-log {
             background: rgba(245, 158, 11, 0.14);
             color: #c2410c;
         }
 
+        /* Label text used in summary cards */
         .summary-label {
             color: #64748b;
             font-size: .86rem;
             margin-bottom: .2rem;
         }
 
+        /* Main numeric value style */
         .summary-value {
             font-size: 1.4rem;
             font-weight: 800;
             margin-bottom: 0;
         }
 
+        /* Supporting text under metric values */
         .summary-sub {
             color: #64748b;
             font-size: .82rem;
             margin-top: .3rem;
         }
 
+        /* Chart card container */
         .chart-card {
             border-radius: 22px;
             border: 1px solid #e7edf5;
@@ -201,6 +239,7 @@
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
         }
 
+        /* Base wrapper for charts */
         .chart-wrapper {
             position: relative;
             width: 100%;
@@ -211,26 +250,31 @@
             justify-content: center;
         }
 
+        /* Larger chart wrapper for monthly analysis */
         .chart-wrapper-lg {
             min-height: 360px;
             height: 360px;
         }
 
+        /* Force canvas to fill wrapper */
         .chart-wrapper canvas {
             width: 100% !important;
             height: 100% !important;
         }
 
+        /* Empty state container */
         .empty-state {
             text-align: center;
             padding: 2rem 1rem;
         }
 
+        /* Empty state icon style */
         .empty-icon {
             font-size: 2rem;
             margin-bottom: .6rem;
         }
 
+        /* Card-like item used in recent transaction list */
         .side-list-item {
             border: 1px solid #edf2f7;
             border-radius: 18px;
@@ -238,10 +282,12 @@
             padding: 1rem;
         }
 
+            /* Spacing between recent transaction items */
             .side-list-item + .side-list-item {
                 margin-top: .8rem;
             }
 
+        /* Row layout for top category list */
         .top-category-row {
             display: flex;
             justify-content: space-between;
@@ -251,16 +297,19 @@
             border-bottom: 1px dashed #e5e7eb;
         }
 
+            /* Remove divider from the last category item */
             .top-category-row:last-child {
                 border-bottom: none;
             }
 
+        /* Timeline item used for activity log */
         .activity-item {
             position: relative;
             padding-left: 1.1rem;
             margin-bottom: 1rem;
         }
 
+            /* Dot marker for activity timeline */
             .activity-item::before {
                 content: "";
                 position: absolute;
@@ -271,18 +320,22 @@
                 border-radius: 50%;
             }
 
+        /* Create action marker */
         .activity-create::before {
             background: #22c55e;
         }
 
+        /* Update action marker */
         .activity-update::before {
             background: #f59e0b;
         }
 
+        /* Delete action marker */
         .activity-delete::before {
             background: #ef4444;
         }
 
+        /* Filter summary badge style */
         .filter-summary-badge {
             display: inline-flex;
             align-items: center;
@@ -295,6 +348,7 @@
             font-weight: 600;
         }
 
+        /* Main table shell container */
         .table-shell {
             border-radius: 22px;
             overflow: hidden;
@@ -303,6 +357,7 @@
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
         }
 
+        /* Table header style */
         .table thead th {
             background: #f8fbff;
             color: #334155;
@@ -311,21 +366,25 @@
             border-bottom: 1px solid #e7edf5;
         }
 
+        /* Hover effect for table rows */
         .table tbody tr:hover {
             background: #fbfdff;
         }
 
+        /* Vertical action button stack */
         .action-stack {
             display: flex;
             flex-direction: column;
             gap: .45rem;
         }
 
+            /* Shared styling for action buttons */
             .action-stack .btn {
                 border-radius: 12px;
                 font-weight: 600;
             }
 
+        /* Small metric badge used across sections */
         .metric-chip {
             display: inline-flex;
             align-items: center;
@@ -335,26 +394,31 @@
             font-weight: 700;
         }
 
+        /* Success chip */
         .chip-success {
             background: rgba(34, 197, 94, 0.12);
             color: #15803d;
         }
 
+        /* Danger chip */
         .chip-danger {
             background: rgba(239, 68, 68, 0.12);
             color: #b91c1c;
         }
 
+        /* Warning chip */
         .chip-warning {
             background: rgba(245, 158, 11, 0.12);
             color: #b45309;
         }
 
+        /* Info chip */
         .chip-info {
             background: rgba(59, 130, 246, 0.12);
             color: #1d4ed8;
         }
 
+        /* SweetAlert popup customization */
         .finance-swal-popup {
             border-radius: 24px !important;
             padding: 1.4rem !important;
@@ -362,12 +426,14 @@
             box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18) !important;
         }
 
+        /* SweetAlert title customization */
         .finance-swal-title {
             font-weight: 800 !important;
             color: #0f172a !important;
             font-size: 1.5rem !important;
         }
 
+        /* Shared styles for SweetAlert buttons */
         .finance-swal-confirm,
         .finance-swal-cancel {
             min-width: 140px;
@@ -379,21 +445,25 @@
             margin: 0 .25rem !important;
         }
 
+        /* Confirm button style */
         .finance-swal-confirm {
             background: #dc2626 !important;
             color: #fff !important;
             box-shadow: 0 10px 24px rgba(220, 38, 38, 0.20) !important;
         }
 
+        /* Cancel button style */
         .finance-swal-cancel {
             background: #e2e8f0 !important;
             color: #0f172a !important;
         }
 
+        /* Ensure modal appears above all page content */
         div:where(.swal2-container) {
             z-index: 99999 !important;
         }
 
+        /* Larger chart sizes for wide screens */
         @@media (min-width: 1200px) {
             .chart-wrapper {
                 min-height: 340px;
@@ -408,6 +478,7 @@
     </style>
 }
 
+<!-- Page header and primary actions -->
 <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3 mb-4">
     <div>
         <h2 class="page-title mb-1">Finansal İşlemler</h2>
@@ -417,11 +488,13 @@
     <div class="hero-actions">
         @Html.ActionLink("➕ Yeni İşlem Ekle", "Create", null, new { @class = "btn btn-primary hero-btn" })
 
+        <!-- Export current filtered data to Excel -->
         <a href="@Url.Action("ExportToExcel", "Finance", new { startDate = currentStartDate, endDate = currentEndDate, category = currentCategory })"
            class="btn btn-success hero-btn">
             📊 Excel
         </a>
 
+        <!-- Export current filtered data to PDF -->
         <a href="@Url.Action("ExportToPdf", "Finance", new { startDate = currentStartDate, endDate = currentEndDate, category = currentCategory })"
            class="btn btn-danger hero-btn">
             📄 PDF
@@ -429,6 +502,7 @@
     </div>
 </div>
 
+<!-- Filter section -->
 <div class="filter-panel p-4 mb-4">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
         <div>
@@ -436,6 +510,7 @@
             <p class="section-subtitle">Tarih ve kategoriye göre işlemleri filtreleyebilirsin.</p>
         </div>
 
+        <!-- Active filter summary badge -->
         <div class="filter-summary-badge">
             🔎 @filterSummary
         </div>
@@ -443,16 +518,19 @@
 
     @using (Html.BeginForm("Index", "Finance", FormMethod.Get, new { @class = "row g-3 align-items-end" }))
     {
+        <!-- Start date filter -->
         <div class="col-12 col-md-3">
             <label for="startDate" class="form-label fw-semibold">Başlangıç Tarihi</label>
             <input type="date" name="startDate" id="startDate" class="form-control" value="@currentStartDate" />
         </div>
 
+        <!-- End date filter -->
         <div class="col-12 col-md-3">
             <label for="endDate" class="form-label fw-semibold">Bitiş Tarihi</label>
             <input type="date" name="endDate" id="endDate" class="form-control" value="@currentEndDate" />
         </div>
 
+        <!-- Category filter -->
         <div class="col-12 col-md-3">
             <label for="category" class="form-label fw-semibold">Kategori</label>
             <select name="category" id="category" class="form-select">
@@ -467,6 +545,7 @@
             </select>
         </div>
 
+        <!-- Filter action buttons -->
         <div class="col-12 col-md-3">
             <div class="d-grid d-sm-flex gap-2">
                 <button type="submit" class="btn btn-primary px-4">Filtrele</button>
@@ -476,6 +555,7 @@
     }
 </div>
 
+<!-- Main dashboard summary cards -->
 <div id="dashboard" class="row g-3 mb-4">
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="summary-card summary-income p-4 h-100">
@@ -532,6 +612,7 @@
     </div>
 </div>
 
+<!-- Secondary dashboard metric cards -->
 <div class="row g-3 mb-4">
     <div class="col-12 col-md-6 col-xl-3">
         <div class="summary-card mini-summary p-4 h-100">
@@ -586,6 +667,7 @@
     </div>
 </div>
 
+<!-- Monthly income and expense analysis chart -->
 <div class="row g-4 mb-4">
     <div class="col-12">
         <div class="chart-card p-3 p-md-4">
@@ -604,6 +686,7 @@
                 }
                 else
                 {
+                    <!-- Empty state shown when no monthly data is available -->
                     <div class="empty-state w-100">
                         <div class="empty-icon">📈</div>
                         <h6 class="fw-bold mb-1">Aylık grafik verisi yok</h6>
@@ -615,6 +698,7 @@
     </div>
 </div>
 
+<!-- Finance distribution charts -->
 <div id="charts" class="row g-4 mb-4">
     <div class="col-12 col-xl-6">
         <div class="chart-card p-3 p-md-4 h-100">
@@ -633,6 +717,7 @@
                 }
                 else
                 {
+                    <!-- Empty state shown when income/expense data is missing -->
                     <div class="empty-state w-100">
                         <div class="empty-icon">📊</div>
                         <h6 class="fw-bold mb-1">Grafik verisi yok</h6>
@@ -660,6 +745,7 @@
                 }
                 else
                 {
+                    <!-- Empty state shown when category-based expense data is unavailable -->
                     <div class="empty-state w-100">
                         <div class="empty-icon">🍩</div>
                         <h6 class="fw-bold mb-1">Kategori verisi yok</h6>
@@ -671,6 +757,7 @@
     </div>
 </div>
 
+<!-- Side panels: top categories, recent transactions, and audit logs -->
 <div class="row g-4 mb-4">
     <div class="col-12 col-xl-4">
         <div class="soft-card p-4 h-100">
@@ -696,6 +783,7 @@
             }
             else
             {
+                <!-- Empty state shown when no top categories are available -->
                 <div class="empty-state">
                     <div class="empty-icon">📂</div>
                     <h6 class="fw-bold mb-1">Kategori özeti yok</h6>
@@ -743,12 +831,14 @@
                             @(string.IsNullOrWhiteSpace(item.Description) ? "-" : item.Description)
                         </div>
 
+                        <!-- Link to transaction details -->
                         @Html.ActionLink("Detay", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-outline-dark w-100" })
                     </div>
                 }
             }
             else
             {
+                <!-- Empty state shown when no recent transactions exist -->
                 <div class="empty-state">
                     <div class="empty-icon">🧾</div>
                     <h6 class="fw-bold mb-1">Son işlem bulunamadı</h6>
@@ -768,6 +858,7 @@
                 <span class="metric-chip chip-warning">Güvenlik</span>
             </div>
 
+            <!-- Summary chips for log action counts -->
             <div class="d-flex flex-wrap gap-2 mb-3">
                 <span class="metric-chip chip-success">Create: @ViewBag.CreateLogCount</span>
                 <span class="metric-chip chip-warning">Update: @ViewBag.UpdateLogCount</span>
@@ -778,6 +869,7 @@
             {
                 foreach (var log in sonLoglar)
                 {
+                    // Resolve visual class based on the log action type
                     var activityClass = "activity-item";
                     if (log.Action == "Create") { activityClass += " activity-create"; }
                     else if (log.Action == "Update") { activityClass += " activity-update"; }
@@ -794,6 +886,7 @@
             }
             else
             {
+                <!-- Empty state shown when there are no log records -->
                 <div class="empty-state">
                     <div class="empty-icon">🛡️</div>
                     <h6 class="fw-bold mb-1">Log bulunamadı</h6>
@@ -804,6 +897,7 @@
     </div>
 </div>
 
+<!-- Main transaction table -->
 <div id="transactions" class="table-shell">
     <div class="p-4 border-bottom">
         <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -833,10 +927,15 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <!-- Transaction date -->
                             <td class="ps-4">@item.Date.ToString("dd.MM.yyyy")</td>
+
+                            <!-- Transaction category -->
                             <td>
                                 <span class="badge text-bg-secondary">@(string.IsNullOrWhiteSpace(item.Category) ? "Diğer" : item.Category)</span>
                             </td>
+
+                            <!-- Transaction type badge -->
                             <td>
                                 @if (item.Type == "Gelir")
                                 {
@@ -847,13 +946,20 @@
                                     <span class="badge rounded-pill text-bg-danger">Gider</span>
                                 }
                             </td>
+
+                            <!-- Transaction amount -->
                             <td class="fw-semibold">@item.Amount.ToString("N2") ₺</td>
+
+                            <!-- Transaction description -->
                             <td>@(string.IsNullOrWhiteSpace(item.Description) ? "-" : item.Description)</td>
+
+                            <!-- Row action buttons -->
                             <td class="pe-4">
                                 <div class="action-stack">
                                     @Html.ActionLink("Detay", "Details", new { id = item.Id }, new { @class = "btn btn-outline-info btn-sm" })
                                     @Html.ActionLink("Düzenle", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-warning btn-sm" })
 
+                                    <!-- Delete button opens a confirmation modal -->
                                     <button type="button"
                                             class="btn btn-outline-danger btn-sm w-100 open-delete-alert"
                                             data-id="@item.Id"
@@ -871,6 +977,7 @@
         }
         else
         {
+            <!-- Empty state shown when the filter returns no records -->
             <div class="p-4">
                 <div class="alert alert-warning mb-0">
                     <strong>Kayıt bulunamadı.</strong><br />
@@ -881,6 +988,7 @@
     </div>
 </div>
 
+<!-- Hidden form used to submit delete requests securely -->
 @using (Html.BeginForm("Delete", "Finance", FormMethod.Post, new { id = "deleteForm" }))
 {
     @Html.AntiForgeryToken()
@@ -889,12 +997,15 @@
 
 @section Scripts {
     <script>
+        // Monthly chart labels and dataset values passed from the server
         const aylikLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikLabels));
         const aylikGelirler = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikGelirler));
         const aylikGiderler = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AylikGiderler));
 
+        // Monthly finance chart canvas reference
         const monthlyCtx = document.getElementById('monthlyFinanceChart');
 
+        // Render monthly income/expense bar chart only when data exists
         if (monthlyCtx && aylikLabels.length > 0) {
             new Chart(monthlyCtx, {
                 type: 'bar',
@@ -922,6 +1033,7 @@
                         legend: { position: 'bottom' },
                         tooltip: {
                             callbacks: {
+                                // Format tooltip values as Turkish currency
                                 label: function (context) {
                                     return context.dataset.label + ': ' + context.raw.toLocaleString('tr-TR') + ' ₺';
                                 }
@@ -932,6 +1044,7 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
+                                // Format y-axis labels as currency values
                                 callback: function (value) {
                                     return value.toLocaleString('tr-TR') + ' ₺';
                                 }
@@ -942,12 +1055,15 @@
             });
         }
 
+        // Total income and expense values used in the finance pie chart
         const gelir = @Html.Raw(Convert.ToDecimal(ViewBag.ToplamGelir).ToString(System.Globalization.CultureInfo.InvariantCulture));
         const gider = @Html.Raw(Convert.ToDecimal(ViewBag.ToplamGider).ToString(System.Globalization.CultureInfo.InvariantCulture));
         const toplam = gelir + gider;
 
+        // Finance summary chart canvas reference
         const financeCtx = document.getElementById('financeChart');
 
+        // Render finance pie chart only when at least one value is greater than zero
         if (financeCtx && toplam > 0) {
             new Chart(financeCtx, {
                 type: 'pie',
@@ -967,6 +1083,7 @@
                         legend: { position: 'bottom' },
                         tooltip: {
                             callbacks: {
+                                // Show value and percentage in tooltip
                                 label: function (context) {
                                     const value = context.raw;
                                     const percentage = ((value / toplam) * 100).toFixed(1);
@@ -980,6 +1097,7 @@
                                 weight: 'bold',
                                 size: 13
                             },
+                            // Show percentage labels on the chart slices
                             formatter: function (value) {
                                 return '%' + ((value / toplam) * 100).toFixed(1);
                             }
@@ -989,12 +1107,15 @@
             });
         }
 
+        // Category-based expense chart data
         const categoryLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GiderKategoriLabels));
         const categoryTotals = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GiderKategoriTotals));
         const categoryToplam = categoryTotals.reduce((a, b) => a + b, 0);
 
+        // Expense by category chart canvas reference
         const categoryCtx = document.getElementById('categoryExpenseChart');
 
+        // Render doughnut chart when category data is available
         if (categoryCtx && categoryLabels.length > 0 && categoryToplam > 0) {
             new Chart(categoryCtx, {
                 type: 'doughnut',
@@ -1023,6 +1144,7 @@
                         legend: { position: 'bottom' },
                         tooltip: {
                             callbacks: {
+                                // Show category value and percentage in tooltip
                                 label: function (context) {
                                     const value = context.raw;
                                     const percentage = ((value / categoryToplam) * 100).toFixed(1);
@@ -1036,6 +1158,7 @@
                                 weight: 'bold',
                                 size: 12
                             },
+                            // Show percentage labels directly on the chart
                             formatter: function (value) {
                                 return '%' + ((value / categoryToplam) * 100).toFixed(1);
                             }
@@ -1045,11 +1168,13 @@
             });
         }
 
+        // Initialize delete confirmation behavior after DOM content is loaded
         document.addEventListener("DOMContentLoaded", function () {
             const deleteButtons = document.querySelectorAll(".open-delete-alert");
             const deleteForm = document.getElementById("deleteForm");
             const deleteItemIdInput = document.getElementById("deleteItemId");
 
+            // Attach click event to each delete button
             deleteButtons.forEach(button => {
                 button.addEventListener("click", function () {
                     const id = this.dataset.id || "";
@@ -1057,6 +1182,7 @@
                     const category = this.dataset.category || "-";
                     const amount = this.dataset.amount || "0,00";
 
+                    // Show SweetAlert confirmation modal with transaction details
                     Swal.fire({
                         title: 'Kaydı Sil',
                         html: `
@@ -1095,6 +1221,7 @@
                             cancelButton: 'finance-swal-cancel'
                         }
                     }).then((result) => {
+                        // Submit delete form only if the user confirms the action
                         if (result.isConfirmed) {
                             deleteItemIdInput.value = id;
                             deleteForm.submit();

@@ -1,21 +1,25 @@
 ﻿@model MiniFinansRaporlama.Models.Transactions
 
 @{
+    // Page title displayed in the layout
     ViewBag.Title = "İşlem Düzenle";
 }
 
 @section Styles {
     <style>
+        /* Page title styling */
         .page-title {
             font-weight: 800;
             letter-spacing: -.4px;
             color: #0f172a;
         }
 
+        /* Subtitle under title */
         .page-subtitle {
             color: #64748b;
         }
 
+        /* Main container card */
         .soft-card {
             border-radius: 24px;
             border: 1px solid #e7edf5;
@@ -23,6 +27,7 @@
             box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
         }
 
+        /* Header layout (title + back button) */
         .edit-topbar {
             display: flex;
             justify-content: space-between;
@@ -32,6 +37,7 @@
             margin-bottom: 1.5rem;
         }
 
+        /* Summary cards showing current values */
         .edit-summary-card {
             border-radius: 20px;
             border: 1px solid #ebf1f7;
@@ -41,12 +47,14 @@
             height: 100%;
         }
 
+        /* Summary label */
         .summary-label {
             color: #64748b;
             font-size: .85rem;
             margin-bottom: .35rem;
         }
 
+        /* Summary value */
         .summary-value {
             font-size: 1.2rem;
             font-weight: 800;
@@ -54,6 +62,7 @@
             color: #0f172a;
         }
 
+        /* Section title */
         .section-title {
             font-size: 1.05rem;
             font-weight: 700;
@@ -61,12 +70,14 @@
             margin-bottom: .2rem;
         }
 
+        /* Section subtitle */
         .section-subtitle {
             color: #64748b;
             font-size: .88rem;
             margin-bottom: 0;
         }
 
+        /* Form field container */
         .detail-field {
             border: 1px solid #e7edf5;
             border-radius: 18px;
@@ -76,6 +87,7 @@
             box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
         }
 
+        /* Field label */
         .detail-label {
             font-size: .82rem;
             font-weight: 700;
@@ -85,6 +97,7 @@
             letter-spacing: .3px;
         }
 
+        /* Input and select base styles */
         .form-control,
         .form-select {
             border-radius: 14px;
@@ -94,17 +107,20 @@
             font-weight: 500;
         }
 
+            /* Focus styles */
             .form-control:focus,
             .form-select:focus {
                 border-color: #6366f1;
                 box-shadow: 0 0 0 .2rem rgba(99,102,241,.12);
             }
 
+        /* Textarea styling */
         textarea.form-control {
             min-height: 130px;
             resize: vertical;
         }
 
+        /* Description preview box */
         .description-box {
             border: 1px solid #e7edf5;
             border-radius: 18px;
@@ -114,6 +130,7 @@
             color: #334155;
         }
 
+        /* Action buttons container */
         .action-wrap {
             display: flex;
             flex-wrap: wrap;
@@ -121,12 +138,14 @@
             margin-top: 1.75rem;
         }
 
+            /* Action buttons */
             .action-wrap .btn {
                 min-width: 140px;
                 border-radius: 14px;
                 font-weight: 700;
             }
 
+        /* Amount highlight styles */
         .highlight-amount-income {
             color: #16a34a;
         }
@@ -135,6 +154,7 @@
             color: #dc2626;
         }
 
+        /* Badge styles for transaction type */
         .detail-badge {
             display: inline-flex;
             align-items: center;
@@ -155,6 +175,7 @@
             color: #b91c1c;
         }
 
+        /* Validation summary box */
         .validation-summary-errors {
             background: rgba(239, 68, 68, 0.08);
             border: 1px solid rgba(239, 68, 68, 0.14);
@@ -164,12 +185,14 @@
             color: #b91c1c;
         }
 
+        /* Validation text */
         .field-validation-error,
         .text-danger {
             font-size: .82rem;
             font-weight: 600;
         }
 
+        /* Responsive adjustments */
         @@media (max-width: 576px) {
             .action-wrap .btn {
                 width: 100%;
@@ -178,19 +201,28 @@
     </style>
 }
 
+<!-- PAGE HEADER -->
 <div class="edit-topbar">
     <div>
         <h2 class="page-title mb-1">İşlem Düzenle</h2>
-        <p class="page-subtitle mb-0">Mevcut işleme ait bilgileri güncelleyebilirsin.</p>
+        <p class="page-subtitle mb-0">
+            Update the selected transaction details.
+        </p>
     </div>
 
+    <!-- Back navigation -->
     <div>
         @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary rounded-3 px-4" })
     </div>
 </div>
 
+<!-- MAIN CONTAINER -->
 <div class="soft-card p-4 p-md-4">
+
+    <!-- CURRENT VALUES SUMMARY -->
     <div class="row g-3 mb-4">
+
+        <!-- Current amount -->
         <div class="col-12 col-md-4">
             <div class="edit-summary-card">
                 <div class="summary-label">Mevcut Tutar</div>
@@ -200,6 +232,7 @@
             </div>
         </div>
 
+        <!-- Current type -->
         <div class="col-12 col-md-4">
             <div class="edit-summary-card">
                 <div class="summary-label">Mevcut Tip</div>
@@ -216,6 +249,7 @@
             </div>
         </div>
 
+        <!-- Current category -->
         <div class="col-12 col-md-4">
             <div class="edit-summary-card">
                 <div class="summary-label">Mevcut Kategori</div>
@@ -226,20 +260,29 @@
         </div>
     </div>
 
+    <!-- FORM HEADER -->
     <div class="mb-4">
         <h5 class="section-title">Düzenleme Formu</h5>
-        <p class="section-subtitle">Aşağıdaki alanları güncelleyerek işlemi kaydedebilirsin.</p>
+        <p class="section-subtitle">
+            Modify fields below and save changes.
+        </p>
     </div>
 
+    <!-- EDIT FORM -->
     @using (Html.BeginForm("Edit", "Finance", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
+
+        // Hidden fields used to preserve entity identity and creation date
         @Html.HiddenFor(x => x.Id)
         @Html.HiddenFor(x => x.CreatedAt)
 
+        // Validation summary
         @Html.ValidationSummary(false, "", new { })
 
         <div class="row g-3">
+
+            <!-- Date field -->
             <div class="col-12 col-md-6">
                 <div class="detail-field">
                     <div class="detail-label">Tarih</div>
@@ -252,6 +295,7 @@
                 </div>
             </div>
 
+            <!-- Amount field -->
             <div class="col-12 col-md-6">
                 <div class="detail-field">
                     <div class="detail-label">Tutar</div>
@@ -266,6 +310,7 @@
                 </div>
             </div>
 
+            <!-- Category field -->
             <div class="col-12 col-md-6">
                 <div class="detail-field">
                     <div class="detail-label">Kategori</div>
@@ -288,6 +333,7 @@
                 </div>
             </div>
 
+            <!-- Type field -->
             <div class="col-12 col-md-6">
                 <div class="detail-field">
                     <div class="detail-label">Tip</div>
@@ -305,6 +351,7 @@
                 </div>
             </div>
 
+            <!-- Description field -->
             <div class="col-12">
                 <div class="detail-field">
                     <div class="detail-label">Açıklama</div>
@@ -319,6 +366,7 @@
             </div>
         </div>
 
+        <!-- ACTION BUTTONS -->
         <div class="action-wrap">
             <button type="submit" class="btn btn-primary">Kaydet</button>
             @Html.ActionLink("İptal", "Index", null, new { @class = "btn btn-outline-dark" })

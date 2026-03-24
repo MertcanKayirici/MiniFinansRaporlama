@@ -1,21 +1,25 @@
 ﻿@model MiniFinansRaporlama.Models.Transactions
 
 @{
+    // Page title displayed in the shared layout
     ViewBag.Title = "Yeni İşlem Ekle";
 }
 
 @section Styles {
     <style>
+        /* Main page title styling */
         .page-title {
             font-weight: 800;
             letter-spacing: -.4px;
             color: #0f172a;
         }
 
+        /* Subtitle text below the page title */
         .page-subtitle {
             color: #64748b;
         }
 
+        /* Main outer card container */
         .soft-card {
             border-radius: 24px;
             border: 1px solid #e7edf5;
@@ -23,6 +27,7 @@
             box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
         }
 
+        /* Section title styling */
         .section-title {
             font-size: 1.05rem;
             font-weight: 700;
@@ -30,12 +35,14 @@
             margin-bottom: .2rem;
         }
 
+        /* Section subtitle styling */
         .section-subtitle {
             color: #64748b;
             font-size: .88rem;
             margin-bottom: 0;
         }
 
+        /* Form wrapper card */
         .form-shell {
             border: 1px solid #e7edf5;
             border-radius: 20px;
@@ -44,12 +51,14 @@
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
         }
 
+        /* Form label styling */
         .form-label {
             font-weight: 700 !important;
             color: #334155;
             margin-bottom: .55rem;
         }
 
+        /* Shared input and select styling */
         .form-control,
         .form-select {
             min-height: 52px;
@@ -60,17 +69,20 @@
             transition: all .2s ease;
         }
 
+        /* Textarea specific sizing */
         textarea.form-control {
             min-height: 120px;
             resize: vertical;
         }
 
+        /* Focus state for form elements */
         .form-control:focus,
         .form-select:focus {
             border-color: #6366f1;
             box-shadow: 0 0 0 .2rem rgba(99, 102, 241, 0.12);
         }
 
+        /* Validation message styling */
         .text-danger.small,
         .field-validation-error {
             display: block;
@@ -79,11 +91,13 @@
             font-weight: 600;
         }
 
+        /* Validation summary container spacing */
         .validation-summary-errors,
         .validation-summary-valid {
             margin-bottom: 1rem;
         }
 
+        /* Validation summary error box */
         .validation-summary-errors {
             background: rgba(239, 68, 68, 0.08);
             border: 1px solid rgba(239, 68, 68, 0.18);
@@ -92,11 +106,13 @@
             padding: 1rem 1rem .85rem 1rem;
         }
 
+            /* Validation summary list styling */
             .validation-summary-errors ul {
                 margin: 0;
                 padding-left: 1.2rem;
             }
 
+        /* Informational cards shown above the form */
         .mini-info-card {
             border-radius: 18px;
             border: 1px solid #e7edf5;
@@ -105,6 +121,7 @@
             height: 100%;
         }
 
+        /* Informational card title */
         .mini-info-title {
             font-size: .85rem;
             color: #64748b;
@@ -112,6 +129,7 @@
             font-weight: 600;
         }
 
+        /* Informational card value text */
         .mini-info-value {
             font-size: 1rem;
             font-weight: 800;
@@ -119,6 +137,7 @@
             margin-bottom: 0;
         }
 
+        /* Action button container */
         .action-wrap {
             display: flex;
             flex-wrap: wrap;
@@ -126,6 +145,7 @@
             margin-top: 1.75rem;
         }
 
+            /* Shared styling for form action buttons */
             .action-wrap .btn,
             .action-wrap input[type="submit"] {
                 min-width: 150px;
@@ -134,16 +154,19 @@
                 font-weight: 700;
             }
 
+        /* Save button emphasis */
         .save-btn {
             box-shadow: 0 10px 24px rgba(34, 197, 94, 0.18);
         }
 
+        /* Top navigation action button */
         .top-action-btn {
             border-radius: 14px;
             padding: .75rem 1.1rem;
             font-weight: 700;
         }
 
+        /* Responsive layout for smaller screens */
         @@media (max-width: 576px) {
             .action-wrap .btn,
             .action-wrap input[type="submit"],
@@ -154,6 +177,7 @@
     </style>
 }
 
+<!-- Page header and quick navigation -->
 <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3 mb-4">
     <div>
         <h2 class="page-title mb-1">Yeni İşlem Ekle</h2>
@@ -161,11 +185,14 @@
     </div>
 
     <div>
+        <!-- Navigate back to transaction list -->
         @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-outline-secondary top-action-btn" })
     </div>
 </div>
 
+<!-- Main content card -->
 <div class="soft-card p-4">
+    <!-- Informational summary cards -->
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-4">
             <div class="mini-info-card">
@@ -189,19 +216,23 @@
         </div>
     </div>
 
+    <!-- Form section heading -->
     <div class="mb-4">
         <h5 class="section-title">İşlem Formu</h5>
         <p class="section-subtitle">Aşağıdaki alanları doldurarak yeni finans kaydı oluştur.</p>
     </div>
 
+    <!-- Transaction creation form -->
     <div class="form-shell">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
+            <!-- Validation summary for model errors -->
             @Html.ValidationSummary(false, "", new { @class = "text-danger mb-3" })
 
             <div class="row g-3">
+                <!-- Transaction date field -->
                 <div class="col-12 col-md-6">
                     @Html.LabelFor(model => model.Date, new { @class = "form-label" })
 
@@ -214,6 +245,7 @@
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger small" })
                 </div>
 
+                <!-- Category selection field -->
                 <div class="col-12 col-md-6">
                     @Html.LabelFor(model => model.Category, new { @class = "form-label" })
 
@@ -236,6 +268,7 @@
                     @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger small" })
                 </div>
 
+                <!-- Transaction type field -->
                 <div class="col-12 col-md-6">
                     @Html.LabelFor(model => model.Type, new { @class = "form-label" })
 
@@ -253,6 +286,7 @@
                     @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger small" })
                 </div>
 
+                <!-- Amount input field -->
                 <div class="col-12 col-md-6">
                     @Html.LabelFor(model => model.Amount, new { @class = "form-label" })
 
@@ -265,6 +299,7 @@
                     @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger small" })
                 </div>
 
+                <!-- Description input field -->
                 <div class="col-12">
                     @Html.LabelFor(model => model.Description, new { @class = "form-label" })
 
@@ -279,6 +314,7 @@
                 </div>
             </div>
 
+            <!-- Form actions -->
             <div class="action-wrap">
                 <input type="submit" value="Kaydet" class="btn btn-success save-btn" />
                 @Html.ActionLink("Vazgeç", "Index", null, new { @class = "btn btn-outline-dark" })
